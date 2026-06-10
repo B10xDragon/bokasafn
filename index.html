@@ -28,25 +28,29 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
+        /* Fínstilltar hreyfingar korta fyrir GPU-hröðun */
         .book-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+            will-change: transform;
             perspective: 1000px;
         }
 
         .book-card:hover {
-            transform: translateY(-10px) rotateX(2deg);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px) rotateX(2deg);
+            box-shadow: 0 20px 30px -10px rgba(79, 70, 229, 0.15);
         }
 
         .book-img-container {
             position: relative;
             overflow: hidden;
             border-radius: 1.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.3s ease;
+            will-change: box-shadow;
         }
 
         .book-card:hover .book-img-container {
-            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.2);
+            box-shadow: 0 15px 20px -5px rgba(79, 70, 229, 0.18);
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -59,25 +63,31 @@
         #timer-widget {
             background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
             border: 1px solid rgba(79, 70, 229, 0.1);
-            transition: all 0.5s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            will-change: border-color, box-shadow;
         }
 
         .timer-active-glow {
             border-color: #6366f1 !important;
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.2) !important;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.15) !important;
         }
 
         .star-rating i {
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform;
         }
 
-        .page-transition {
-            animation: slideUp 0.6s ease-out forwards;
+        /* Fínstillt síðuskiptakerfi (Crossfade) */
+        .page-container {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .page-container.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         @keyframes shake {
@@ -123,7 +133,7 @@
     <main class="max-w-[100rem] mx-auto p-4 md:p-10">
         
         <!-- Bókasafnið -->
-        <div id="library-page" class="page-transition">
+        <div id="library-page" class="page-container active">
             <div class="mb-12 space-y-10">
                 <!-- Lestrarklukka -->
                 <div id="timer-widget" class="p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] shadow-lg flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 max-w-lg mx-auto">
@@ -141,6 +151,12 @@
                     </div>
                 </div>
 
+                <div class="text-center">
+                    <button onclick="openRecommendModal(event)" class="px-5 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-2xl text-xs font-bold shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5 active:scale-95">
+                        <i class="fas fa-paper-plane mr-2"></i>Mælir þú með bók?
+                    </button>
+                </div>
+
                 <!-- Flokkar (Fjölval) -->
                 <div class="text-center">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Hægt er að velja marga flokka í einu til að þrengja leitina</p>
@@ -153,7 +169,7 @@
         </div>
 
         <!-- Tölfræði -->
-        <div id="stats-page" class="hidden page-transition">
+        <div id="stats-page" class="page-container hidden">
             <div class="max-w-7xl mx-auto space-y-12 md:space-y-16">
 
                 <!-- Streak Banner -->
@@ -170,35 +186,46 @@
                     </div>
                 </div>
 
-                <!-- Tölfræði kassar -->
+                <!-- Sjónrænir Tölfræði kassar -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-                    <div class="glass-card p-6 md:p-10 rounded-3xl md:rounded-[3rem] shadow-sm text-center group hover:bg-white transition-all duration-500">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-indigo-100 text-indigo-600 rounded-2xl md:rounded-3xl flex items-center justify-center text-xl md:text-2xl mx-auto mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                    <!-- Hours Card -->
+                    <div class="relative overflow-hidden bg-gradient-to-br from-indigo-500 to-indigo-600 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4 backdrop-blur-md">
                             <i class="fas fa-hourglass-half"></i>
                         </div>
-                        <p class="text-slate-400 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 md:mb-2">Klukkustundir</p>
-                        <h3 id="stat-hours" class="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter">0</h3>
+                        <p class="text-indigo-200 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 text-center">Klukkustundir</p>
+                        <h3 id="stat-hours" class="text-3xl md:text-5xl font-black text-center tracking-tighter drop-shadow-sm">0</h3>
                     </div>
-                    <div class="glass-card p-6 md:p-10 rounded-3xl md:rounded-[3rem] shadow-sm text-center group hover:bg-white transition-all duration-500">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-violet-100 text-violet-600 rounded-2xl md:rounded-3xl flex items-center justify-center text-xl md:text-2xl mx-auto mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                    
+                    <!-- Minutes Card -->
+                    <div class="relative overflow-hidden bg-gradient-to-br from-violet-500 to-violet-600 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4 backdrop-blur-md">
                             <i class="fas fa-clock"></i>
                         </div>
-                        <p class="text-slate-400 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 md:mb-2">Mínútur</p>
-                        <h3 id="stat-minutes" class="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter">0</h3>
+                        <p class="text-violet-200 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 text-center">Mínútur</p>
+                        <h3 id="stat-minutes" class="text-3xl md:text-5xl font-black text-center tracking-tighter drop-shadow-sm">0</h3>
                     </div>
-                    <div class="glass-card p-6 md:p-10 rounded-3xl md:rounded-[3rem] shadow-sm text-center group hover:bg-white transition-all duration-500">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-blue-100 text-blue-600 rounded-2xl md:rounded-3xl flex items-center justify-center text-xl md:text-2xl mx-auto mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                    
+                    <!-- Seconds Card -->
+                    <div class="relative overflow-hidden bg-gradient-to-br from-pink-500 to-pink-600 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4 backdrop-blur-md">
                             <i class="fas fa-stopwatch"></i>
                         </div>
-                        <p class="text-slate-400 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 md:mb-2">Sekúndur</p>
-                        <h3 id="stat-seconds" class="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter">0</h3>
+                        <p class="text-pink-200 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 text-center">Sekúndur</p>
+                        <h3 id="stat-seconds" class="text-3xl md:text-5xl font-black text-center tracking-tighter drop-shadow-sm">0</h3>
                     </div>
-                    <div class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] shadow-xl border-b-4 md:border-b-8 border-orange-500 text-center relative overflow-hidden group">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-orange-100 text-orange-600 rounded-2xl md:rounded-3xl flex items-center justify-center text-xl md:text-2xl mx-auto mb-4 md:mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-fire"></i>
+                    
+                    <!-- Streak Card -->
+                    <div class="relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-500 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4 backdrop-blur-md">
+                            <i class="fas fa-fire animate-pulse text-amber-100"></i>
                         </div>
-                        <p class="text-slate-400 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 md:mb-2">Dagar í röð</p>
-                        <h3 id="stat-streak" class="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter">0</h3>
+                        <p class="text-amber-100 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 text-center">Dagar í röð</p>
+                        <h3 id="stat-streak" class="text-3xl md:text-5xl font-black text-center tracking-tighter drop-shadow-sm">0</h3>
                     </div>
                 </div>
 
@@ -282,39 +309,55 @@
                     </div>
                 </div>
 
+                <!-- Samræmt Sjónrænt Tölfræðiborð -->
+                <div class="glass-card p-8 md:p-12 rounded-3xl md:rounded-[3.5rem] shadow-sm">
+                    <h3 class="text-xl md:text-2xl font-black mb-10 flex items-center gap-4 text-slate-900">
+                        <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-sm">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        Lestrarvenjur og tölfræði
+                    </h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-14">
+                        <!-- Dálkur 1: Flokkar -->
+                        <div class="space-y-6">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-tags text-indigo-500"></i> Bókaflokkar sem ég les mest
+                            </h4>
+                            <div id="visual-stats-categories" class="space-y-5"></div>
+                        </div>
+                        <!-- Dálkur 2: Höfundar -->
+                        <div class="space-y-6">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-pen-nib text-violet-500"></i> Höfundar sem ég les mest
+                            </h4>
+                            <div id="visual-stats-authors" class="space-y-5"></div>
+                        </div>
+                        <!-- Dálkur 3: Mánaðarlegt lestraryfirlit -->
+                        <div class="space-y-6">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-calendar-alt text-pink-500"></i> Mánaðarlegt lestraryfirlit
+                            </h4>
+                            <div id="monthly-history-container" class="space-y-5"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Umsagnir -->
                 <div class="glass-card p-8 md:p-12 rounded-3xl md:rounded-[4rem] shadow-sm">
-                    <h3 class="text-xl md:text-2xl font-black mb-10 md:mb-12 flex items-center gap-4 md:gap-5 text-slate-900">
-                        <div class="w-10 h-10 bg-amber-500 text-white rounded-xl flex items-center justify-center text-sm"><i class="fas fa-star"></i></div>
+                    <h3 class="text-xl md:text-2xl font-black mb-8 flex items-center gap-4 text-slate-900">
+                        <div class="w-10 h-10 bg-amber-500 text-white rounded-xl flex items-center justify-center text-sm">
+                            <i class="fas fa-star"></i>
+                        </div>
                         Umsagnirnar mínar
                     </h3>
                     <div id="reviews-archive" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"></div>
                 </div>
 
-                <!-- Sjónræn tölfræði -->
-                <div class="glass-card p-8 md:p-12 rounded-3xl md:rounded-[4rem] shadow-sm">
-                    <h3 class="text-xl md:text-2xl font-black mb-10 md:mb-12 flex items-center gap-4 md:gap-5 text-slate-900">
-                        <div class="w-10 h-10 bg-indigo-500 text-white rounded-xl flex items-center justify-center text-sm"><i class="fas fa-chart-bar"></i></div>
-                        Lestrartölfræðin mín
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                        <!-- Flokkar mest lesnir -->
-                        <div class="bg-white/50 p-6 md:p-8 rounded-3xl border border-slate-100 shadow-inner">
-                            <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Mest lesnu flokkarnir</h4>
-                            <div id="visual-stats-categories" class="space-y-4"></div>
-                        </div>
-                        <!-- Höfundar mest lesnir -->
-                        <div class="bg-white/50 p-6 md:p-8 rounded-3xl border border-slate-100 shadow-inner">
-                            <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Mest lesnu höfundarnir</h4>
-                            <div id="visual-stats-authors" class="space-y-4"></div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
 
-    <!-- Modal (Breytt í absolute staðsetningu fyrir Google Sites) -->
+    <!-- Modal -->
     <div id="desc-modal" class="absolute inset-x-0 top-0 z-[100] flex items-start justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 hidden" onclick="closeModal()">
         <div id="desc-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-4xl w-full shadow-2xl relative animate-in zoom-in-95 duration-300 overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
             <button onclick="closeModal()" class="absolute top-4 right-4 md:top-8 md:right-8 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 transition-all z-10 shadow-sm">
@@ -324,7 +367,42 @@
         </div>
     </div>
 
-    <!-- Staðfestingargluggi (Breytt í absolute staðsetningu fyrir Google Sites) -->
+    <!-- Meðmæla Modal -->
+    <div id="recommend-modal" class="absolute inset-x-0 top-0 z-[100] flex items-start justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 hidden" onclick="closeRecommendModal()">
+        <div id="recommend-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-lg w-full shadow-2xl relative animate-in zoom-in-95 duration-300" onclick="event.stopPropagation()">
+            <button onclick="closeRecommendModal()" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 transition-all z-10 shadow-sm">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl md:text-2xl font-black text-slate-900 tracking-tighter flex items-center gap-3">
+                        <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-sm"><i class="fas fa-envelope-open-text"></i></div>
+                        Mælir þú með bók?
+                    </h3>
+                    <p class="text-slate-400 font-bold uppercase tracking-widest text-[9px] mt-2">Sendu tillögu þína til bókavarðar</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Heiti bókar <span class="text-rose-500">*</span></label>
+                        <input type="text" id="rec-title" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-3 outline-none focus:bg-white focus:border-indigo-400 transition-all font-semibold text-sm shadow-sm" placeholder="T.d. Hornauga">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Höfundur (valfrjálst)</label>
+                        <input type="text" id="rec-author" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-3 outline-none focus:bg-white focus:border-indigo-400 transition-all font-semibold text-sm shadow-sm" placeholder="T.d. Jón Jónsson">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Hugmyndir eða umsögn (valfrjálst)</label>
+                        <textarea id="rec-ideas" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-4 text-sm font-semibold outline-none focus:bg-white focus:border-indigo-400 shadow-sm min-h-[100px] transition-all" placeholder="Af hverju mælir þú með þessari bók?"></textarea>
+                    </div>
+                </div>
+                <button onclick="submitRecommendation()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-indigo-700 transition-all text-xs uppercase tracking-widest active:scale-95">
+                    <i class="fas fa-paper-plane mr-2"></i> Senda tillögu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Staðfestingargluggi -->
     <div id="stop-confirm-modal" class="absolute inset-x-0 top-0 z-[110] flex items-start justify-center bg-slate-900/40 backdrop-blur-sm p-6 hidden" onclick="closeStopConfirmation()">
         <div class="bg-white p-8 md:p-12 rounded-3xl md:rounded-[3.5rem] max-w-md w-full shadow-2xl text-center border border-slate-100" onclick="event.stopPropagation()">
             <div class="w-20 h-20 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-6 md:mb-8 shadow-inner">
@@ -368,6 +446,32 @@
         
         let timerState = { active: false, paused: false, startTime: null, elapsedBeforePause: 0, interval: null };
 
+        // --- Defensive Safe DOM Manipulation Utilities ---
+        const setInnerHTML = (id, html) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerHTML = html;
+            } else {
+                console.warn(`Element with ID '${id}' was not found in DOM.`);
+            }
+        };
+
+        const setInnerText = (id, text) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerText = text;
+            } else {
+                console.warn(`Element with ID '${id}' was not found in DOM.`);
+            }
+        };
+
+        const safeToggleClass = (id, className, force) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle(className, force);
+            }
+        };
+
         window.onload = async () => {
             loadUserData();
             await fetchBooks();
@@ -380,47 +484,6 @@
             const month = String(d.getMonth() + 1).padStart(2, '0');
             const day = String(d.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
-        }
-
-        function exportReadingCode() {
-            try {
-                const dataString = JSON.stringify(userData);
-                const b64 = btoa(unescape(encodeURIComponent(dataString)));
-                document.getElementById('reading-code-input').value = b64;
-                document.getElementById('reading-code-input').select();
-                document.execCommand('copy');
-                showToast("Lestrarkóði afritaður! Geymdu hann!");
-            } catch (err) {
-                console.error(err);
-                showToast("Villa kom upp við að búa til kóða.", "error");
-            }
-        }
-
-        function importReadingCode() {
-            const code = document.getElementById('reading-code-input').value.trim();
-            if (!code) {
-                showToast("Vinsamlegast límdu kóða fyrst!", "error");
-                return;
-            }
-            try {
-                const decodedString = decodeURIComponent(escape(atob(code)));
-                const parsedData = JSON.parse(decodedString);
-                
-                if (parsedData && typeof parsedData === 'object') {
-                    userData = { ...userData, ...parsedData };
-                    saveUserData();
-                    updateStatsUI();
-                    syncGoalUI();
-                    renderBooks();
-                    showToast("Lestrarstaða endurheimt! 🎉");
-                    document.getElementById('reading-code-input').value = "";
-                } else {
-                    showToast("Ógildur lestrarkóði!", "error");
-                }
-            } catch (err) {
-                console.error(err);
-                showToast("Villa: Gakktu úr skugga um að kóðinn sé réttur.", "error");
-            }
         }
 
         function shuffleArray(array) {
@@ -530,11 +593,13 @@
             return clean;
         }
 
+        // Búum til flokka einu sinni til að koma í veg fyrir óþarfa endur-teiknun á DOM
         function renderCategories() {
             let cats = new Set();
             allBooks.forEach(b => b.categories.forEach(c => cats.add(c)));
             const sortedCats = ['Allir', '❤️ Óskalisti', '✅ Lesið', ...Array.from(cats).sort()];
             const container = document.getElementById('category-filters');
+            if (!container) return;
             
             container.innerHTML = sortedCats.map(cat => {
                 const isAllSelected = cat === 'Allir' && activeCategories.length === 0;
@@ -542,12 +607,29 @@
                 const isActive = isAllSelected || isSelected;
                 
                 return `
-                    <button onclick="toggleCategory('${cat}')" 
-                        class="px-4 md:px-5 py-2 md:py-2.5 rounded-xl md:rounded-2xl text-[11px] md:text-xs font-bold transition-all shadow-sm ${isActive ? 'bg-indigo-600 text-white shadow-indigo-200' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/50'}">
+                    <button onclick="toggleCategory('${cat}')" data-category="${cat}"
+                        class="category-btn px-4 md:px-5 py-2 md:py-2.5 rounded-xl md:rounded-2xl text-[11px] md:text-xs font-bold transition-all duration-200 shadow-sm ${isActive ? 'bg-indigo-600 text-white shadow-indigo-200' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/50'}">
                         ${cat}
                     </button>
                 `;
             }).join('');
+        }
+
+        // Fínstillt virkni sem uppfærir aðeins klasa án þess að eyða DOM-hnúðum
+        function updateCategoryButtonsUI() {
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => {
+                const cat = btn.getAttribute('data-category');
+                const isAllSelected = cat === 'Allir' && activeCategories.length === 0;
+                const isSelected = activeCategories.includes(cat);
+                const isActive = isAllSelected || isSelected;
+                
+                if (isActive) {
+                    btn.className = "category-btn px-4 md:px-5 py-2 md:py-2.5 rounded-xl md:rounded-2xl text-[11px] md:text-xs font-bold transition-all duration-200 shadow-sm bg-indigo-600 text-white shadow-indigo-200";
+                } else {
+                    btn.className = "category-btn px-4 md:px-5 py-2 md:py-2.5 rounded-xl md:rounded-2xl text-[11px] md:text-xs font-bold transition-all duration-200 shadow-sm bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/50";
+                }
+            });
         }
 
         function toggleCategory(cat) {
@@ -561,7 +643,7 @@
                     activeCategories.push(cat);
                 }
             }
-            renderCategories();
+            updateCategoryButtonsUI();
             applyFilters();
         }
 
@@ -586,6 +668,8 @@
 
         function renderBooks() {
             const container = document.getElementById('book-grid');
+            if (!container) return;
+
             if (filteredBooks.length === 0) {
                 container.innerHTML = `
                     <div class="col-span-full py-20 text-center text-slate-400 font-bold italic">
@@ -609,8 +693,11 @@
                             </button>
                         </div>
                         <div onclick="openBookInfo(${b.id}, event)" class="cursor-pointer">
-                            <div class="book-img-container aspect-[3/4.5] relative mb-2 md:mb-3">
-                                <img src="${b.cover || 'https://via.placeholder.com/400x600?text=Vantar'}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x600?text=Vantar'">
+                            <div class="book-img-container aspect-[3/4.5] relative mb-2 md:mb-3 bg-slate-100">
+                                <img src="${b.cover || 'https://via.placeholder.com/400x600?text=Vantar'}" 
+                                     class="w-full h-full object-cover transition-opacity duration-300 opacity-0" 
+                                     onload="this.classList.remove('opacity-0')"
+                                     onerror="this.src='https://via.placeholder.com/400x600?text=Vantar'; this.classList.remove('opacity-0')">
                                 <div class="absolute inset-0 img-gradient opacity-60"></div>
                                 ${review ? `
                                     <div class="absolute bottom-2 left-2 bg-amber-400 text-white text-[8px] font-black px-2 py-0.5 rounded-lg shadow-lg flex items-center gap-1">
@@ -640,9 +727,9 @@
                 clickY = window.scrollY + 150;
             }
             
-            document.getElementById('modal-inner-content').innerHTML = `
+            setInnerHTML('modal-inner-content', `
                 <div class="flex flex-col md:flex-row gap-6 md:gap-10 items-start">
-                    <div class="w-full md:w-[200px] shrink-0 mx-auto">
+                    <div class="w-full md:w-[180px] shrink-0 mx-auto">
                         <img src="${b.cover}" class="w-full aspect-[3/4.5] object-cover rounded-2xl shadow-xl" onerror="this.src='https://via.placeholder.com/400x600?text=Vantar'">
                         <div class="mt-4 flex flex-wrap gap-1 justify-center">
                             ${b.categories.map(c => `<span class="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase border border-indigo-100/50">${c}</span>`).join('')}
@@ -676,38 +763,110 @@
                             </button>
                         </div>
                     </div>
-                </div>`;
+                </div>`);
             
             const modal = document.getElementById('desc-modal');
             const modalContent = document.getElementById('desc-modal-content');
             
-            modalContent.style.marginTop = Math.max(20, clickY - 150) + 'px';
-            modal.classList.remove('hidden');
+            if (modal && modalContent) {
+                modalContent.style.marginTop = Math.max(20, clickY - 150) + 'px';
+                modal.classList.remove('hidden');
+            }
         }
 
         function closeModal() { 
-            document.getElementById('desc-modal').classList.add('hidden'); 
+            safeToggleClass('desc-modal', 'hidden', true);
+        }
+
+        function openRecommendModal(event) {
+            let clickY = 100;
+            if (event && event.pageY) {
+                clickY = event.pageY;
+            } else {
+                clickY = window.scrollY + 150;
+            }
+            const modal = document.getElementById('recommend-modal');
+            const modalContent = modal ? modal.querySelector('div') : null;
+            if (modal && modalContent) {
+                modalContent.style.marginTop = Math.max(20, clickY - 150) + 'px';
+                modal.classList.remove('hidden');
+            }
+            
+            const titleInput = document.getElementById('rec-title');
+            const authorInput = document.getElementById('rec-author');
+            const ideasInput = document.getElementById('rec-ideas');
+            
+            if (titleInput) titleInput.value = '';
+            if (authorInput) authorInput.value = '';
+            if (ideasInput) ideasInput.value = '';
+        }
+
+        function closeRecommendModal() {
+            safeToggleClass('recommend-modal', 'hidden', true);
+        }
+
+        function submitRecommendation() {
+            const titleEl = document.getElementById('rec-title');
+            const title = titleEl ? titleEl.value.trim() : '';
+            const authorEl = document.getElementById('rec-author');
+            const author = authorEl ? authorEl.value.trim() : '';
+            const ideasEl = document.getElementById('rec-ideas');
+            const ideas = ideasEl ? ideasEl.value.trim() : '';
+            
+            if (!title) {
+                if (titleEl) {
+                    titleEl.classList.add('shake-element');
+                    setTimeout(() => titleEl.classList.remove('shake-element'), 300);
+                }
+                showToast("Þú verður að fylla út heiti bókar!", "error");
+                return;
+            }
+            
+            const email = "OdIG01@gskolar.is";
+            const subject = encodeURIComponent("Bókameðmæli frá Bókasafni Unglingadeildar");
+            let bodyText = `Hæ!\n\nÉg vil mæla með eftirfarandi bók fyrir bókasafnið:\n\n`;
+            bodyText += `Heiti bókar: ${title}\n`;
+            if (author) {
+                bodyText += `Höfundur: ${author}\n`;
+            }
+            if (ideas) {
+                bodyText += `Hugmyndir / umsögn: ${ideas}\n`;
+            }
+            
+            const body = encodeURIComponent(bodyText);
+            const mailtoUrl = `mailto:${email}?subject=${subject}&body=${body}`;
+            
+            window.location.href = mailtoUrl;
+            
+            closeRecommendModal();
+            showToast("Tillagan þín hefur verið undirbúin í tölvupósti!");
         }
 
         function setRating(r) {
             currentRating = r;
-            const stars = document.getElementById('modal-stars').children;
-            for (let i = 0; i < 5; i++) {
-                stars[i].className = (i < r ? 'fas text-amber-400' : 'far text-slate-200') + ' fa-star cursor-pointer transition-transform hover:scale-110';
+            const starContainer = document.getElementById('modal-stars');
+            if (starContainer) {
+                const stars = starContainer.children;
+                for (let i = 0; i < 5; i++) {
+                    stars[i].className = (i < r ? 'fas text-amber-400' : 'far text-slate-200') + ' fa-star cursor-pointer transition-transform hover:scale-110';
+                }
             }
         }
 
         function showToast(msg, type = 'success') {
             const t = document.getElementById('success-toast');
             const icon = document.getElementById('success-icon');
+            const msgEl = document.getElementById('success-message');
+            if (!t) return;
+            
             if (type === 'error') {
                 t.classList.remove('bg-emerald-600'); t.classList.add('bg-rose-600');
-                icon.className = 'fas fa-exclamation-circle';
+                if (icon) icon.className = 'fas fa-exclamation-circle';
             } else {
                 t.classList.remove('bg-rose-600'); t.classList.add('bg-emerald-600');
-                icon.className = 'fas fa-check';
+                if (icon) icon.className = 'fas fa-check';
             }
-            document.getElementById('success-message').innerText = msg;
+            if (msgEl) msgEl.innerText = msg;
             t.classList.remove('translate-y-48', 'opacity-0');
             t.classList.add('translate-y-0', 'opacity-100');
             setTimeout(() => {
@@ -718,9 +877,13 @@
 
         function saveReview(title, id, event) {
             const btn = document.getElementById('save-review-btn');
-            const comment = document.getElementById('review-text').value.trim();
+            const reviewEl = document.getElementById('review-text');
+            const comment = reviewEl ? reviewEl.value.trim() : '';
             if (currentRating === 0) {
-                btn.classList.add('shake-element'); setTimeout(() => btn.classList.remove('shake-element'), 300);
+                if (btn) {
+                    btn.classList.add('shake-element'); 
+                    setTimeout(() => btn.classList.remove('shake-element'), 300);
+                }
                 showToast("Veldu stjörnur fyrst!", "error"); return;
             }
             userData.reviews[title] = { rating: currentRating, comment, date: new Date().toLocaleDateString('is-IS') };
@@ -751,7 +914,7 @@
             const h = Math.floor(sT / 3600).toString().padStart(2, '0');
             const m = Math.floor((sT % 3600) / 60).toString().padStart(2, '0');
             const s = (sT % 60).toString().padStart(2, '0');
-            document.getElementById('main-timer-display').innerText = `${h}:${m}:${s}`;
+            setInnerText('main-timer-display', `${h}:${m}:${s}`);
         }
 
         function showStopConfirmation(event) { 
@@ -767,14 +930,16 @@
             }
             
             const modal = document.getElementById('stop-confirm-modal');
-            const modalContent = modal.querySelector('div');
+            const modalContent = modal ? modal.querySelector('div') : null;
             
-            modalContent.style.marginTop = Math.max(20, clickY - 150) + 'px';
-            modal.classList.remove('hidden'); 
+            if (modal && modalContent) {
+                modalContent.style.marginTop = Math.max(20, clickY - 150) + 'px';
+                modal.classList.remove('hidden'); 
+            }
         }
         
         function closeStopConfirmation() { 
-            document.getElementById('stop-confirm-modal').classList.add('hidden'); 
+            safeToggleClass('stop-confirm-modal', 'hidden', true);
         }
 
         function confirmStopReading() {
@@ -788,7 +953,7 @@
             }
             clearInterval(timerState.interval);
             timerState = { active: false, paused: false, startTime: null, elapsedBeforePause: 0, interval: null };
-            document.getElementById('main-timer-display').innerText = '00:00:00';
+            setInnerText('main-timer-display', '00:00:00');
             updateTimerUI(); saveUserData(); updateStatsUI(); closeStopConfirmation();
             showToast("Tími vistaður!");
         }
@@ -800,36 +965,51 @@
             const sB = document.getElementById('timer-stop-btn');
             const sL = document.getElementById('timer-status-label');
             if (!timerState.active) {
-                sL.innerText = "Hefja lestur"; pI.className = "fas fa-play ml-1";
-                pB.className = "w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white rounded-2xl md:rounded-3xl flex items-center justify-center transition shadow-lg shadow-indigo-100";
-                sB.classList.add('hidden'); w.classList.remove('timer-active-glow');
+                if (sL) sL.innerText = "Hefja lestur"; 
+                if (pI) pI.className = "fas fa-play ml-1";
+                if (pB) pB.className = "w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white rounded-2xl md:rounded-3xl flex items-center justify-center transition shadow-lg shadow-indigo-100";
+                if (sB) sB.classList.add('hidden'); 
+                if (w) w.classList.remove('timer-active-glow');
             } else if (!timerState.paused) {
-                sL.innerText = "Lestur í gangi"; pI.className = "fas fa-pause";
-                pB.className = "w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-amber-500 to-orange-500 text-white rounded-2xl md:rounded-3xl flex items-center justify-center transition shadow-lg shadow-amber-100";
-                sB.classList.remove('hidden'); w.classList.add('timer-active-glow');
+                if (sL) sL.innerText = "Lestur í gangi"; 
+                if (pI) pI.className = "fas fa-pause";
+                if (pB) pB.className = "w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-amber-500 to-orange-500 text-white rounded-2xl md:rounded-3xl flex items-center justify-center transition shadow-lg shadow-amber-100";
+                if (sB) sB.classList.remove('hidden'); 
+                if (w) w.classList.add('timer-active-glow');
             } else {
-                sL.innerText = "Pása"; pI.className = "fas fa-play ml-1";
-                pB.className = "w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white rounded-2xl md:rounded-3xl flex items-center justify-center transition shadow-lg shadow-indigo-100";
-                sB.classList.remove('hidden'); w.classList.remove('timer-active-glow');
+                if (sL) sL.innerText = "Pása"; 
+                if (pI) pI.className = "fas fa-play ml-1";
+                if (pB) pB.className = "w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white rounded-2xl md:rounded-3xl flex items-center justify-center transition shadow-lg shadow-indigo-100";
+                if (sB) sB.classList.remove('hidden'); 
+                if (w) w.classList.remove('timer-active-glow');
             }
         }
 
         function syncGoalUI() {
-            document.getElementById('target-minutes-input').value = userData.minutesGoal || '';
-            document.getElementById('goal-type-select').value = userData.goalType || 'daily';
+            const minInput = document.getElementById('target-minutes-input');
+            const goalSelect = document.getElementById('goal-type-select');
+            if (minInput) minInput.value = userData.minutesGoal || '';
+            if (goalSelect) goalSelect.value = userData.goalType || 'daily';
         }
 
         function setMinutesGoal() {
-            const rawVal = Number(document.getElementById('target-minutes-input').value);
+            const minInput = document.getElementById('target-minutes-input');
+            const goalSelect = document.getElementById('goal-type-select');
+            const rawVal = minInput ? Number(minInput.value) : 0;
             userData.minutesGoal = Math.max(0, rawVal);
-            userData.goalType = document.getElementById('goal-type-select').value;
+            userData.goalType = goalSelect ? goalSelect.value : 'daily';
             saveUserData();
             updateStatsUI();
         }
 
         function addPersonalGoal() {
             const i = document.getElementById('personal-goal-input');
-            if (i.value.trim()) { userData.personalGoals.push({ id: Date.now(), text: i.value.trim(), completed: false }); i.value = ''; saveUserData(); updateStatsUI(); }
+            if (i && i.value.trim()) { 
+                userData.personalGoals.push({ id: Date.now(), text: i.value.trim(), completed: false }); 
+                i.value = ''; 
+                saveUserData(); 
+                updateStatsUI(); 
+            }
         }
         function togglePersonalGoal(id) { const g = userData.personalGoals.find(x => x.id === id); if (g) { g.completed = !g.completed; saveUserData(); updateStatsUI(); } }
         function deletePersonalGoal(id) { userData.personalGoals = userData.personalGoals.filter(x => x.id !== id); saveUserData(); updateStatsUI(); }
@@ -856,19 +1036,27 @@
 
         function updateStatsUI() {
             const ts = userData.totalSeconds;
-            document.getElementById('stat-hours').innerText = Math.floor(ts / 3600);
-            document.getElementById('stat-minutes').innerText = Math.floor((ts % 3600) / 60);
-            document.getElementById('stat-seconds').innerText = ts % 60;
-            document.getElementById('stat-streak').innerText = calculateStreak();
+            setInnerText('stat-hours', Math.floor(ts / 3600));
+            setInnerText('stat-minutes', Math.floor((ts % 3600) / 60));
+            setInnerText('stat-seconds', ts % 60);
+            
+            const streak = calculateStreak();
+            setInnerText('stat-streak', streak);
             
             const banner = document.getElementById('streak-banner');
-            const streak = calculateStreak();
-            if (streak >= 2) { banner.classList.remove('hidden'); banner.classList.add('flex'); document.getElementById('streak-banner-days').innerText = streak; }
-            else banner.classList.add('hidden');
+            if (banner) {
+                if (streak >= 2) { 
+                    banner.classList.remove('hidden'); 
+                    banner.classList.add('flex'); 
+                    setInnerText('streak-banner-days', streak); 
+                } else {
+                    banner.classList.add('hidden');
+                }
+            }
 
             const progressContainer = document.getElementById('minutes-goal-progress-container');
             if (userData.minutesGoal > 0) {
-                progressContainer.classList.remove('hidden');
+                if (progressContainer) progressContainer.classList.remove('hidden');
                 
                 let currentSecs = 0;
                 let periodText = "";
@@ -885,15 +1073,20 @@
                 }
 
                 const currentMins = Math.floor(currentSecs / 60);
-                document.getElementById('target-minutes-display').innerText = userData.minutesGoal;
-                document.getElementById('current-minutes-reached').innerText = currentMins;
+                setInnerText('target-minutes-display', userData.minutesGoal);
+                setInnerText('current-minutes-reached', currentMins);
                 const pct = Math.min(100, (currentMins / userData.minutesGoal) * 100);
-                document.getElementById('minutes-goal-bar').style.width = pct + '%';
+                
+                const goalBar = document.getElementById('minutes-goal-bar');
+                if (goalBar) goalBar.style.width = pct + '%';
+                
                 const remaining = Math.max(0, userData.minutesGoal - currentMins);
-                document.getElementById('minutes-goal-status').innerText = pct >= 100 ? "Markmiði náð! 🎉" : `Þú ert ${remaining} mín frá ${periodText}!`;
-            } else progressContainer.classList.add('hidden');
+                setInnerText('minutes-goal-status', pct >= 100 ? "Markmiði náð! 🎉" : `Þú ert ${remaining} mín frá ${periodText}!`);
+            } else {
+                if (progressContainer) progressContainer.classList.add('hidden');
+            }
 
-            document.getElementById('personal-goals-list').innerHTML = userData.personalGoals.map(g => `
+            const goalsHtml = userData.personalGoals.map(g => `
                 <div class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm transition-all">
                     <button onclick="togglePersonalGoal(${g.id})" class="shrink-0 w-6 h-6 rounded-lg border-2 ${g.completed ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-200 bg-white'} flex items-center justify-center transition-all">
                         ${g.completed ? '<i class="fas fa-check text-[10px]"></i>' : ''}
@@ -901,12 +1094,13 @@
                     <span class="flex-grow font-bold text-xs ${g.completed ? 'text-slate-400 line-through' : 'text-slate-700'}">${g.text}</span>
                     <button onclick="deletePersonalGoal(${g.id})" class="text-slate-300 hover:text-rose-500 transition-colors"><i class="fas fa-trash-can text-sm"></i></button>
                 </div>`).join('') || '<p class="text-center py-4 text-slate-300 font-bold italic text-[10px]">Engin markmið skráð.</p>';
+            setInnerHTML('personal-goals-list', goalsHtml);
             
-            document.getElementById('reviews-archive').innerHTML = Object.keys(userData.reviews).map(t => {
+            const reviewsHtml = Object.keys(userData.reviews).map(t => {
                 const r = userData.reviews[t]; const b = allBooks.find(x => x.title === t);
                 return `
                     <div class="bg-white p-5 rounded-3xl border border-slate-100 flex gap-4 shadow-sm cursor-pointer" onclick="openBookInfo(${b?.id}, event)">
-                        <img src="${b?.cover || ''}" class="w-12 h-18 object-cover rounded-xl shadow-md shrink-0">
+                        <img src="${b?.cover || ''}" class="w-12 h-18 object-cover rounded-xl shadow-md shrink-0" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'">
                         <div>
                             <h4 class="text-[11px] font-black line-clamp-1 mb-1">${t}</h4>
                             <div class="flex gap-0.5 mb-2">${Array(5).fill(0).map((_, i) => `<i class="${i < r.rating ? 'fas text-amber-400' : 'far text-slate-200'} fa-star text-[9px]"></i>`).join('')}</div>
@@ -914,27 +1108,40 @@
                         </div>
                     </div>`;
             }).join('') || '<p class="col-span-full text-center py-10 text-slate-300 font-bold italic text-[10px]">Engar umsagnir ennþá.</p>';
+            setInnerHTML('reviews-archive', reviewsHtml);
             
-            document.getElementById('total-read-books-badge').innerText = userData.read.length;
-            document.getElementById('read-items').innerHTML = allBooks.filter(b => userData.read.includes(b.title)).map(b => `
+            setInnerText('total-read-books-badge', userData.read.length);
+            
+            const readItemsHtml = allBooks.filter(b => userData.read.includes(b.title)).map(b => `
                 <div class="flex items-center gap-4 p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition cursor-pointer" onclick="openBookInfo(${b.id}, event)">
-                    <img src="${b.cover}" class="w-10 h-14 object-cover rounded-lg">
-                    <div class="flex-grow overflow-hidden"><p class="font-bold text-xs line-clamp-1">${b.title}</p><p class="text-[8px] font-black opacity-50 uppercase tracking-widest">${b.author}</p></div>
+                    <img src="${b.cover}" class="w-10 h-14 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'">
+                    <div class="flex-grow overflow-hidden">
+                        <p class="font-bold text-xs line-clamp-1">${b.title}</p>
+                        <p class="text-[8px] font-black opacity-50 uppercase tracking-widest">${b.author}</p>
+                    </div>
                 </div>`).join('');
+            setInnerHTML('read-items', readItemsHtml);
             
-            document.getElementById('wishlist-items').innerHTML = allBooks.filter(b => userData.liked.includes(b.title)).map(b => `
+            const wishlistHtml = allBooks.filter(b => userData.liked.includes(b.title)).map(b => `
                 <div class="flex items-center gap-4 p-3 bg-white rounded-2xl hover:bg-slate-50 transition cursor-pointer border border-slate-100" onclick="openBookInfo(${b.id}, event)">
-                    <img src="${b.cover}" class="w-10 h-14 object-cover rounded-lg">
-                    <div class="flex-grow overflow-hidden"><p class="font-bold text-xs text-slate-900 line-clamp-1">${b.title}</p><p class="text-[8px] font-black text-indigo-400 uppercase tracking-widest">${b.author}</p></div>
+                    <img src="${b.cover}" class="w-10 h-14 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'">
+                    <div class="flex-grow overflow-hidden">
+                        <p class="font-bold text-xs text-slate-900 line-clamp-1">${b.title}</p>
+                        <p class="text-[8px] font-black text-indigo-400 uppercase tracking-widest">${b.author}</p>
+                    </div>
                 </div>`).join('');
+            setInnerHTML('wishlist-items', wishlistHtml);
 
             renderVisualStats();
+            renderMonthlyStats();
         }
 
         function renderVisualStats() {
             const readBooks = allBooks.filter(b => userData.read.includes(b.title));
             const catContainer = document.getElementById('visual-stats-categories');
             const authContainer = document.getElementById('visual-stats-authors');
+
+            if (!catContainer || !authContainer) return;
 
             if (readBooks.length === 0) {
                 catContainer.innerHTML = `<p class="text-xs italic text-slate-400 py-4">Hakaðu við lesnar bækur til að sjá tölfræði!</p>`;
@@ -964,10 +1171,10 @@
                     <div class="space-y-1">
                         <div class="flex justify-between text-[11px] font-bold text-slate-700">
                             <span>${cat}</span>
-                            <span>${count} bók${count > 1 ? 'ur' : ''}</span>
+                            <span class="text-slate-500">${count} bók${count > 1 ? 'ur' : ''}</span>
                         </div>
-                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden p-0.5">
-                            <div class="bg-indigo-500 h-full rounded-full transition-all duration-700" style="width: ${pct}%"></div>
+                        <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
+                            <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 h-full rounded-full transition-all duration-700" style="width: ${pct}%"></div>
                         </div>
                     </div>
                 `;
@@ -979,41 +1186,168 @@
                     <div class="space-y-1">
                         <div class="flex justify-between text-[11px] font-bold text-slate-700">
                             <span>${auth}</span>
-                            <span>${count} bók${count > 1 ? 'ur' : ''}</span>
+                            <span class="text-slate-500">${count} bók${count > 1 ? 'ur' : ''}</span>
                         </div>
-                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden p-0.5">
-                            <div class="bg-violet-500 h-full rounded-full transition-all duration-700" style="width: ${pct}%"></div>
+                        <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
+                            <div class="bg-gradient-to-r from-violet-500 to-violet-600 h-full rounded-full transition-all duration-700" style="width: ${pct}%"></div>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
+        function renderMonthlyStats() {
+            const container = document.getElementById('monthly-history-container');
+            if (!container) return;
+
+            const monthsIs = [
+                'Janúar', 'Febrúar', 'Mars', 'Apríl', 'Maí', 'Júní',
+                'Júlí', 'Ágúst', 'September', 'Október', 'Nóvember', 'Desember'
+            ];
+
+            const monthlyData = {};
+            const now = new Date();
+
+            for (let i = 5; i >= 0; i--) {
+                const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                const year = d.getFullYear();
+                const monthIdx = d.getMonth();
+                const key = `${year}-${String(monthIdx + 1).padStart(2, '0')}`;
+                monthlyData[key] = {
+                    label: `${monthsIs[monthIdx]}`,
+                    seconds: 0
+                };
+            }
+
+            for (const dateStr in userData.dailyProgress) {
+                const seconds = userData.dailyProgress[dateStr] || 0;
+                if (seconds === 0) continue;
+                
+                const [year, month] = dateStr.split('-');
+                const key = `${year}-${month}`;
+                
+                if (monthlyData[key]) {
+                    monthlyData[key].seconds += seconds;
+                }
+            }
+
+            const sortedMonths = Object.entries(monthlyData)
+                .sort((a, b) => a[0].localeCompare(b[0]));
+
+            const maxSeconds = Math.max(...sortedMonths.map(m => m[1].seconds), 1);
+            const totalActivity = sortedMonths.reduce((sum, m) => sum + m[1].seconds, 0);
+
+            if (totalActivity === 0) {
+                container.innerHTML = `
+                    <p class="text-xs italic text-slate-400 py-4">Ræstu lestrarklukkuna þegar þú lest til að safna mánaðarlegri tölfræði!</p>
+                `;
+                return;
+            }
+
+            container.innerHTML = sortedMonths.map(([key, data]) => {
+                const totalMins = Math.floor(data.seconds / 60);
+                const hours = Math.floor(totalMins / 60);
+                const mins = totalMins % 60;
+                const pct = (data.seconds / maxSeconds) * 100;
+
+                let timeText = "0 mín";
+                if (data.seconds > 0) {
+                    if (hours > 0) {
+                        timeText = `${hours} klst og ${mins} mín`;
+                    } else {
+                        timeText = `${mins} mín`;
+                    }
+                }
+
+                return `
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[11px] font-bold text-slate-700">
+                            <span>${data.label}</span>
+                            <span class="text-pink-600 font-extrabold">${timeText}</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
+                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-full rounded-full transition-all duration-1000" style="width: ${data.seconds > 0 ? Math.max(5, pct) : 0}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Fínstillt og vélbúnaðar-hröðuð síðuskipti (Crossfade)
         function showPage(p) {
-            document.getElementById('library-page').classList.toggle('hidden', p !== 'library');
-            document.getElementById('stats-page').classList.toggle('hidden', p !== 'stats');
-            const libBtn = document.getElementById('nav-library'); const statBtn = document.getElementById('nav-stats');
-            libBtn.className = p === 'library' ? "px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap" : "px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap";
-            statBtn.className = p === 'stats' ? "px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap" : "px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap";
+            const libPage = document.getElementById('library-page');
+            const statsPage = document.getElementById('stats-page');
+            const targetPage = p === 'library' ? libPage : statsPage;
+            const currentActivePage = p === 'library' ? statsPage : libPage;
+
+            if (!targetPage || !currentActivePage) return;
+
+            // Dofna núverandi síðu út
+            currentActivePage.classList.remove('active');
+            
+            setTimeout(() => {
+                currentActivePage.classList.add('hidden');
+                targetPage.classList.remove('hidden');
+                
+                // Kveikja á reflow svo vafrinn sjái breytinguna
+                targetPage.offsetHeight;
+                
+                // Dofna nýju síðuna inn
+                targetPage.classList.add('active');
+            }, 150); // Crossfade tekur samtals 150ms og líður eins og í appi!
+
+            const libBtn = document.getElementById('nav-library'); 
+            const statBtn = document.getElementById('nav-stats');
+            
+            if (libBtn) {
+                libBtn.className = p === 'library' 
+                    ? "px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap" 
+                    : "px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap";
+            }
+            if (statBtn) {
+                statBtn.className = p === 'stats' 
+                    ? "px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap" 
+                    : "px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap";
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function handleSearch() {
-            searchQuery = document.getElementById('book-search').value.toLowerCase();
+            const searchInput = document.getElementById('book-search');
+            searchQuery = searchInput ? searchInput.value.toLowerCase() : '';
             if (searchQuery) showPage('library');
             applyFilters();
+            
             const sBox = document.getElementById('search-suggestions');
-            if (!searchQuery) { sBox.classList.add('hidden'); return; }
+            if (!sBox) return;
+            
+            if (!searchQuery) { 
+                sBox.classList.add('hidden'); 
+                return; 
+            }
             
             let matchT = allBooks.filter(b => b.title.toLowerCase().includes(searchQuery) || b.author.toLowerCase().includes(searchQuery)).slice(0,5);
             if (matchT.length) {
                 sBox.innerHTML = matchT.map(b => `<li onclick="selectSug('${b.title.replace(/'/g, "\\'")}')" class="px-6 py-4 hover:bg-indigo-50 cursor-pointer text-sm font-bold border-b border-slate-50 flex items-center gap-4"><i class="fas fa-book text-indigo-400"></i> ${b.title}</li>`).join('');
                 sBox.classList.remove('hidden');
-            } else sBox.classList.add('hidden');
+            } else {
+                sBox.classList.add('hidden');
+            }
         }
 
-        function selectSug(v) { document.getElementById('book-search').value = v; document.getElementById('search-suggestions').classList.add('hidden'); handleSearch(); }
-        document.addEventListener('click', e => { if (!document.getElementById('search-container').contains(e.target)) document.getElementById('search-suggestions').classList.add('hidden'); });
+        function selectSug(v) { 
+            const searchInput = document.getElementById('book-search');
+            if (searchInput) searchInput.value = v; 
+            safeToggleClass('search-suggestions', 'hidden', true); 
+            handleSearch(); 
+        }
+
+        document.addEventListener('click', e => { 
+            const searchContainer = document.getElementById('search-container');
+            if (searchContainer && !searchContainer.contains(e.target)) {
+                safeToggleClass('search-suggestions', 'hidden', true); 
+            }
+        });
     </script>
 </body>
 </html>
