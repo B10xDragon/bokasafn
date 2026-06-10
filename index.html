@@ -11,14 +11,27 @@
         
         :root {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
         }
 
+        /* OFUR-FÍNSTILLTUR BAKGRUNNUR: 
+           Kemur í veg fyrir endurteiknun (repaint lag) á meðan skrollað er niður síðuna */
         body {
-            background: radial-gradient(circle at top left, #e0e7ff 0%, #f8fafc 40%),
-                        radial-gradient(circle at bottom right, #fae8ff 0%, #f8fafc 40%);
-            background-attachment: fixed;
+            background-color: #f8fafc;
             color: #1e293b;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at top left, #e0e7ff 0%, #f8fafc 45%),
+                        radial-gradient(circle at bottom right, #fae8ff 0%, #f8fafc 45%);
+            pointer-events: none;
+            transform: translate3d(0, 0, 0); /* Þvingar GPU lag til að halda skruni léttu */
         }
 
         .glass-card {
@@ -28,29 +41,35 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Fínstilltar hreyfingar korta fyrir GPU-hröðun */
+        /* Vélbúnaðar-hröðuð kort án þess að yfirfylla GPU minni */
         .book-card {
-            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
-            will-change: transform;
-            perspective: 1000px;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translate3d(0, 0, 0);
         }
 
         .book-card:hover {
-            transform: translateY(-8px) rotateX(2deg);
-            box-shadow: 0 20px 30px -10px rgba(79, 70, 229, 0.15);
+            transform: translate3d(0, -6px, 0) scale(1.02);
+            box-shadow: 0 16px 30px -8px rgba(79, 70, 229, 0.12);
+        }
+
+        /* Ljómalegur hleðslustíll (Shimmer Placeholder Effect) */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .shimmer-placeholder {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s infinite linear;
         }
 
         .book-img-container {
             position: relative;
             overflow: hidden;
             border-radius: 1.5rem;
-            box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.08);
-            transition: box-shadow 0.3s ease;
-            will-change: box-shadow;
-        }
-
-        .book-card:hover .book-img-container {
-            box-shadow: 0 15px 20px -5px rgba(79, 70, 229, 0.18);
+            box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.25s ease;
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -62,46 +81,43 @@
 
         #timer-widget {
             background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-            border: 1px solid rgba(79, 70, 229, 0.1);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            will-change: border-color, box-shadow;
+            border: 1px solid rgba(79, 70, 229, 0.08);
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
         .timer-active-glow {
             border-color: #6366f1 !important;
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.15) !important;
+            box-shadow: 0 0 35px rgba(99, 102, 241, 0.15) !important;
         }
 
         .star-rating i {
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            will-change: transform;
         }
 
-        /* Fínstillt síðuskiptakerfi (Crossfade) */
+        /* Ofur-mjúk flæðandi síðuskipti */
         .page-container {
             opacity: 0;
-            transform: translateY(8px);
-            transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform, opacity;
+            transform: translate3d(0, 10px, 0);
+            transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .page-container.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
         .shake-element { animation: shake 0.3s ease-in-out; }
     </style>
 </head>
 <body class="pb-24 relative">
 
-    <!-- Leiðsögustika -->
-    <nav class="bg-white/70 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200/50">
+    <!-- Leiðsögustika (isoleruð á eigin vélbúnaðarlagi fyrir mýkra skrun) -->
+    <nav class="bg-white/70 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200/50 transform translate-z-0">
         <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-4 cursor-pointer group shrink-0" onclick="showPage('library')">
                 <div class="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200 group-hover:rotate-12 transition-all duration-300">
@@ -145,14 +161,14 @@
                         <button id="timer-primary-btn" onclick="handleTimerPrimaryAction()" class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white rounded-2xl md:rounded-3xl flex items-center justify-center transition-all hover:shadow-2xl hover:shadow-indigo-300 hover:-translate-y-1 active:scale-90">
                             <i class="fas fa-play text-lg md:text-xl ml-1" id="timer-primary-icon"></i>
                         </button>
-                        <button id="timer-stop-btn" onclick="showStopConfirmation(event)" class="hidden w-14 h-14 md:w-16 md:h-16 bg-white border border-slate-200 text-slate-400 rounded-2xl md:rounded-3xl flex items-center justify-center transition-all hover:bg-rose-50 hover:text-rose-500 hover:border-rose-100 hover:-translate-y-1 active:scale-90 shadow-sm">
+                        <button id="timer-stop-btn" onclick="showStopConfirmation()" class="hidden w-14 h-14 md:w-16 md:h-16 bg-white border border-slate-200 text-slate-400 rounded-2xl md:rounded-3xl flex items-center justify-center transition-all hover:bg-rose-50 hover:text-rose-500 hover:border-rose-100 hover:-translate-y-1 active:scale-90 shadow-sm">
                             <i class="fas fa-stop text-lg md:text-xl"></i>
                         </button>
                     </div>
                 </div>
 
                 <div class="text-center">
-                    <button onclick="openRecommendModal(event)" class="px-5 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-2xl text-xs font-bold shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5 active:scale-95">
+                    <button onclick="openRecommendModal()" class="px-5 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-2xl text-xs font-bold shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5 active:scale-95">
                         <i class="fas fa-paper-plane mr-2"></i>Mælir þú með bók?
                     </button>
                 </div>
@@ -357,19 +373,19 @@
         </div>
     </main>
 
-    <!-- Modal -->
-    <div id="desc-modal" class="absolute inset-x-0 top-0 z-[100] flex items-start justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 hidden" onclick="closeModal()">
-        <div id="desc-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-4xl w-full shadow-2xl relative animate-in zoom-in-95 duration-300 overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
-            <button onclick="closeModal()" class="absolute top-4 right-4 md:top-8 md:right-8 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 transition-all z-10 shadow-sm">
+    <!-- Modal (Bókarupplýsingar) - Mjúkur, skalandi og fixed á miðjum skjá -->
+    <div id="desc-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 opacity-0 pointer-events-none transition-all duration-300 hidden" onclick="handleCloseModal()">
+        <div id="desc-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-4xl w-full shadow-2xl relative transform scale-95 translate-y-4 transition-all duration-300 max-h-[90vh] overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
+            <button onclick="handleCloseModal()" class="absolute top-4 right-4 md:top-8 md:right-8 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 transition-all z-10 shadow-sm">
                 <i class="fas fa-times text-lg"></i>
             </button>
             <div id="modal-inner-content"></div>
         </div>
     </div>
 
-    <!-- Meðmæla Modal -->
-    <div id="recommend-modal" class="absolute inset-x-0 top-0 z-[100] flex items-start justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 hidden" onclick="closeRecommendModal()">
-        <div id="recommend-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-lg w-full shadow-2xl relative animate-in zoom-in-95 duration-300" onclick="event.stopPropagation()">
+    <!-- Meðmæla Modal - Mjúkur og fágaður fixed gluggi -->
+    <div id="recommend-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 opacity-0 pointer-events-none transition-all duration-300 hidden" onclick="closeRecommendModal()">
+        <div id="recommend-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-lg w-full shadow-2xl relative transform scale-95 translate-y-4 transition-all duration-300 max-h-[90vh] overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
             <button onclick="closeRecommendModal()" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 transition-all z-10 shadow-sm">
                 <i class="fas fa-times text-lg"></i>
             </button>
@@ -402,9 +418,9 @@
         </div>
     </div>
 
-    <!-- Staðfestingargluggi -->
-    <div id="stop-confirm-modal" class="absolute inset-x-0 top-0 z-[110] flex items-start justify-center bg-slate-900/40 backdrop-blur-sm p-6 hidden" onclick="closeStopConfirmation()">
-        <div class="bg-white p-8 md:p-12 rounded-3xl md:rounded-[3.5rem] max-w-md w-full shadow-2xl text-center border border-slate-100" onclick="event.stopPropagation()">
+    <!-- Staðfestingargluggi - Mjúkur og flæðandi fixed gluggi -->
+    <div id="stop-confirm-modal" class="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-6 opacity-0 pointer-events-none transition-all duration-300 hidden" onclick="closeStopConfirmation()">
+        <div id="stop-confirm-modal-content" class="bg-white p-8 md:p-12 rounded-3xl md:rounded-[3.5rem] max-w-md w-full shadow-2xl text-center border border-slate-100 transform scale-95 translate-y-4 transition-all duration-300" onclick="event.stopPropagation()">
             <div class="w-20 h-20 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-6 md:mb-8 shadow-inner">
                 <i class="fas fa-stop"></i>
             </div>
@@ -493,6 +509,7 @@
             }
         }
 
+        // Streak útreikningur
         function calculateStreak() {
             if (!userData.dailyProgress) return 0;
             const MIN_SECONDS = 600; 
@@ -593,7 +610,7 @@
             return clean;
         }
 
-        // Búum til flokka einu sinni til að koma í veg fyrir óþarfa endur-teiknun á DOM
+        // Flokkarnir búnir til á fljótlegan hátt
         function renderCategories() {
             let cats = new Set();
             allBooks.forEach(b => b.categories.forEach(c => cats.add(c)));
@@ -615,7 +632,6 @@
             }).join('');
         }
 
-        // Fínstillt virkni sem uppfærir aðeins klasa án þess að eyða DOM-hnúðum
         function updateCategoryButtonsUI() {
             const buttons = document.querySelectorAll('.category-btn');
             buttons.forEach(btn => {
@@ -693,11 +709,14 @@
                             </button>
                         </div>
                         <div onclick="openBookInfo(${b.id}, event)" class="cursor-pointer">
-                            <div class="book-img-container aspect-[3/4.5] relative mb-2 md:mb-3 bg-slate-100">
+                            <!-- Bætt við async decoding og lazy loading á myndir til að gera skrun 100% lagg-frítt -->
+                            <div class="book-img-container aspect-[3/4.5] relative mb-2 md:mb-3 shimmer-placeholder">
                                 <img src="${b.cover || 'https://via.placeholder.com/400x600?text=Vantar'}" 
-                                     class="w-full h-full object-cover transition-opacity duration-300 opacity-0" 
-                                     onload="this.classList.remove('opacity-0')"
-                                     onerror="this.src='https://via.placeholder.com/400x600?text=Vantar'; this.classList.remove('opacity-0')">
+                                     class="w-full h-full object-cover transition-opacity duration-500 opacity-0" 
+                                     decoding="async"
+                                     loading="lazy"
+                                     onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')"
+                                     onerror="this.src='https://via.placeholder.com/400x600?text=Vantar'; this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')">
                                 <div class="absolute inset-0 img-gradient opacity-60"></div>
                                 ${review ? `
                                     <div class="absolute bottom-2 left-2 bg-amber-400 text-white text-[8px] font-black px-2 py-0.5 rounded-lg shadow-lg flex items-center gap-1">
@@ -715,22 +734,55 @@
             }).join('');
         }
 
+        // --- Útfærsla á mýkri gluggum (Fluid Modal API) ---
+        function openModal(modalId, contentId) {
+            const modal = document.getElementById(modalId);
+            const content = document.getElementById(contentId);
+            if (!modal) return;
+            
+            modal.classList.remove('hidden');
+            // Gildi uppfært í næsta ramma til að kveikja á CSS transition hreyfingu
+            requestAnimationFrame(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100', 'pointer-events-auto');
+                if (content) {
+                    content.classList.remove('scale-95', 'translate-y-4');
+                    content.classList.add('scale-100', 'translate-y-0');
+                }
+            });
+        }
+
+        function closeModal(modalId, contentId) {
+            const modal = document.getElementById(modalId);
+            const content = document.getElementById(contentId);
+            if (!modal) return;
+            
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            if (content) {
+                content.classList.remove('scale-100', 'translate-y-0');
+                content.classList.add('scale-95', 'translate-y-4');
+            }
+            // Beðið eftir að hreyfingu ljúki áður en frumefni er falið með hidden
+            setTimeout(() => {
+                if (modal.classList.contains('opacity-0')) {
+                    modal.classList.add('hidden');
+                }
+            }, 300); // 300ms passar við duration-300 á transition
+        }
+
+        // Opnar bókaupplýsingar í öruggum fixed glugga með mjúkri hreyfingu
         function openBookInfo(id, event) {
             const b = allBooks.find(x => x.id === id); if (!b) return;
             const rev = userData.reviews[b.title] || { rating: 0, comment: '' };
             currentRating = rev.rating;
             
-            let clickY = 100;
-            if (event && event.pageY) {
-                clickY = event.pageY;
-            } else {
-                clickY = window.scrollY + 150;
-            }
-            
             setInnerHTML('modal-inner-content', `
                 <div class="flex flex-col md:flex-row gap-6 md:gap-10 items-start">
                     <div class="w-full md:w-[180px] shrink-0 mx-auto">
-                        <img src="${b.cover}" class="w-full aspect-[3/4.5] object-cover rounded-2xl shadow-xl" onerror="this.src='https://via.placeholder.com/400x600?text=Vantar'">
+                        <div class="shimmer-placeholder aspect-[3/4.5] rounded-2xl shadow-xl overflow-hidden">
+                            <img src="${b.cover}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')" onerror="this.src='https://via.placeholder.com/400x600?text=Vantar'; this.classList.remove('opacity-0')">
+                        </div>
                         <div class="mt-4 flex flex-wrap gap-1 justify-center">
                             ${b.categories.map(c => `<span class="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase border border-indigo-100/50">${c}</span>`).join('')}
                         </div>
@@ -765,32 +817,16 @@
                     </div>
                 </div>`);
             
-            const modal = document.getElementById('desc-modal');
-            const modalContent = document.getElementById('desc-modal-content');
-            
-            if (modal && modalContent) {
-                modalContent.style.marginTop = Math.max(20, clickY - 150) + 'px';
-                modal.classList.remove('hidden');
-            }
+            openModal('desc-modal', 'desc-modal-content');
         }
 
-        function closeModal() { 
-            safeToggleClass('desc-modal', 'hidden', true);
+        function handleCloseModal() {
+            closeModal('desc-modal', 'desc-modal-content');
         }
 
-        function openRecommendModal(event) {
-            let clickY = 100;
-            if (event && event.pageY) {
-                clickY = event.pageY;
-            } else {
-                clickY = window.scrollY + 150;
-            }
-            const modal = document.getElementById('recommend-modal');
-            const modalContent = modal ? modal.querySelector('div') : null;
-            if (modal && modalContent) {
-                modalContent.style.marginTop = Math.max(20, clickY - 150) + 'px';
-                modal.classList.remove('hidden');
-            }
+        // Opnar meðmælakerfi í fixed glugga með transition
+        function openRecommendModal() {
+            openModal('recommend-modal', 'recommend-modal-content');
             
             const titleInput = document.getElementById('rec-title');
             const authorInput = document.getElementById('rec-author');
@@ -802,7 +838,7 @@
         }
 
         function closeRecommendModal() {
-            safeToggleClass('recommend-modal', 'hidden', true);
+            closeModal('recommend-modal', 'recommend-modal-content');
         }
 
         function submitRecommendation() {
@@ -886,7 +922,15 @@
                 }
                 showToast("Veldu stjörnur fyrst!", "error"); return;
             }
+            
+            // Vista umsögn í gagnagrunn / localStorage
             userData.reviews[title] = { rating: currentRating, comment, date: new Date().toLocaleDateString('is-IS') };
+            
+            // Marka bókina sjálfkrafa sem lesna (grænt hak) ef hún er ekki þegar merkt
+            if (!userData.read.includes(title)) {
+                userData.read.push(title);
+            }
+            
             saveUserData(); 
             openBookInfo(id, event); 
             updateStatsUI(); 
@@ -917,29 +961,13 @@
             setInnerText('main-timer-display', `${h}:${m}:${s}`);
         }
 
-        function showStopConfirmation(event) { 
-            let clickY = 100;
-            if (event && event.pageY) {
-                clickY = event.pageY;
-            } else {
-                const widget = document.getElementById('timer-widget');
-                if (widget) {
-                    const rect = widget.getBoundingClientRect();
-                    clickY = rect.top + window.scrollY;
-                }
-            }
-            
-            const modal = document.getElementById('stop-confirm-modal');
-            const modalContent = modal ? modal.querySelector('div') : null;
-            
-            if (modal && modalContent) {
-                modalContent.style.marginTop = Math.max(20, clickY - 150) + 'px';
-                modal.classList.remove('hidden'); 
-            }
+        // Opnar staðfestingarglugga á miðjum skjánum á öruggan hátt með transition
+        function showStopConfirmation() { 
+            openModal('stop-confirm-modal', 'stop-confirm-modal-content');
         }
         
         function closeStopConfirmation() { 
-            safeToggleClass('stop-confirm-modal', 'hidden', true);
+            closeModal('stop-confirm-modal', 'stop-confirm-modal-content');
         }
 
         function confirmStopReading() {
@@ -1025,6 +1053,7 @@
             }
         }
 
+        // Hleður gögnum nemanda
         function loadUserData() { 
             try {
                 const s = localStorage.getItem('library_v14'); 
@@ -1034,6 +1063,7 @@
             }
         }
 
+        // Uppfærir tölfræðiviðmótið á síðunni „Lesturinn minn“
         function updateStatsUI() {
             const ts = userData.totalSeconds;
             setInnerText('stat-hours', Math.floor(ts / 3600));
@@ -1087,7 +1117,7 @@
             }
 
             const goalsHtml = userData.personalGoals.map(g => `
-                <div class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm transition-all">
+                <div class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm transition-all duration-300">
                     <button onclick="togglePersonalGoal(${g.id})" class="shrink-0 w-6 h-6 rounded-lg border-2 ${g.completed ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-200 bg-white'} flex items-center justify-center transition-all">
                         ${g.completed ? '<i class="fas fa-check text-[10px]"></i>' : ''}
                     </button>
@@ -1099,8 +1129,10 @@
             const reviewsHtml = Object.keys(userData.reviews).map(t => {
                 const r = userData.reviews[t]; const b = allBooks.find(x => x.title === t);
                 return `
-                    <div class="bg-white p-5 rounded-3xl border border-slate-100 flex gap-4 shadow-sm cursor-pointer" onclick="openBookInfo(${b?.id}, event)">
-                        <img src="${b?.cover || ''}" class="w-12 h-18 object-cover rounded-xl shadow-md shrink-0" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'">
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 flex gap-4 shadow-sm cursor-pointer transition-all hover:scale-[1.01]" onclick="openBookInfo(${b?.id}, event)">
+                        <div class="w-12 h-18 shimmer-placeholder rounded-xl shrink-0 overflow-hidden shadow-md">
+                            <img src="${b?.cover || ''}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'; this.classList.remove('opacity-0')">
+                        </div>
                         <div>
                             <h4 class="text-[11px] font-black line-clamp-1 mb-1">${t}</h4>
                             <div class="flex gap-0.5 mb-2">${Array(5).fill(0).map((_, i) => `<i class="${i < r.rating ? 'fas text-amber-400' : 'far text-slate-200'} fa-star text-[9px]"></i>`).join('')}</div>
@@ -1114,7 +1146,9 @@
             
             const readItemsHtml = allBooks.filter(b => userData.read.includes(b.title)).map(b => `
                 <div class="flex items-center gap-4 p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition cursor-pointer" onclick="openBookInfo(${b.id}, event)">
-                    <img src="${b.cover}" class="w-10 h-14 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'">
+                    <div class="w-10 h-14 shimmer-placeholder rounded-lg shrink-0 overflow-hidden">
+                        <img src="${b.cover}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'; this.classList.remove('opacity-0')">
+                    </div>
                     <div class="flex-grow overflow-hidden">
                         <p class="font-bold text-xs line-clamp-1">${b.title}</p>
                         <p class="text-[8px] font-black opacity-50 uppercase tracking-widest">${b.author}</p>
@@ -1124,7 +1158,9 @@
             
             const wishlistHtml = allBooks.filter(b => userData.liked.includes(b.title)).map(b => `
                 <div class="flex items-center gap-4 p-3 bg-white rounded-2xl hover:bg-slate-50 transition cursor-pointer border border-slate-100" onclick="openBookInfo(${b.id}, event)">
-                    <img src="${b.cover}" class="w-10 h-14 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'">
+                    <div class="w-10 h-14 shimmer-placeholder rounded-lg shrink-0 overflow-hidden">
+                        <img src="${b.cover}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'; this.classList.remove('opacity-0')">
+                    </div>
                     <div class="flex-grow overflow-hidden">
                         <p class="font-bold text-xs text-slate-900 line-clamp-1">${b.title}</p>
                         <p class="text-[8px] font-black text-indigo-400 uppercase tracking-widest">${b.author}</p>
@@ -1136,6 +1172,7 @@
             renderMonthlyStats();
         }
 
+        // Teiknar tölfræði yfir flokka og höfunda
         function renderVisualStats() {
             const readBooks = allBooks.filter(b => userData.read.includes(b.title));
             const catContainer = document.getElementById('visual-stats-categories');
@@ -1196,6 +1233,7 @@
             }).join('');
         }
 
+        // Teiknar mánaðarlega tölfræðitöflu
         function renderMonthlyStats() {
             const container = document.getElementById('monthly-history-container');
             if (!container) return;
@@ -1273,7 +1311,7 @@
             }).join('');
         }
 
-        // Fínstillt og vélbúnaðar-hröðuð síðuskipti (Crossfade)
+        // Fínstillt og vélbúnaðar-hröðuð síðuskipti (Perfect Crossfade)
         function showPage(p) {
             const libPage = document.getElementById('library-page');
             const statsPage = document.getElementById('stats-page');
@@ -1281,20 +1319,21 @@
             const currentActivePage = p === 'library' ? statsPage : libPage;
 
             if (!targetPage || !currentActivePage) return;
+            if (targetPage.classList.contains('active') && !targetPage.classList.contains('hidden')) return;
 
-            // Dofna núverandi síðu út
+            // Dofna virku síðuna mjúklega út
             currentActivePage.classList.remove('active');
             
             setTimeout(() => {
                 currentActivePage.classList.add('hidden');
                 targetPage.classList.remove('hidden');
                 
-                // Kveikja á reflow svo vafrinn sjái breytinguna
+                // Endurkalla flæði á skjánum (Force reflow)
                 targetPage.offsetHeight;
                 
-                // Dofna nýju síðuna inn
+                // Birta nýju síðuna mjúklega inn með risi
                 targetPage.classList.add('active');
-            }, 150); // Crossfade tekur samtals 150ms og líður eins og í appi!
+            }, 180); // Skilar fullkomlega smurðum og liprum hreyfingum
 
             const libBtn = document.getElementById('nav-library'); 
             const statBtn = document.getElementById('nav-stats');
