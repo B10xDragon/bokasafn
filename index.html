@@ -555,7 +555,7 @@
 
         async function fetchBooks() {
             try {
-                const response = await fetch('resources/books.json', { cache: 'no-store' });
+                const response = await fetch('Resources/books.json', { cache: 'no-store' });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
                 const books = await response.json();
@@ -577,11 +577,11 @@
                 renderCategories();
                 applyFilters();
             } catch (error) {
-                console.error('Villa við að hlaða resources/books.json:', error);
+                console.error('Villa við að hlaða Resources/books.json:', error);
                 setInnerHTML('book-grid', `
                     <div class="col-span-full py-20 text-center">
                         <p class="text-rose-500 font-bold">Ekki tókst að hlaða bókunum.</p>
-                        <p class="text-slate-400 text-sm mt-2">Athugaðu að <code>resources/books.json</code> sé til staðar og gilt JSON.</p>
+                        <p class="text-slate-400 text-sm mt-2">Athugaðu að <code>Resources/books.json</code> sé til staðar og gilt JSON.</p>
                     </div>`);
             }
         }
