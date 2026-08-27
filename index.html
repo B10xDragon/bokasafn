@@ -559,8 +559,12 @@
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
                 const books = await response.json();
-                if (!Array.isArray(books)) throw new Error('books.json verður að innihalda fylki af bókum.');
 
+if (!Array.isArray(books)) {
+    throw new Error('books.json verður að innihalda fylki af bókum.');
+}
+
+books.sort((a, b) => Number(a.id) - Number(b.id));
                 allBooks = books.map((book, index) => ({
                     id: Number.isFinite(Number(book.id)) ? Number(book.id) : index,
                     title: String(book.title || '').trim(),
@@ -573,7 +577,7 @@
                     pages: book.pages ?? ''
                 })).filter(book => book.title);
 
-                shuffleArray(allBooks);
+
                 renderCategories();
                 applyFilters();
             } catch (error) {
