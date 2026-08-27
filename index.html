@@ -2022,6 +2022,64 @@ body[data-theme] [class*="rating"] * {
 
 </style>
 
+
+<style id="recommend-modal-theme">
+/* Recommendation modal window */
+.recommend-modal-window {
+    border: 2px solid rgba(99, 102, 241, 0.45);
+    box-shadow:
+        0 0 25px rgba(99, 102, 241, 0.25),
+        0 0 60px rgba(99, 102, 241, 0.12),
+        0 25px 60px rgba(0, 0, 0, 0.20);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Light */
+[data-theme="light"] .recommend-modal-window {
+    border-color: rgba(99, 102, 241, 0.35);
+    box-shadow:
+        0 0 25px rgba(99, 102, 241, 0.20),
+        0 0 60px rgba(99, 102, 241, 0.10),
+        0 25px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Green */
+[data-theme="green"] .recommend-modal-window {
+    border-color: rgba(34, 197, 94, 0.50);
+    box-shadow:
+        0 0 25px rgba(34, 197, 94, 0.30),
+        0 0 60px rgba(34, 197, 94, 0.15),
+        0 25px 60px rgba(0, 0, 0, 0.30);
+}
+
+/* Dark */
+[data-theme="dark"] .recommend-modal-window {
+    border-color: rgba(129, 140, 248, 0.55);
+    box-shadow:
+        0 0 25px rgba(129, 140, 248, 0.35),
+        0 0 70px rgba(129, 140, 248, 0.18),
+        0 25px 60px rgba(0, 0, 0, 0.50);
+}
+
+/* Purple */
+[data-theme="purple"] .recommend-modal-window {
+    border-color: rgba(168, 85, 247, 0.55);
+    box-shadow:
+        0 0 25px rgba(168, 85, 247, 0.35),
+        0 0 70px rgba(168, 85, 247, 0.18),
+        0 25px 60px rgba(0, 0, 0, 0.50);
+}
+
+/* Orange */
+[data-theme="orange"] .recommend-modal-window {
+    border-color: rgba(249, 115, 22, 0.55);
+    box-shadow:
+        0 0 25px rgba(249, 115, 22, 0.35),
+        0 0 70px rgba(249, 115, 22, 0.18),
+        0 25px 60px rgba(0, 0, 0, 0.50);
+}
+</style>
+
 </head>
 <body class="pb-24 relative">
 
@@ -2308,7 +2366,7 @@ body[data-theme] [class*="rating"] * {
 
     <!-- Modal (Bókarupplýsingar) - Mjúkur, skalandi og fixed á miðjum skjá -->
     <div id="desc-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 opacity-0 pointer-events-none transition-all duration-300 hidden" onclick="handleCloseModal()">
-        <div id="desc-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-4xl w-full shadow-2xl relative transform scale-95 translate-y-4 transition-all duration-300 max-h-[90vh] overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
+        <div id="desc-modal-content" class="recommend-modal-window bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-4xl w-full shadow-2xl relative transform scale-95 translate-y-4 transition-all duration-300 max-h-[90vh] overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
             <button onclick="handleCloseModal()" class="absolute top-4 right-4 md:top-8 md:right-8 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 transition-all z-10 shadow-sm">
                 <i class="fas fa-times text-lg"></i>
             </button>
@@ -2318,7 +2376,7 @@ body[data-theme] [class*="rating"] * {
 
     <!-- Meðmæla Modal - Mjúkur og fágaður fixed gluggi -->
     <div id="recommend-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 opacity-0 pointer-events-none transition-all duration-300 hidden" onclick="closeRecommendModal()">
-        <div id="recommend-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-lg w-full shadow-2xl relative transform scale-95 translate-y-4 transition-all duration-300 max-h-[90vh] overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
+        <div class="p-6 md:p-10 border rounded-3xl md:rounded-[3rem] max-w-lg w-full shadow-2xl relative transform scale-95 translate-y-4 transition-all duration-300 max-h-[90vh] overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
             <button onclick="closeRecommendModal()" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 transition-all z-10 shadow-sm">
                 <i class="fas fa-times text-lg"></i>
             </button>
