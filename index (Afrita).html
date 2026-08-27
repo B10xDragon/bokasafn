@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bókasafn Unglingadeildar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at top left, #e0e7ff 0%, #f8fafc 45%),
+                        radial-gradient(circle at bottom right, #fae8ff 0%, #f8fafc 45%);
+            pointer-events: none;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .book-card {
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translate3d(0, 0, 0);
+        }
+
+        .book-card:hover {
+            transform: translate3d(0, -6px, 0) scale(1.02);
+            box-shadow: 0 16px 30px -8px rgba(79, 70, 229, 0.12);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .shimmer-placeholder {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s infinite linear;
+        }
+
+        .book-img-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.25s ease;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .img-gradient {
+            background: linear-gradient(to bottom, transparent 50%, rgba(15, 23, 42, 0.8) 100%);
+        }
+
+        #timer-widget {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            border: 1px solid rgba(79, 70, 229, 0.08);
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .timer-active-glow {
+            border-color: #6366f1 !important;
+            box-shadow: 0 0 35px rgba(99, 102, 241, 0.15) !important;
+        }
+
+        .star-rating i {
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .page-container {
+            opacity: 0;
+            transform: translate3d(0, 10px, 0);
+            transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .page-container.active {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+        .shake-element { animation: shake 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="pb-24 relative">
+
+    <!-- Leiðsögustika -->
+    <nav class="bg-white/70 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4 cursor-pointer group shrink-0" onclick="showPage('library')">
+                <div class="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200 group-hover:rotate-12 transition-all duration-300">
+                    <i class="fas fa-book-open text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight leading-none group-hover:text-indigo-600 transition-colors">Bókasafnið</h1>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">Unglingadeild</p>
+                </div>
+            </div>
+
+            <div class="relative w-full max-w-lg group" id="search-container">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none z-10">
+                    <i class="fas fa-search text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
+                </div>
+                <input type="text" id="book-search" oninput="handleSearch()" onfocus="handleSearch()"
+                    placeholder="Leita..." 
+                    class="w-full pl-12 pr-6 py-4 bg-slate-100/80 border-2 border-transparent rounded-[2rem] focus:ring-0 focus:bg-white focus:border-indigo-400 transition-all outline-none text-sm font-semibold shadow-inner">
+                <ul id="search-suggestions" class="absolute left-0 right-0 top-full mt-3 bg-white/90 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-slate-100 hidden max-h-64 overflow-y-auto overflow-hidden z-50"></ul>
+            </div>
+
+            <div class="flex gap-1 md:gap-2 items-center bg-slate-200/50 p-1.5 rounded-[1.8rem]">
+                <button onclick="showPage('library')" id="nav-library" class="px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap">Bækur</button>
+                <button onclick="showPage('stats')" id="nav-stats" class="px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap">Lesturinn minn</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-[100rem] mx-auto p-4 md:p-10">
+        
+        <!-- Bókasafnið -->
+        <div id="library-page" class="page-container active">
+            <div class="mb-12 space-y-10">
+                <!-- Lestrarklukka -->
+                <div id="timer-widget" class="p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] shadow-lg flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 max-w-lg mx-auto">
+                    <div class="flex flex-col items-center sm:items-start">
+                        <span id="timer-status-label" class="text-[11px] font-black text-indigo-400 uppercase tracking-[0.3em] mb-2">Tími að lesa</span>
+                        <div id="main-timer-display" class="text-4xl md:text-5xl font-mono font-black tracking-tighter text-slate-900 drop-shadow-sm">00:00:00</div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button id="timer-primary-btn" onclick="handleTimerPrimaryAction()" class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white rounded-2xl md:rounded-3xl flex items-center justify-center transition-all hover:shadow-2xl hover:shadow-indigo-300 hover:-translate-y-1 active:scale-90">
+                            <i class="fas fa-play text-lg md:text-xl ml-1" id="timer-primary-icon"></i>
+                        </button>
+                        <button id="timer-stop-btn" onclick="showStopConfirmation()" class="hidden w-14 h-14 md:w-16 md:h-16 bg-white border border-slate-200 text-slate-400 rounded-2xl md:rounded-3xl flex items-center justify-center transition-all hover:bg-rose-50 hover:text-rose-500 hover:border-rose-100 hover:-translate-y-1 active:scale-90 shadow-sm">
+                            <i class="fas fa-stop text-lg md:text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button onclick="openRecommendModal()" class="px-5 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-2xl text-xs font-bold shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5 active:scale-95">
+                        <i class="fas fa-paper-plane mr-2"></i>Mælir þú með bók?
+                    </button>
+                </div>
+
+                <!-- Flokkar -->
+                <div class="text-center">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Hægt er að velja marga flokka í einu til að þrengja leitina</p>
+                    <div id="category-filters" class="flex flex-wrap justify-center gap-2 md:gap-3 max-w-5xl mx-auto"></div>
+                </div>
+            </div>
+
+            <!-- Bókagrill -->
+            <div id="book-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-4 md:gap-6"></div>
+        </div>
+
+        <!-- Tölfræði -->
+        <div id="stats-page" class="page-container hidden">
+            <div class="max-w-7xl mx-auto space-y-12 md:space-y-16">
+
+                <!-- Streak Banner -->
+                <div id="streak-banner" class="hidden bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-600 p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] items-center gap-6 md:gap-10 shadow-2xl text-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-20 opacity-10 rotate-12">
+                        <i class="fas fa-fire text-[200px] md:text-[250px]"></i>
+                    </div>
+                    <div class="w-20 h-20 md:w-24 md:h-24 bg-white/20 rounded-3xl md:rounded-[2.5rem] flex items-center justify-center text-4xl md:text-5xl shrink-0 backdrop-blur-xl border border-white/30">
+                        <i class="fas fa-fire animate-pulse text-orange-300"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl md:text-3xl font-black mb-1 md:mb-2 tracking-tight">Vá! Þú ert á eldi 🔥</h3>
+                        <p class="text-indigo-100 font-semibold text-lg md:text-xl">Þú hefur náð markmiðinu í <strong><span id="streak-banner-days">0</span> daga í röð</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- Tölfræði kassar -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+                    <div class="relative overflow-hidden bg-gradient-to-br from-indigo-500 to-indigo-600 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4 backdrop-blur-md">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <p class="text-indigo-200 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 text-center">Klukkustundir</p>
+                        <h3 id="stat-hours" class="text-3xl md:text-5xl font-black text-center tracking-tighter drop-shadow-sm">0</h3>
+                    </div>
+                    
+                    <div class="relative overflow-hidden bg-gradient-to-br from-violet-500 to-violet-600 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4 backdrop-blur-md">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <p class="text-violet-200 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 text-center">Mínútur</p>
+                        <h3 id="stat-minutes" class="text-3xl md:text-5xl font-black text-center tracking-tighter drop-shadow-sm">0</h3>
+                    </div>
+                    
+                    <div class="relative overflow-hidden bg-gradient-to-br from-pink-500 to-pink-600 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4 backdrop-blur-md">
+                            <i class="fas fa-stopwatch"></i>
+                        </div>
+                        <p class="text-pink-200 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 text-center">Sekúndur</p>
+                        <h3 id="stat-seconds" class="text-3xl md:text-5xl font-black text-center tracking-tighter drop-shadow-sm">0</h3>
+                    </div>
+                    
+                    <div class="relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-500 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl mx-auto mb-4 backdrop-blur-md">
+                            <i class="fas fa-fire animate-pulse text-amber-100"></i>
+                        </div>
+                        <p class="text-amber-100 uppercase text-[9px] md:text-[10px] font-black tracking-[0.2em] mb-1 text-center">Dagar í röð</p>
+                        <h3 id="stat-streak" class="text-3xl md:text-5xl font-black text-center tracking-tighter drop-shadow-sm">0</h3>
+                    </div>
+                </div>
+
+                <!-- Markmið -->
+                <div class="glass-card p-8 md:p-12 rounded-[2rem] md:rounded-[3.5rem] shadow-sm">
+                    <h3 class="text-xl md:text-2xl font-black flex items-center gap-4 md:gap-5 text-slate-900 mb-8 md:mb-10">
+                        <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-sm"><i class="fas fa-bullseye"></i></div>
+                        Markmiðin mín
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+                        <div class="space-y-6">
+                            <div class="bg-white/50 p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] border border-white/50 shadow-inner">
+                                <div class="flex flex-col gap-4 md:gap-6">
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Mínútumarkmið</label>
+                                        <input type="number" id="target-minutes-input" oninput="setMinutesGoal()" min="0" class="w-full bg-white border-2 border-slate-100 rounded-2xl px-5 md:px-6 py-3 md:py-4 outline-none focus:border-indigo-400 transition-all font-bold text-lg md:text-xl shadow-sm" placeholder="T.d. 30">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Tímabil fyrir markmið</label>
+                                        <select id="goal-type-select" onchange="setMinutesGoal()" class="w-full h-14 md:h-[60px] bg-white border-2 border-slate-100 rounded-2xl px-4 outline-none focus:border-indigo-400 font-bold text-sm shadow-sm transition-all">
+                                            <option value="daily">Markmið fyrir daginn</option>
+                                            <option value="weekly">Markmið fyrir vikuna</option>
+                                            <option value="monthly">Markmið fyrir mánuðinn</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="minutes-goal-progress-container" class="hidden mt-6 md:mt-8">
+                                    <div class="flex justify-between items-end mb-3 md:mb-4">
+                                        <span class="text-xs md:text-sm font-bold text-slate-600">Framvinda: <span id="current-minutes-reached" class="text-indigo-600 font-black">0</span> mín</span>
+                                        <span class="text-[10px] md:text-xs font-bold text-slate-400">Markmið: <span id="target-minutes-display">0</span></span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 h-5 md:h-6 rounded-full overflow-hidden p-1 shadow-inner">
+                                        <div id="minutes-goal-bar" class="bg-gradient-to-r from-indigo-500 to-violet-500 h-full rounded-full transition-all duration-1000 shadow-lg" style="width: 0%"></div>
+                                    </div>
+                                    <p id="minutes-goal-status" class="text-center text-[9px] md:text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em] mt-3 md:mt-4"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 md:space-y-6">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block px-2">Annað markmið</label>
+                            <div class="flex gap-3">
+                                <input type="text" id="personal-goal-input" class="flex-grow bg-white border-2 border-slate-100 rounded-2xl px-5 md:px-6 py-3 md:py-4 outline-none focus:border-indigo-400 transition-all font-semibold text-sm shadow-sm" placeholder="Nýtt markmið...">
+                                <button onclick="addPersonalGoal()" class="bg-indigo-600 text-white w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center hover:bg-indigo-700 shadow-lg transition-all active:scale-95">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div id="personal-goals-list" class="space-y-2 md:space-y-3 pt-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Listar -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
+                    <div class="bg-slate-900 text-white p-8 md:p-12 rounded-3xl md:rounded-[3.5rem] shadow-2xl relative overflow-hidden group">
+                        <div class="absolute -bottom-10 -right-10 text-white opacity-5 text-[150px] md:text-[200px] group-hover:rotate-12 transition-transform duration-700">
+                            <i class="fas fa-circle-check"></i>
+                        </div>
+                        <div class="relative z-10 flex flex-col h-full">
+                            <div class="flex items-center justify-between mb-6 md:mb-8">
+                                <h3 class="text-xl md:text-2xl font-black flex items-center gap-4 md:gap-5">
+                                    <div class="w-10 h-10 bg-emerald-500 text-white rounded-xl flex items-center justify-center text-sm"><i class="fas fa-check"></i></div>
+                                    Kláraðar bækur
+                                </h3>
+                                <span id="total-read-books-badge" class="bg-white/10 text-emerald-300 font-black px-4 md:px-5 py-1.5 rounded-2xl text-xs md:text-sm backdrop-blur-md">0</span>
+                            </div>
+                            <div id="read-items" class="space-y-3 md:space-y-4 overflow-y-auto max-h-[300px] md:max-h-[350px] pr-2 no-scrollbar"></div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-8 md:p-12 rounded-3xl md:rounded-[3.5rem] shadow-sm flex flex-col h-full">
+                        <h3 class="text-xl md:text-2xl font-black mb-6 md:mb-8 flex items-center gap-4 md:gap-5 text-slate-900">
+                            <div class="w-10 h-10 bg-rose-500 text-white rounded-xl flex items-center justify-center text-sm"><i class="fas fa-heart"></i></div>
+                            Óskalisti
+                        </h3>
+                        <div id="wishlist-items" class="space-y-3 md:space-y-4 overflow-y-auto max-h-[300px] md:max-h-[350px] pr-2 no-scrollbar flex-grow"></div>
+                    </div>
+                </div>
+
+                <!-- Tölfræðiborð -->
+                <div class="glass-card p-8 md:p-12 rounded-3xl md:rounded-[3.5rem] shadow-sm">
+                    <h3 class="text-xl md:text-2xl font-black mb-10 flex items-center gap-4 text-slate-900">
+                        <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-sm">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        Lestrarvenjur og tölfræði
+                    </h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-14">
+                        <div class="space-y-6">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-tags text-indigo-500"></i> Bókaflokkar sem ég les mest
+                            </h4>
+                            <div id="visual-stats-categories" class="space-y-5"></div>
+                        </div>
+                        <div class="space-y-6">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-pen-nib text-violet-500"></i> Höfundar sem ég les mest
+                            </h4>
+                            <div id="visual-stats-authors" class="space-y-5"></div>
+                        </div>
+                        <div class="space-y-6">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-calendar-alt text-pink-500"></i> Mánaðarlegt lestraryfirlit
+                            </h4>
+                            <div id="monthly-history-container" class="space-y-5"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Umsagnir -->
+                <div class="glass-card p-8 md:p-12 rounded-3xl md:rounded-[4rem] shadow-sm">
+                    <h3 class="text-xl md:text-2xl font-black mb-8 flex items-center gap-4 text-slate-900">
+                        <div class="w-10 h-10 bg-amber-500 text-white rounded-xl flex items-center justify-center text-sm">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        Umsagnirnar mínar
+                    </h3>
+                    <div id="reviews-archive" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"></div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="desc-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 opacity-0 pointer-events-none transition-all duration-300 hidden" onclick="handleCloseModal()">
+        <div id="desc-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-4xl w-full shadow-2xl relative transform scale-95 translate-y-4 transition-all duration-300 max-h-[90vh] overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
+            <button onclick="handleCloseModal()" class="absolute top-4 right-4 md:top-8 md:right-8 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 transition-all z-10 shadow-sm">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <div id="modal-inner-content"></div>
+        </div>
+    </div>
+
+    <!-- Meðmæla Modal -->
+    <div id="recommend-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 md:p-6 opacity-0 pointer-events-none transition-all duration-300 hidden" onclick="closeRecommendModal()">
+        <div id="recommend-modal-content" class="bg-white p-6 md:p-10 rounded-3xl md:rounded-[3rem] max-w-lg w-full shadow-2xl relative transform scale-95 translate-y-4 transition-all duration-300 max-h-[90vh] overflow-y-auto no-scrollbar" onclick="event.stopPropagation()">
+            <button onclick="closeRecommendModal()" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 transition-all z-10 shadow-sm">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl md:text-2xl font-black text-slate-900 tracking-tighter flex items-center gap-3">
+                        <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-sm"><i class="fas fa-envelope-open-text"></i></div>
+                        Mælir þú með bók?
+                    </h3>
+                    <p class="text-slate-400 font-bold uppercase tracking-widest text-[9px] mt-2">Sendu tillögu þína til bókavarðar</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Heiti bókar <span class="text-rose-500">*</span></label>
+                        <input type="text" id="rec-title" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-3 outline-none focus:bg-white focus:border-indigo-400 transition-all font-semibold text-sm shadow-sm" placeholder="T.d. Hornauga">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Höfundur (valfrjálst)</label>
+                        <input type="text" id="rec-author" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-3 outline-none focus:bg-white focus:border-indigo-400 transition-all font-semibold text-sm shadow-sm" placeholder="T.d. Jón Jónsson">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Hugmyndir eða umsögn (valfrjálst)</label>
+                        <textarea id="rec-ideas" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-4 text-sm font-semibold outline-none focus:bg-white focus:border-indigo-400 shadow-sm min-h-[100px] transition-all" placeholder="Af hverju mælir þú með þessari bók?"></textarea>
+                    </div>
+                </div>
+                <button onclick="submitRecommendation()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-indigo-700 transition-all text-xs uppercase tracking-widest active:scale-95">
+                    <i class="fas fa-paper-plane mr-2"></i> Senda tillögu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Staðfestingargluggi -->
+    <div id="stop-confirm-modal" class="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-6 opacity-0 pointer-events-none transition-all duration-300 hidden" onclick="closeStopConfirmation()">
+        <div id="stop-confirm-modal-content" class="bg-white p-8 md:p-12 rounded-3xl md:rounded-[3.5rem] max-w-md w-full shadow-2xl text-center border border-slate-100 transform scale-95 translate-y-4 transition-all duration-300" onclick="event.stopPropagation()">
+            <div class="w-20 h-20 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-6 md:mb-8 shadow-inner">
+                <i class="fas fa-stop"></i>
+            </div>
+            <h4 class="text-2xl md:text-3xl font-black mb-4 tracking-tight">Viltu vista?</h4>
+            <p class="text-slate-500 font-medium mb-8 md:mb-10 text-sm md:base">Viltu vista þessar mínútur og ljúka lestrinum í bili?</p>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="confirmStopReading()" class="bg-indigo-600 text-white font-black py-4 md:py-5 rounded-2xl md:rounded-[1.8rem] hover:bg-indigo-700 shadow-xl transition-all active:scale-95">Já, vista!</button>
+                <button onclick="closeStopConfirmation()" class="bg-slate-100 text-slate-600 font-bold py-4 md:py-5 rounded-2xl md:rounded-[1.8rem] hover:bg-slate-200 transition-all">Halda áfram</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="success-toast" class="fixed bottom-12 left-1/2 -translate-x-1/2 z-[200] bg-emerald-600 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-4 transform translate-y-48 opacity-0 transition-all duration-500 pointer-events-none border border-white/20">
+        <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"><i class="fas fa-check text-sm" id="success-icon"></i></div>
+        <p id="success-message" class="font-black text-[12px] uppercase tracking-wider"></p>
+    </div>
+
+    <script>
+        let allBooks = [];
+        let filteredBooks = [];
+        let searchQuery = '';
+        let activeCategories = [];
+        let currentRating = 0;
+        
+        let userData = { 
+            liked: [], 
+            read: [], 
+            totalSeconds: 0, 
+            dailyProgress: {},
+            minutesGoal: 0,
+            goalType: 'daily',
+            personalGoals: [],
+            reviews:
