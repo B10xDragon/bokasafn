@@ -440,8 +440,6 @@
     </div>
 
     <script>
-        const SPREADSHEET_ID = '1nh6nJk5PGkwBdNAMr7-jdUE-qO3ZyoQ3IJyKkYuvtwk';
-        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&t=${Date.now()}`;
 
         let allBooks = [];
         let filteredBooks = [];
@@ -557,57 +555,35 @@
 
         async function fetchBooks() {
             try {
-                const response = await fetch(CSV_URL);
-                const text = await response.text();
-                const rows = parseCSV(text).slice(1);
-                allBooks = rows.map((cols, index) => {
-                    const rawCategories = (cols[2] || 'Almennt').split(',').map(c => c.trim()).filter(c => c !== '');
-                    const pagesCleaned = (cols[5] || '').trim().replace(/bls\.?\s?/i, '');
-                    return {
-                        id: index,
-                        title: (cols[0] || '').trim(),
-                        author: (cols[1] || '').trim(),
-                        categories: rawCategories.length > 0 ? rawCategories : ['Almennt'],
-                        description: (cols[3] || '').trim(),
-                        cover: formatImageUrl(cols[4] || ''),
-                        pages: pagesCleaned
-                    };
-                }).filter(b => b.title);
+                const response = await fetch('resources/books.json', { cache: 'no-store' });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                const books = await response.json();
+                if (!Array.isArray(books)) throw new Error('books.json verður að innihalda fylki af bókum.');
+
+                allBooks = books.map((book, index) => ({
+                    id: Number.isFinite(Number(book.id)) ? Number(book.id) : index,
+                    title: String(book.title || '').trim(),
+                    author: String(book.author || '').trim(),
+                    categories: Array.isArray(book.categories) && book.categories.length
+                        ? book.categories.map(c => String(c).trim()).filter(Boolean)
+                        : ['Almennt'],
+                    description: String(book.description || '').trim(),
+                    cover: String(book.cover || '').trim(),
+                    pages: book.pages ?? ''
+                })).filter(book => book.title);
+
                 shuffleArray(allBooks);
                 renderCategories();
                 applyFilters();
-            } catch (error) { console.error("Villa:", error); }
-        }
-
-        function parseCSV(text) {
-            const rows = []; let row = []; let field = ''; let inQuotes = false;
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i]; const nextChar = text[i+1];
-                if (inQuotes) {
-                    if (char === '"' && nextChar === '"') { field += '"'; i++; }
-                    else if (char === '"') inQuotes = false;
-                    else field += char;
-                } else {
-                    if (char === '"') inQuotes = true;
-                    else if (char === ',') { row.push(field); field = ''; }
-                    else if (char === '\n' || char === '\r') {
-                        row.push(field); if (row.length > 1) rows.push(row); row = []; field = '';
-                        if (char === '\r' && nextChar === '\n') i++;
-                    } else field += char;
-                }
+            } catch (error) {
+                console.error('Villa við að hlaða resources/books.json:', error);
+                setInnerHTML('book-grid', `
+                    <div class="col-span-full py-20 text-center">
+                        <p class="text-rose-500 font-bold">Ekki tókst að hlaða bókunum.</p>
+                        <p class="text-slate-400 text-sm mt-2">Athugaðu að <code>resources/books.json</code> sé til staðar og gilt JSON.</p>
+                    </div>`);
             }
-            if (row.length > 0 || field !== '') { row.push(field); rows.push(row); }
-            return rows;
-        }
-
-        function formatImageUrl(url) {
-            if (!url) return '';
-            let clean = url.trim().replace(/^"|"$/g, '');
-            const idMatch = clean.match(/[-\w]{25,}/);
-            if (idMatch) {
-                return `https://drive.google.com/thumbnail?id=${idMatch[0]}&sz=w1000`;
-            }
-            return clean;
         }
 
         // Flokkarnir búnir til á fljótlegan hátt
