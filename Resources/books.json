@@ -405,5 +405,16 @@
     "description": "Önnur bókin í þríleik Suzanne Collins um Hungurleikana, Eldar kvikna, kemur út í vikunni hjá Forlaginu. Bókin kemur samstundis út innbundin og í kiljubroti.\n\nÍ Eldar kvikna er haldið áfram að fylgjast með Katniss, Peeta og Gale og lífi þeirra í Panem þar sem uppreisnarólgur eru byrjaðar að vakna.\n\nHungurleikarnir hafa átt miklum vinsældum að fagna á Íslandi hjá fólki á öllum aldri. Innbundna útgáfan er uppseld og kiljan hefur verið prentuð tvisvar sinnum. Einnig eru Hungurleikarnir í rafbók mest selda rafbók Forlagsins.\n\nÞriðja og síðasta bókin í þríleiknum, Hermiskaði, kemur út hjá Forlaginu í haust.",
     "cover": "Resources/Images/36.jpg",
     "pages": 265
-  }
+  },
+  {
+  "id": 37,
+  "title": "Eragon",
+  "author": "Christopher Paolini",
+  "categories": [
+    "Ævintýri"
+  ],
+  "description": "Eragon uppgötvar drekaegg og verður að knapa, sem dregur hann inn í ævintýri fullt af töfrum, hættum og bardögum.",
+  "cover": "Resources/Images/37.jpg",
+  "pages": 509
+}
 ]
