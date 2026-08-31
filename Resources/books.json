@@ -416,5 +416,18 @@
   "description": "Eragon uppgötvar drekaegg og verður að knapa, sem dregur hann inn í ævintýri fullt af töfrum, hættum og bardögum.",
   "cover": "Resources/Images/37.jpg",
   "pages": 509
+},
+{
+  "id": 38,
+  "title": "High School DxD",
+  "author": "Ichiei Ishibumi",
+  "categories": [
+    "Manga",
+    "Fantasy",
+    "Action"
+  ],
+  "description": "Fantasy-action manga series about supernatural conflicts and a high school student who becomes involved with demons and other mythical beings.",
+  "cover": "Resources/Images/38.jpg",
+  "pages": 0
 }
 ]
