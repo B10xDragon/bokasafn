@@ -416,5 +416,29 @@
   "description": "Eragon uppgötvar drekaegg og verður að knapa, sem dregur hann inn í ævintýri fullt af töfrum, hættum og bardögum.",
   "cover": "Resources/Images/37.jpg",
   "pages": 509
+},
+{
+  "id": 38,
+  "title": "Hungurleikarnir: Hermiskaði",
+  "author": "Suzanne Collins",
+  "categories": [
+    "Ævintýri",
+    "Vísindaskáldsaga"
+  ],
+  "description": "Katniss Everdeen er send í Hungurleikarnir í annað sinn og þarf að berjast fyrir lífi sínu í enn hættulegri keppni.",
+  "cover": "Resources/Images/38.jpg",
+  "pages": 448
+},
+{
+  "id": 39,
+  "title": "Hvísl hrafnanna",
+  "author": "Maggie Stiefvater",
+  "categories": [
+    "Ævintýri",
+    "Fantasia"
+  ],
+  "description": "Dularfull saga um hóp ungmenna sem flækjast inn í leyndardóma, töfra og forna spádóma.",
+  "cover": "Resources/Images/39.jpg",
+  "pages": 408
 }
 ]
