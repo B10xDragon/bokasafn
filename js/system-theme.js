@@ -1,4 +1,10 @@
 (() => {
+    const savedTheme = localStorage.getItem('bokasafn-theme');
+
+    if (savedTheme !== 'system') {
+        return;
+    }
+
     function applySystemTheme() {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.body.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
