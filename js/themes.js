@@ -33,3 +33,9 @@ function loadBokasafnTheme() {
 }
 
 document.addEventListener("DOMContentLoaded", loadBokasafnTheme);
+
+// Load optional library enhancements after the main app has been defined.
+const sortingScript = document.createElement("script");
+sortingScript.src = "js/sorting.js";
+sortingScript.defer = true;
+document.head.appendChild(sortingScript);
