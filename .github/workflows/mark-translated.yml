@@ -1,0 +1,39 @@
+name: Mark translated books
+
+on:
+  push:
+    branches: [Beta]
+    paths:
+      - '.github/scripts/mark-translated.py'
+      - '.github/workflows/mark-translated.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-books:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Beta
+          fetch-depth: 0
+
+      - name: Mark translated books
+        run: python .github/scripts/mark-translated.py
+
+      - name: Validate JSON
+        run: python -m json.tool Resources/books.json >/dev/null
+
+      - name: Commit changes
+        run: |
+          git config user.name "B10xDragon"
+          git config user.email "jon3107alt@gmail.com"
+          git add Resources/books.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Mark translated books correctly"
+          git push origin Beta
