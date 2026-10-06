@@ -103,3 +103,17 @@
             75% { transform: translateX(4px); }
         }
         .shake-element { animation: shake 0.3s ease-in-out; }
+
+
+/* Keyboard equivalents of the existing hover affordances. */
+:focus-visible {
+    outline: 3px solid var(--theme-accent, #6366f1);
+    outline-offset: 3px;
+}
+.book-card:focus-within > div:first-child {
+    opacity: 1;
+    transform: translateX(0);
+}
+@media (hover: none) {
+    .book-card > div:first-child { opacity: 1; transform: translateX(0); }
+}

@@ -15,7 +15,7 @@ let allBooks = [];
             reviews: {}
         };
         
-        let timerState = { active: false, paused: false, startTime: null, elapsedBeforePause: 0, interval: null };
+        let timerState = emptyTimerState();
 
         // --- Defensive Safe DOM Manipulation Utilities ---
         const setInnerHTML = (id, html) => {
@@ -44,8 +44,9 @@ let allBooks = [];
         };
 
         window.onload = async () => {
+            const catalogLoaded = await fetchBooks();
             loadUserData();
-            await fetchBooks();
+            if (catalogLoaded) applyFilters();
             syncGoalUI();
             updateStatsUI();
         };
@@ -66,29 +67,33 @@ let allBooks = [];
 
         // Streak útreikningur
         function calculateStreak() {
-            if (!userData.dailyProgress) return 0;
-            const MIN_SECONDS = 600; 
-            let streak = 0;
-            let currentCheck = new Date();
-            let todayStr = getLocalYYYYMMDD(currentCheck);
-            if ((userData.dailyProgress[todayStr] || 0) < MIN_SECONDS) {
-                currentCheck.setDate(currentCheck.getDate() - 1);
+            // Weekly targets retain their rolling-seven-day meaning. Monthly targets
+            // use calendar-month-to-date totals. The streak counts days meeting the
+            // selected period target, rather than silently imposing a daily target.
+            const threshold = userData.minutesGoal > 0 ? userData.minutesGoal * 60 : 600;
+            function reached(date) {
+                if (userData.goalType === 'weekly') return getWeeklySeconds(date) >= threshold;
+                if (userData.goalType === 'monthly') return getMonthlySeconds(date) >= threshold;
+                return (userData.dailyProgress[getLocalYYYYMMDD(date)] || 0) >= threshold;
             }
-            while (true) {
-                let dateStr = getLocalYYYYMMDD(currentCheck);
-                if ((userData.dailyProgress[dateStr] || 0) >= MIN_SECONDS) {
-                    streak++;
-                    currentCheck.setDate(currentCheck.getDate() - 1);
-                } else break;
+            let date = new Date();
+            let streak = 0;
+            if (!reached(date)) date.setDate(date.getDate() - 1);
+            // Every qualifying period must contain a saved reading day.
+            const dates = Object.keys(userData.dailyProgress).sort();
+            if (!dates.length) return 0;
+            const earliest = dates[0];
+            while (getLocalYYYYMMDD(date) >= earliest && reached(date)) {
+                streak++;
+                date.setDate(date.getDate() - 1);
             }
             return streak;
         }
 
-        function getWeeklySeconds() {
+        function getWeeklySeconds(now = new Date()) {
             let total = 0;
-            const now = new Date();
             for (let i = 0; i < 7; i++) {
-                const d = new Date();
+                const d = new Date(now);
                 d.setDate(now.getDate() - i);
                 const ds = getLocalYYYYMMDD(d);
                 total += userData.dailyProgress[ds] || 0;
@@ -96,14 +101,13 @@ let allBooks = [];
             return total;
         }
 
-        function getMonthlySeconds() {
+        function getMonthlySeconds(now = new Date()) {
             let total = 0;
-            const now = new Date();
             const currentMonth = now.getMonth();
             const currentYear = now.getFullYear();
             for (const dateStr in userData.dailyProgress) {
                 const [year, month, day] = dateStr.split('-').map(Number);
-                if (year === currentYear && (month - 1) === currentMonth) {
+                if (year === currentYear && (month - 1) === currentMonth && dateStr <= getLocalYYYYMMDD(now)) {
                     total += userData.dailyProgress[dateStr];
                 }
             }
@@ -122,21 +126,22 @@ if (!Array.isArray(books)) {
 }
 
 books.sort((a, b) => Number(a.id) - Number(b.id));
-                allBooks = books.map((book, index) => ({
-                    id: Number.isFinite(Number(book.id)) ? Number(book.id) : index,
+                allBooks = books.filter(book => book && Number.isSafeInteger(Number(book.id)) && Number(book.id) >= 0).map(book => ({
+                    id: Number(book.id),
                     title: String(book.title || '').trim(),
                     author: String(book.author || '').trim(),
                     categories: Array.isArray(book.categories) && book.categories.length
-                        ? book.categories.map(c => String(c).trim()).filter(Boolean)
+                        ? [...new Set(book.categories.map(c => String(c).trim()).map(c => c === 'Fantasia' ? 'Fantasía' : c).filter(Boolean))]
                         : ['Almennt'],
                     description: String(book.description || '').trim(),
                     cover: String(book.cover || '').trim(),
-                    pages: book.pages ?? ''
+                    pages: Number.isFinite(Number(book.pages)) && Number(book.pages) > 0 ? Number(book.pages) : ''
                 })).filter(book => book.title);
 
 
                 renderCategories();
                 applyFilters();
+                return true;
             } catch (error) {
                 console.error('Villa við að hlaða Resources/books.json:', error);
                 setInnerHTML('book-grid', `
@@ -144,6 +149,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                         <p class="text-rose-500 font-bold">Ekki tókst að hlaða bókunum.</p>
                         <p class="text-slate-400 text-sm mt-2">Athugaðu að <code>Resources/books.json</code> sé til staðar og gilt JSON.</p>
                     </div>`);
+                return false;
             }
         }
 
@@ -161,9 +167,9 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 const isActive = isAllSelected || isSelected;
                 
                 return `
-                    <button onclick="toggleCategory('${cat}')" data-category="${cat}"
+                    <button onclick="toggleCategory(this.dataset.category)" data-category="${escapeHTML(cat)}" aria-pressed="${isActive}"
                         class="category-btn px-4 md:px-5 py-2 md:py-2.5 rounded-xl md:rounded-2xl text-[11px] md:text-xs font-bold transition-all duration-200 shadow-sm ${isActive ? 'bg-indigo-600 text-white shadow-indigo-200' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/50'}">
-                        ${cat}
+                        ${escapeHTML(cat)}
                     </button>
                 `;
             }).join('');
@@ -177,6 +183,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 const isSelected = activeCategories.includes(cat);
                 const isActive = isAllSelected || isSelected;
                 
+                btn.setAttribute('aria-pressed', String(isActive));
                 if (isActive) {
                     btn.className = "category-btn px-4 md:px-5 py-2 md:py-2.5 rounded-xl md:rounded-2xl text-[11px] md:text-xs font-bold transition-all duration-200 shadow-sm bg-indigo-600 text-white shadow-indigo-200";
                 } else {
@@ -209,8 +216,8 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 }
                 
                 const matchesCategories = activeCategories.every(cat => {
-                    if (cat === '❤️ Óskalisti') return userData.liked.includes(b.title);
-                    if (cat === '✅ Lesið') return userData.read.includes(b.title);
+                    if (cat === '❤️ Óskalisti') return userData.liked.includes(b.id);
+                    if (cat === '✅ Lesið') return userData.read.includes(b.id);
                     return b.categories.includes(cat);
                 });
                 
@@ -222,53 +229,56 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         function renderBooks() {
             const container = document.getElementById('book-grid');
             if (!container) return;
+            const rememberedFocus = rememberBookFocus();
 
             if (filteredBooks.length === 0) {
                 container.innerHTML = `
                     <div class="col-span-full py-20 text-center text-slate-400 font-bold italic">
                         Engin bók fannst í þessari samsetningu...
                     </div>`;
+                restoreBookFocus(rememberedFocus);
                 return;
             }
             container.innerHTML = filteredBooks.map(b => {
-                const isLiked = userData.liked.includes(b.title);
-                const isRead = userData.read.includes(b.title);
-                const review = userData.reviews[b.title];
+                const isLiked = userData.liked.includes(b.id);
+                const isRead = userData.read.includes(b.id);
+                const review = userData.reviews[b.id];
                 
                 return `
-                    <div class="book-card group relative">
-                        <div class="absolute top-2 right-2 md:top-3 md:right-3 flex flex-col gap-2 z-20 transform translate-x-3 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                            <button onclick="event.stopPropagation(); toggleRead('${b.title.replace(/'/g, "\\'")}')" class="w-8 h-8 rounded-xl bg-white/95 backdrop-blur-md flex items-center justify-center shadow-lg hover:scale-110 transition-all">
-                                <i class="${isRead ? 'fas fa-circle-check text-emerald-500' : 'far fa-circle-check text-slate-300'} text-lg"></i>
+                    <div class="book-card group relative" data-book-id="${b.id}">
+                        <div class="absolute top-2 right-2 md:top-3 md:right-3 flex flex-col gap-2 z-20 transform translate-x-3 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:translate-x-0 group-focus-within:opacity-100 transition-all duration-300">
+                            <button onclick="event.stopPropagation(); toggleRead(${b.id})" data-action="read" aria-label="Merkja ${escapeHTML(b.title)} sem lesna" aria-pressed="${isRead}" class="w-8 h-8 rounded-xl bg-white/95 backdrop-blur-md flex items-center justify-center shadow-lg hover:scale-110 transition-all">
+                                <i aria-hidden="true" class="${isRead ? 'fas fa-circle-check text-emerald-500' : 'far fa-circle-check text-slate-300'} text-lg"></i>
                             </button>
-                            <button onclick="event.stopPropagation(); toggleLike('${b.title.replace(/'/g, "\\'")}')" class="w-8 h-8 rounded-xl bg-white/95 backdrop-blur-md flex items-center justify-center shadow-lg hover:scale-110 transition-all">
-                                <i class="${isLiked ? 'fas fa-heart text-rose-500' : 'far fa-heart text-slate-300'} text-lg"></i>
+                            <button onclick="event.stopPropagation(); toggleLike(${b.id})" data-action="like" aria-label="Setja ${escapeHTML(b.title)} á óskalista" aria-pressed="${isLiked}" class="w-8 h-8 rounded-xl bg-white/95 backdrop-blur-md flex items-center justify-center shadow-lg hover:scale-110 transition-all">
+                                <i aria-hidden="true" class="${isLiked ? 'fas fa-heart text-rose-500' : 'far fa-heart text-slate-300'} text-lg"></i>
                             </button>
                         </div>
-                        <div onclick="openBookInfo(${b.id}, event)" class="cursor-pointer">
+                        <div data-action="info" role="button" tabindex="0" data-book-id="${b.id}" aria-label="Upplýsingar um ${escapeHTML(b.title)}" onclick="openBookInfo(${b.id}, event)" class="cursor-pointer">
                             <!-- Bætt við async decoding og lazy loading á myndir til að gera skrun 100% lagg-frítt -->
                             <div class="book-img-container aspect-[3/4.5] relative mb-2 md:mb-3 shimmer-placeholder">
-                                <img src="${b.cover || 'https://via.placeholder.com/400x600?text=Vantar'}" 
+                                <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}"
                                      class="w-full h-full object-cover transition-opacity duration-500 opacity-0" 
                                      decoding="async"
                                      loading="lazy"
-                                     onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')"
-                                     onerror="this.src='https://via.placeholder.com/400x600?text=Vantar'; this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')">
+                                     onload="finishCoverLoading(this)"
+                                     onerror="handleCoverError(this)">
                                 <div class="absolute inset-0 img-gradient opacity-60"></div>
                                 ${review ? `
                                     <div class="absolute bottom-2 left-2 bg-amber-400 text-white text-[8px] font-black px-2 py-0.5 rounded-lg shadow-lg flex items-center gap-1">
-                                        <i class="fas fa-star"></i>${review.rating}
+                                        <i aria-hidden="true" class="fas fa-star"></i>${review.rating}
                                     </div>
                                 ` : ''}
                             </div>
                             <div class="px-1 text-center">
-                                <h3 class="font-bold text-slate-900 text-[10px] md:text-[11px] leading-tight mb-0.5 uppercase tracking-tighter line-clamp-2">${b.title}</h3>
-                                <p class="text-indigo-400 text-[8px] font-black uppercase tracking-widest">${b.author}</p>
+                                <h3 class="font-bold text-slate-900 text-[10px] md:text-[11px] leading-tight mb-0.5 uppercase tracking-tighter line-clamp-2">${escapeHTML(b.title)}</h3>
+                                <p class="text-indigo-400 text-[8px] font-black uppercase tracking-widest">${escapeHTML(b.author)}</p>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
+            restoreBookFocus(rememberedFocus);
         }
 
         // --- Útfærsla á mýkri gluggum (Fluid Modal API) ---
@@ -278,13 +288,16 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             if (!modal) return;
             
             modal.classList.remove('hidden');
+            prepareDialog(modal, content);
             // Gildi uppfært í næsta ramma til að kveikja á CSS transition hreyfingu
             requestAnimationFrame(() => {
+                if (activeDialog?.modal !== modal) return;
                 modal.classList.remove('opacity-0', 'pointer-events-none');
                 modal.classList.add('opacity-100', 'pointer-events-auto');
                 if (content) {
                     content.classList.remove('scale-95', 'translate-y-4');
                     content.classList.add('scale-100', 'translate-y-0');
+                    if (activeDialog?.modal === modal) focusDialog(content);
                 }
             });
         }
@@ -294,6 +307,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             const content = document.getElementById(contentId);
             if (!modal) return;
             
+            restoreDialogFocus(modal);
             modal.classList.remove('opacity-100', 'pointer-events-auto');
             modal.classList.add('opacity-0', 'pointer-events-none');
             if (content) {
@@ -311,44 +325,44 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         // Opnar bókaupplýsingar í öruggum fixed glugga með mjúkri hreyfingu
         function openBookInfo(id, event) {
             const b = allBooks.find(x => x.id === id); if (!b) return;
-            const rev = userData.reviews[b.title] || { rating: 0, comment: '' };
+            const rev = userData.reviews[b.id] || { rating: 0, comment: '' };
             currentRating = rev.rating;
             
             setInnerHTML('modal-inner-content', `
                 <div class="flex flex-col md:flex-row gap-6 md:gap-10 items-start">
                     <div class="w-full md:w-[180px] shrink-0 mx-auto">
                         <div class="shimmer-placeholder aspect-[3/4.5] rounded-2xl shadow-xl overflow-hidden">
-                            <img src="${b.cover}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')" onerror="this.src='https://via.placeholder.com/400x600?text=Vantar'; this.classList.remove('opacity-0')">
+                            <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                         </div>
                         <div class="mt-4 flex flex-wrap gap-1 justify-center">
-                            ${b.categories.map(c => `<span class="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase border border-indigo-100/50">${c}</span>`).join('')}
+                            ${b.categories.map(c => `<span class="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase border border-indigo-100/50">${escapeHTML(c)}</span>`).join('')}
                         </div>
                     </div>
                     <div class="flex-grow space-y-6 w-full">
                         <div>
-                            <h2 class="text-2xl font-black text-slate-900 tracking-tighter leading-tight">${b.title}</h2>
+                            <h2 id="book-dialog-title" class="text-2xl font-black text-slate-900 tracking-tighter leading-tight">${escapeHTML(b.title)}</h2>
                             <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-slate-400 font-bold uppercase tracking-widest text-[9px] mt-2">
-                                <span>Höfundur: ${b.author}</span>
+                                <span>Höfundur: ${escapeHTML(b.author)}</span>
                                 <span>|</span>
-                                <span class="text-indigo-500 font-black"><i class="fas fa-file-lines"></i> ${b.pages ? b.pages + ' bls' : 'Óþekkt'}</span>
+                                <span class="text-indigo-500 font-black"><i aria-hidden="true" class="fas fa-file-lines"></i> ${b.pages ? b.pages + ' bls' : 'Óþekkt'}</span>
                             </div>
                         </div>
                         <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                             <h5 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Söguþráður</h5>
-                            <p class="text-slate-600 text-sm leading-relaxed">${b.description || 'Engin lýsing fannst.'}</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">${escapeHTML(b.description || 'Engin lýsing fannst.')}</p>
                         </div>
                         
                         <div class="p-6 rounded-2xl space-y-4 border border-indigo-100/50">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                 <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Gefðu bókinni stjörnugjöf</h4>
-                                <div class="star-rating text-xl flex gap-1.5" id="modal-stars">
-                                    ${[1,2,3,4,5].map(i => `<i class="${i <= currentRating ? 'fas text-amber-400' : 'far text-slate-200'} fa-star cursor-pointer transition-transform hover:scale-110" onclick="setRating(${i})"></i>`).join('')}
+                                <div role="group" aria-label="Stjörnugjöf" class="star-rating text-xl flex gap-1.5" id="modal-stars">
+                                    ${[1,2,3,4,5].map(i => `<button type="button" aria-label="${i} stjörnur" aria-pressed="${i === currentRating}" class="cursor-pointer transition-transform hover:scale-110" onclick="setRating(${i})"><i aria-hidden="true" class="${i <= currentRating ? 'fas text-amber-400' : 'far text-slate-200'} fa-star"></i></button>`).join('')}
                                 </div>
                             </div>
-                            <textarea id="review-text" class="w-full bg-white border-2 border-slate-100 rounded-2xl p-4 text-sm font-semibold outline-none focus:border-indigo-400 shadow-sm min-h-[100px] transition-all" placeholder="Hvernig fannst þér bókin?">${rev.comment}</textarea>
+                            <textarea aria-label="Umsögn um bókina" id="review-text" class="w-full bg-white border-2 border-slate-100 rounded-2xl p-4 text-sm font-semibold outline-none focus:border-indigo-400 shadow-sm min-h-[100px] transition-all" placeholder="Hvernig fannst þér bókin?">${escapeHTML(rev.comment)}</textarea>
                             
-                            <button onclick="saveReview('${b.title.replace(/'/g, "\\'")}', ${b.id}, event)" id="save-review-btn" class="w-full bg-indigo-600 text-white font-black py-3.5 rounded-xl shadow-lg transition-all text-[11px] uppercase tracking-widest active:scale-95">
-                                <i class="fas fa-floppy-disk mr-2"></i> Vista umsögn
+                            <button onclick="saveReview(${b.id}, event)" id="save-review-btn" class="w-full bg-indigo-600 text-white font-black py-3.5 rounded-xl shadow-lg transition-all text-[11px] uppercase tracking-widest active:scale-95">
+                                <i aria-hidden="true" class="fas fa-floppy-disk mr-2"></i> Vista umsögn
                             </button>
                         </div>
                     </div>
@@ -421,7 +435,8 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             if (starContainer) {
                 const stars = starContainer.children;
                 for (let i = 0; i < 5; i++) {
-                    stars[i].className = (i < r ? 'fas text-amber-400' : 'far text-slate-200') + ' fa-star cursor-pointer transition-transform hover:scale-110';
+                    stars[i].setAttribute('aria-pressed', String(i + 1 === r));
+                    stars[i].firstElementChild.className = (i < r ? 'fas text-amber-400' : 'far text-slate-200') + ' fa-star';
                 }
             }
         }
@@ -448,11 +463,12 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             }, 3000);
         }
 
-        function saveReview(title, id, event) {
+        function saveReview(id, event) {
             const btn = document.getElementById('save-review-btn');
             const reviewEl = document.getElementById('review-text');
             const comment = reviewEl ? reviewEl.value.trim() : '';
-            if (currentRating === 0) {
+            if (!allBooks.some(book => book.id === id)) return;
+            if (!Number.isInteger(currentRating) || currentRating < 1 || currentRating > 5) {
                 if (btn) {
                     btn.classList.add('shake-element'); 
                     setTimeout(() => btn.classList.remove('shake-element'), 300);
@@ -461,36 +477,42 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             }
             
             // Vista umsögn í gagnagrunn / localStorage
-            userData.reviews[title] = { rating: currentRating, comment, date: new Date().toLocaleDateString('is-IS') };
+            userData.reviews[id] = { rating: currentRating, comment, date: new Date().toLocaleDateString('is-IS') };
             
             // Marka bókina sjálfkrafa sem lesna (grænt hak) ef hún er ekki þegar merkt
-            if (!userData.read.includes(title)) {
-                userData.read.push(title);
+            if (!userData.read.includes(id)) {
+                userData.read.push(id);
             }
             
-            saveUserData(); 
-            openBookInfo(id, event); 
-            updateStatsUI(); 
-            renderBooks();
-            showToast("Umsögnin þín hefur verið vistuð");
+            const saved = saveUserData();
+            openBookInfo(id, event);
+            updateStatsUI();
+            applyFilters();
+            if (saved) showToast("Umsögnin þín hefur verið vistuð");
         }
 
-        function handleTimerPrimaryAction() { 
+        function handleTimerPrimaryAction() {
             if (!timerState.active) {
-                timerState.active = true; timerState.startTime = Date.now();
+                timerState = emptyTimerState();
+                timerState.active = true;
+                timerState.startTime = Date.now();
                 timerState.interval = setInterval(updateTimerDisplay, 1000);
             } else if (!timerState.paused) {
-                timerState.paused = true; timerState.elapsedBeforePause += Date.now() - timerState.startTime;
+                checkpointTimer();
+                timerState.paused = true;
                 clearInterval(timerState.interval);
             } else {
-                timerState.paused = false; timerState.startTime = Date.now();
+                timerState.paused = false;
+                timerState.startTime = Date.now();
                 timerState.interval = setInterval(updateTimerDisplay, 1000);
             }
+            saveUserData();
+            updateTimerDisplay();
             updateTimerUI();
         }
 
         function updateTimerDisplay() {
-            const ms = timerState.elapsedBeforePause + (Date.now() - timerState.startTime);
+            const ms = timerState.elapsedBeforePause + (timerState.active && !timerState.paused ? Math.max(0, Date.now() - timerState.startTime) : 0);
             const sT = Math.floor(ms / 1000);
             const h = Math.floor(sT / 3600).toString().padStart(2, '0');
             const m = Math.floor((sT % 3600) / 60).toString().padStart(2, '0');
@@ -508,18 +530,29 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         }
 
         function confirmStopReading() {
-            let ms = timerState.elapsedBeforePause;
-            if (!timerState.paused) ms += Date.now() - timerState.startTime;
-            let secs = Math.floor(ms / 1000);
-            if (secs > 0) {
-                userData.totalSeconds += secs;
-                const d = getLocalYYYYMMDD(new Date());
-                userData.dailyProgress[d] = (userData.dailyProgress[d] || 0) + secs;
+            if (!timerState.active) { closeStopConfirmation(); return; }
+            checkpointTimer();
+            const previousTotal = userData.totalSeconds;
+            const previousProgress = { ...userData.dailyProgress };
+            const session = timerState;
+            for (const [date, ms] of Object.entries(session.dailyMilliseconds)) {
+                const seconds = Math.floor(ms / 1000);
+                userData.totalSeconds += seconds;
+                userData.dailyProgress[date] = (userData.dailyProgress[date] || 0) + seconds;
             }
-            clearInterval(timerState.interval);
-            timerState = { active: false, paused: false, startTime: null, elapsedBeforePause: 0, interval: null };
-            setInnerText('main-timer-display', '00:00:00');
-            updateTimerUI(); saveUserData(); updateStatsUI(); closeStopConfirmation();
+            timerState = emptyTimerState();
+            // Commit the totals and removal of the session in one storage write.
+            if (!saveUserData()) {
+                userData.totalSeconds = previousTotal;
+                userData.dailyProgress = previousProgress;
+                timerState = session;
+                return;
+            }
+            clearInterval(session.interval);
+            updateTimerDisplay();
+            updateTimerUI();
+            updateStatsUI();
+            closeStopConfirmation();
             showToast("Tími vistaður!");
         }
 
@@ -529,6 +562,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             const pB = document.getElementById('timer-primary-btn');
             const sB = document.getElementById('timer-stop-btn');
             const sL = document.getElementById('timer-status-label');
+            if (pB) pB.setAttribute('aria-label', !timerState.active ? 'Hefja lestur' : timerState.paused ? 'Halda lestri áfram' : 'Gera hlé á lestri');
             if (!timerState.active) {
                 if (sL) sL.innerText = "Hefja lestur"; 
                 if (pI) pI.className = "fas fa-play ml-1";
@@ -561,8 +595,8 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             const minInput = document.getElementById('target-minutes-input');
             const goalSelect = document.getElementById('goal-type-select');
             const rawVal = minInput ? Number(minInput.value) : 0;
-            userData.minutesGoal = Math.max(0, rawVal);
-            userData.goalType = goalSelect ? goalSelect.value : 'daily';
+            userData.minutesGoal = Number.isFinite(rawVal) ? Math.max(0, rawVal) : 0;
+            userData.goalType = ['daily', 'weekly', 'monthly'].includes(goalSelect?.value) ? goalSelect.value : 'daily';
             saveUserData();
             updateStatsUI();
         }
@@ -570,7 +604,9 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         function addPersonalGoal() {
             const i = document.getElementById('personal-goal-input');
             if (i && i.value.trim()) { 
-                userData.personalGoals.push({ id: Date.now(), text: i.value.trim(), completed: false }); 
+                let id = Date.now();
+                while (userData.personalGoals.some(goal => goal.id === id)) id++;
+                userData.personalGoals.push({ id, text: i.value.trim(), completed: false });
                 i.value = ''; 
                 saveUserData(); 
                 updateStatsUI(); 
@@ -579,25 +615,17 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         function togglePersonalGoal(id) { const g = userData.personalGoals.find(x => x.id === id); if (g) { g.completed = !g.completed; saveUserData(); updateStatsUI(); } }
         function deletePersonalGoal(id) { userData.personalGoals = userData.personalGoals.filter(x => x.id !== id); saveUserData(); updateStatsUI(); }
 
-        function toggleLike(t) { const i = userData.liked.indexOf(t); if (i > -1) userData.liked.splice(i,1); else userData.liked.push(t); saveUserData(); renderBooks(); updateStatsUI(); }
-        function toggleRead(t) { const i = userData.read.indexOf(t); if (i > -1) userData.read.splice(i,1); else userData.read.push(t); saveUserData(); renderBooks(); updateStatsUI(); }
-
-        function saveUserData() { 
-            try {
-                localStorage.setItem('library_v14', JSON.stringify(userData)); 
-            } catch (err) {
-                console.warn("LocalStorage ekki tilbúið.");
-            }
+        function toggleLike(id) {
+            if (!allBooks.some(book => book.id === id)) return;
+            const index = userData.liked.indexOf(id);
+            if (index > -1) userData.liked.splice(index, 1); else userData.liked.push(id);
+            saveUserData(); applyFilters(); updateStatsUI();
         }
-
-        // Hleður gögnum nemanda
-        function loadUserData() { 
-            try {
-                const s = localStorage.getItem('library_v14'); 
-                if (s) userData = JSON.parse(s); 
-            } catch (err) {
-                console.warn("Ekki hægt að hlaða úr LocalStorage.");
-            }
+        function toggleRead(id) {
+            if (!allBooks.some(book => book.id === id)) return;
+            const index = userData.read.indexOf(id);
+            if (index > -1) userData.read.splice(index, 1); else userData.read.push(id);
+            saveUserData(); applyFilters(); updateStatsUI();
         }
 
         // Uppfærir tölfræðiviðmótið á síðunni „Lesturinn minn“
@@ -609,13 +637,15 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             
             const streak = calculateStreak();
             setInnerText('stat-streak', streak);
+            setInnerText('streak-banner-description', userData.minutesGoal > 0
+                ? `Þú hefur náð ${userData.goalType === 'weekly' ? 'vikumarkmiðinu' : userData.goalType === 'monthly' ? 'mánaðarmarkmiðinu' : 'dagsmarkmiðinu'} í ${streak} daga í röð.`
+                : `Þú hefur lesið í minnst 10 mínútur í ${streak} daga í röð.`);
             
             const banner = document.getElementById('streak-banner');
             if (banner) {
                 if (streak >= 2) { 
                     banner.classList.remove('hidden'); 
                     banner.classList.add('flex'); 
-                    setInnerText('streak-banner-days', streak); 
                 } else {
                     banner.classList.add('hidden');
                 }
@@ -642,12 +672,12 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 const currentMins = Math.floor(currentSecs / 60);
                 setInnerText('target-minutes-display', userData.minutesGoal);
                 setInnerText('current-minutes-reached', currentMins);
-                const pct = Math.min(100, (currentMins / userData.minutesGoal) * 100);
+                const pct = Math.min(100, (currentSecs / (userData.minutesGoal * 60)) * 100);
                 
                 const goalBar = document.getElementById('minutes-goal-bar');
                 if (goalBar) goalBar.style.width = pct + '%';
                 
-                const remaining = Math.max(0, userData.minutesGoal - currentMins);
+                const remaining = Math.ceil(Math.max(0, userData.minutesGoal * 60 - currentSecs) / 60);
                 setInnerText('minutes-goal-status', pct >= 100 ? "Markmiði náð! 🎉" : `Þú ert ${remaining} mín frá ${periodText}!`);
             } else {
                 if (progressContainer) progressContainer.classList.add('hidden');
@@ -655,25 +685,25 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
 
             const goalsHtml = userData.personalGoals.map(g => `
                 <div class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm transition-all duration-300">
-                    <button onclick="togglePersonalGoal(${g.id})" class="shrink-0 w-6 h-6 rounded-lg border-2 ${g.completed ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-200 bg-white'} flex items-center justify-center transition-all">
-                        ${g.completed ? '<i class="fas fa-check text-[10px]"></i>' : ''}
+                    <button onclick="togglePersonalGoal(${g.id})" aria-label="Ljúka markmiði: ${escapeHTML(g.text)}" aria-pressed="${g.completed}" class="shrink-0 w-6 h-6 rounded-lg border-2 ${g.completed ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-200 bg-white'} flex items-center justify-center transition-all">
+                        ${g.completed ? '<i aria-hidden="true" class="fas fa-check text-[10px]"></i>' : ''}
                     </button>
-                    <span class="flex-grow font-bold text-xs ${g.completed ? 'text-slate-400 line-through' : 'text-slate-700'}">${g.text}</span>
-                    <button onclick="deletePersonalGoal(${g.id})" class="text-slate-300 hover:text-rose-500 transition-colors"><i class="fas fa-trash-can text-sm"></i></button>
+                    <span class="flex-grow font-bold text-xs ${g.completed ? 'text-slate-400 line-through' : 'text-slate-700'}">${escapeHTML(g.text)}</span>
+                    <button onclick="deletePersonalGoal(${g.id})" aria-label="Eyða markmiði: ${escapeHTML(g.text)}" class="text-slate-300 hover:text-rose-500 transition-colors"><i aria-hidden="true" class="fas fa-trash-can text-sm"></i></button>
                 </div>`).join('') || '<p class="text-center py-4 text-slate-300 font-bold italic text-[10px]">Engin markmið skráð.</p>';
             setInnerHTML('personal-goals-list', goalsHtml);
             
             const reviewsHtml = Object.keys(userData.reviews).map(t => {
-                const r = userData.reviews[t]; const b = allBooks.find(x => x.title === t);
+                const r = userData.reviews[t]; const b = allBooks.find(x => x.id === Number(t));
                 return `
-                    <div class="bg-white p-5 rounded-3xl border border-slate-100 flex gap-4 shadow-sm cursor-pointer transition-all hover:scale-[1.01]" onclick="openBookInfo(${b?.id}, event)">
+                    <div class="bg-white p-5 rounded-3xl border border-slate-100 flex gap-4 shadow-sm cursor-pointer transition-all hover:scale-[1.01]" role="button" tabindex="0" data-book-id="${b?.id ?? ''}" aria-label="Opna umsögn" onclick="openBookInfo(${b?.id}, event)">
                         <div class="w-12 h-18 shimmer-placeholder rounded-xl shrink-0 overflow-hidden shadow-md">
-                            <img src="${b?.cover || ''}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'; this.classList.remove('opacity-0')">
+                            <img src="${escapeHTML(b?.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b?.title || 'Óþekkt bók')}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                         </div>
                         <div>
-                            <h4 class="text-[11px] font-black line-clamp-1 mb-1">${t}</h4>
-                            <div class="flex gap-0.5 mb-2">${Array(5).fill(0).map((_, i) => `<i class="${i < r.rating ? 'fas text-amber-400' : 'far text-slate-200'} fa-star text-[9px]"></i>`).join('')}</div>
-                            <p class="text-[9px] text-slate-500 font-medium italic line-clamp-2">"${r.comment}"</p>
+                            <h4 class="text-[11px] font-black line-clamp-1 mb-1">${escapeHTML(b?.title || 'Bók ekki í safninu')}</h4>
+                            <div role="img" aria-label="${r.rating} af 5 stjörnum" class="flex gap-0.5 mb-2">${Array(5).fill(0).map((_, i) => `<i aria-hidden="true" class="${i < r.rating ? 'fas text-amber-400' : 'far text-slate-200'} fa-star text-[9px]"></i>`).join('')}</div>
+                            <p class="text-[9px] text-slate-500 font-medium italic line-clamp-2">"${escapeHTML(r.comment)}"</p>
                         </div>
                     </div>`;
             }).join('') || '<p class="col-span-full text-center py-10 text-slate-300 font-bold italic text-[10px]">Engar umsagnir ennþá.</p>';
@@ -681,26 +711,26 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             
             setInnerText('total-read-books-badge', userData.read.length);
             
-            const readItemsHtml = allBooks.filter(b => userData.read.includes(b.title)).map(b => `
-                <div class="flex items-center gap-4 p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition cursor-pointer" onclick="openBookInfo(${b.id}, event)">
+            const readItemsHtml = allBooks.filter(b => userData.read.includes(b.id)).map(b => `
+                <div class="flex items-center gap-4 p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition cursor-pointer" role="button" tabindex="0" data-book-id="${b.id}" aria-label="Upplýsingar um ${escapeHTML(b.title)}" onclick="openBookInfo(${b.id}, event)">
                     <div class="w-10 h-14 shimmer-placeholder rounded-lg shrink-0 overflow-hidden">
-                        <img src="${b.cover}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'; this.classList.remove('opacity-0')">
+                        <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                     </div>
                     <div class="flex-grow overflow-hidden">
-                        <p class="font-bold text-xs line-clamp-1">${b.title}</p>
-                        <p class="text-[8px] font-black opacity-50 uppercase tracking-widest">${b.author}</p>
+                        <p class="font-bold text-xs line-clamp-1">${escapeHTML(b.title)}</p>
+                        <p class="text-[8px] font-black opacity-50 uppercase tracking-widest">${escapeHTML(b.author)}</p>
                     </div>
                 </div>`).join('');
             setInnerHTML('read-items', readItemsHtml);
             
-            const wishlistHtml = allBooks.filter(b => userData.liked.includes(b.title)).map(b => `
-                <div class="flex items-center gap-4 p-3 bg-white rounded-2xl hover:bg-slate-50 transition cursor-pointer border border-slate-100" onclick="openBookInfo(${b.id}, event)">
+            const wishlistHtml = allBooks.filter(b => userData.liked.includes(b.id)).map(b => `
+                <div class="flex items-center gap-4 p-3 bg-white rounded-2xl hover:bg-slate-50 transition cursor-pointer border border-slate-100" role="button" tabindex="0" data-book-id="${b.id}" aria-label="Upplýsingar um ${escapeHTML(b.title)}" onclick="openBookInfo(${b.id}, event)">
                     <div class="w-10 h-14 shimmer-placeholder rounded-lg shrink-0 overflow-hidden">
-                        <img src="${b.cover}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer-placeholder')" onerror="this.src='https://via.placeholder.com/100x150?text=Vantar'; this.classList.remove('opacity-0')">
+                        <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                     </div>
                     <div class="flex-grow overflow-hidden">
-                        <p class="font-bold text-xs text-slate-900 line-clamp-1">${b.title}</p>
-                        <p class="text-[8px] font-black text-indigo-400 uppercase tracking-widest">${b.author}</p>
+                        <p class="font-bold text-xs text-slate-900 line-clamp-1">${escapeHTML(b.title)}</p>
+                        <p class="text-[8px] font-black text-indigo-400 uppercase tracking-widest">${escapeHTML(b.author)}</p>
                     </div>
                 </div>`).join('');
             setInnerHTML('wishlist-items', wishlistHtml);
@@ -711,7 +741,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
 
         // Teiknar tölfræði yfir flokka og höfunda
         function renderVisualStats() {
-            const readBooks = allBooks.filter(b => userData.read.includes(b.title));
+            const readBooks = allBooks.filter(b => userData.read.includes(b.id));
             const catContainer = document.getElementById('visual-stats-categories');
             const authContainer = document.getElementById('visual-stats-authors');
 
@@ -723,8 +753,8 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 return;
             }
 
-            let catCounts = {};
-            let authCounts = {};
+            let catCounts = Object.create(null);
+            let authCounts = Object.create(null);
 
             readBooks.forEach(b => {
                 b.categories.forEach(c => {
@@ -744,7 +774,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 return `
                     <div class="space-y-1">
                         <div class="flex justify-between text-[11px] font-bold text-slate-700">
-                            <span>${cat}</span>
+                            <span>${escapeHTML(cat)}</span>
                             <span class="text-slate-500">${count} bók${count > 1 ? 'ur' : ''}</span>
                         </div>
                         <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
@@ -759,7 +789,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 return `
                     <div class="space-y-1">
                         <div class="flex justify-between text-[11px] font-bold text-slate-700">
-                            <span>${auth}</span>
+                            <span>${escapeHTML(auth)}</span>
                             <span class="text-slate-500">${count} bók${count > 1 ? 'ur' : ''}</span>
                         </div>
                         <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
@@ -904,18 +934,20 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             
             let matchT = allBooks.filter(b => b.title.toLowerCase().includes(searchQuery) || b.author.toLowerCase().includes(searchQuery)).slice(0,5);
             if (matchT.length) {
-                sBox.innerHTML = matchT.map(b => `<li onclick="selectSug('${b.title.replace(/'/g, "\\'")}')" class="px-6 py-4 hover:bg-indigo-50 cursor-pointer text-sm font-bold border-b border-slate-50 flex items-center gap-4"><i class="fas fa-book text-indigo-400"></i> ${b.title}</li>`).join('');
+                sBox.innerHTML = matchT.map(b => `<li role="button" tabindex="0" onclick="selectSug(${b.id})" class="px-6 py-4 hover:bg-indigo-50 cursor-pointer text-sm font-bold border-b border-slate-50 flex items-center gap-4"><i aria-hidden="true" class="fas fa-book text-indigo-400"></i> ${escapeHTML(b.title)}</li>`).join('');
                 sBox.classList.remove('hidden');
             } else {
                 sBox.classList.add('hidden');
             }
         }
 
-        function selectSug(v) { 
+        function selectSug(id) {
             const searchInput = document.getElementById('book-search');
-            if (searchInput) searchInput.value = v; 
-            safeToggleClass('search-suggestions', 'hidden', true); 
-            handleSearch(); 
+            const book = allBooks.find(book => book.id === id);
+            if (searchInput && book) searchInput.value = book.title;
+            handleSearch();
+            safeToggleClass('search-suggestions', 'hidden', true);
+            searchInput?.focus();
         }
 
         document.addEventListener('click', e => { 
@@ -923,4 +955,10 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             if (searchContainer && !searchContainer.contains(e.target)) {
                 safeToggleClass('search-suggestions', 'hidden', true); 
             }
+        });
+
+
+        window.addEventListener('pagehide', () => { checkpointTimer(); saveUserData(); });
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') { checkpointTimer(); saveUserData(); }
         });
