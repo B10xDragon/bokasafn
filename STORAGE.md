@@ -64,3 +64,11 @@ selection. Each suggestion states its main positive signal. No API is involved.
 Advanced rating filters/sorts use personal ratings, not a public average.
 
 The site has no accounts, backend, current-reading state or current-page tracking.
+
+Repeated joins cannot create another active copy of a built-in challenge. The
+monthly challenge can be joined once per calendar month, even after completion;
+other built-ins can be joined again after completing the previous challenge.
+Identical old challenge records are grouped into one displayed card. Different
+baselines or completion dates remain separate. Grouping never deletes stored
+records, and exports retain every ID. Deleting the displayed card explicitly
+removes all identical copies represented by that card.

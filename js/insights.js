@@ -8,6 +8,54 @@ function newDataId() {
       Math.random().toString(36).slice(2)
   );
 }
+const BUILTIN_CHALLENGES = {
+  month: ["books", 3, "Þrjár bækur í þessum mánuði", true],
+  pages: ["pages", 500, "500 blaðsíður", false],
+  fantasy: ["fantasy", 1, "Lestu fantasíubók", false],
+  author: ["author", 1, "Uppgötvaðu nýjan höfund", false],
+};
+
+function existingBuiltInChallenge(type, now = new Date()) {
+  const definition = BUILTIN_CHALLENGES[type];
+  if (!definition) return null;
+  const [kind, target, title, monthly] = definition;
+  const start = getLocalYYYYMMDD(
+    new Date(now.getFullYear(), now.getMonth(), 1),
+  );
+  const end = getLocalYYYYMMDD(
+    new Date(now.getFullYear(), now.getMonth() + 1, 0),
+  );
+  return (
+    userData.challenges.find(
+      (c) =>
+        c.kind === kind &&
+        c.target === target &&
+        c.title === title &&
+        (monthly ? c.start === start && c.end === end : !c.completed && !c.end),
+    ) || null
+  );
+}
+
+// Collapse identical cards only in the view. Every stored record stays in the
+// backup, including IDs, baselines and completion dates from earlier versions.
+function challengeDisplayGroups(challenges) {
+  const groups = new Map();
+  for (const challenge of challenges) {
+    const key = JSON.stringify({
+      title: challenge.title,
+      kind: challenge.kind,
+      target: challenge.target,
+      start: challenge.start,
+      end: challenge.end,
+      baseline: [...new Set(challenge.baseline)].sort((a, b) => a - b),
+      baselineSeconds: challenge.baselineSeconds,
+      completed: challenge.completed,
+    });
+    if (!groups.has(key)) groups.set(key, { challenge, ids: [] });
+    groups.get(key).ids.push(challenge.id);
+  }
+  return [...groups.values()];
+}
 // Additive v15 extensions: old totals stay authoritative; unknown history stays unknown.
 function normalizeExtensions(source, result) {
   result.completedDates = Object.create(null);

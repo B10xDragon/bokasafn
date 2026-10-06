@@ -175,6 +175,29 @@ with sync_playwright() as p:
         page.keyboard.press('Escape');page.reload();page.wait_for_function('window.featuresReady');assert 'book=' not in page.url;assert page.locator('#desc-modal').get_attribute('aria-hidden')=='true'
         reset(page)
     check('active-session import blocking, quota rollback and retry, actual clipboard link and immediate-close reload',import_failures_and_sharing)
+    def duplicate_challenges():
+        reset(page);page.evaluate('showPage("stats");setBokasafnTheme("green")');page.wait_for_timeout(350)
+        for kind in ['month','pages','fantasy','author']:
+            page.evaluate('(kind)=>{for(let i=0;i<8;i++)addBuiltInChallenge(kind);}',kind)
+        assert page.evaluate('userData.challenges.length')==4
+        page.reload();page.wait_for_function('window.featuresReady');page.evaluate('showPage("stats")');page.wait_for_timeout(350)
+        assert page.locator('#challenge-list article').count()==4
+        # Reproduce the screenshot's four old monthly copies, without deleting data.
+        page.evaluate('userData.challenges=userData.challenges.filter(c=>c.kind==="books");const first=userData.challenges[0];for(let i=0;i<3;i++)userData.challenges.push({...first,id:newDataId(),baseline:[...first.baseline]});saveUserData();renderInsights()')
+        assert page.locator('#challenge-list article').count()==1
+        assert page.evaluate('userData.challenges.length')==4
+        page.reload();page.wait_for_function('window.featuresReady');page.evaluate('showPage("stats")');page.wait_for_timeout(350)
+        assert page.locator('#challenge-list article').count()==1
+        for width in [320,390,1280]:
+            page.set_viewport_size({'width':width,'height':889})
+            assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
+        page.screenshot(path=str(ARTIFACTS/'challenge-duplicate-fix.png'),full_page=True)
+        with page.expect_download() as result:page.get_by_role('button',name='Sækja JSON-afrit',exact=True).click()
+        target=ARTIFACTS/'duplicate-preservation.json';result.value.save_as(target);assert len(json.loads(target.read_text())['data']['challenges'])==4
+        page.locator('#challenge-list button').click();assert page.evaluate('userData.challenges.length')==0;assert page.locator('#challenge-list article').count()==0
+        page.get_by_role('button',name='3 bækur í þessum mánuði',exact=True).click();assert page.evaluate('userData.challenges.length')==1
+        page.evaluate('userData.challenges[0].completed=getLocalYYYYMMDD(new Date());saveUserData();addBuiltInChallenge("month")');assert page.evaluate('userData.challenges.length')==1
+    check('repeat taps block duplicates and old identical cards collapse without data loss across reload and export',duplicate_challenges)
     assert not ERRORS,ERRORS
     assert not FAILURES,FAILURES
     print(json.dumps({'groups_passed':COUNT,'uncaught_errors':ERRORS,'dependency_failures':FAILURES},indent=2))

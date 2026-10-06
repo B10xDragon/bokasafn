@@ -191,13 +191,12 @@ function addChallenge(kind, target, title, monthly = false) {
   renderInsights();
 }
 function addBuiltInChallenge(kind) {
-  const defs = {
-    month: ["books", 3, "Þrjár bækur í þessum mánuði", true],
-    pages: ["pages", 500, "500 blaðsíður", false],
-    fantasy: ["fantasy", 1, "Lestu fantasíubók", false],
-    author: ["author", 1, "Uppgötvaðu nýjan höfund", false],
-  };
-  const d = defs[kind];
+  const d = BUILTIN_CHALLENGES[kind];
+  if (!d) return;
+  if (existingBuiltInChallenge(kind)) {
+    showToast("Þú ert þegar með þessa áskorun.");
+    return;
+  }
   addChallenge(...d);
 }
 function createPersonalChallenge() {
@@ -210,7 +209,11 @@ function createPersonalChallenge() {
   document.getElementById("challenge-title").value = "";
 }
 function removeChallenge(id) {
-  userData.challenges = userData.challenges.filter((c) => c.id !== id);
+  const group = challengeDisplayGroups(userData.challenges).find((g) =>
+    g.ids.includes(id),
+  );
+  const ids = new Set(group ? group.ids : [id]);
+  userData.challenges = userData.challenges.filter((c) => !ids.has(c.id));
   saveUserData();
   renderInsights();
 }
@@ -289,9 +292,9 @@ function renderInsights() {
     },
   ).join("");
   document.getElementById("challenge-list").innerHTML =
-    userData.challenges
+    challengeDisplayGroups(userData.challenges)
       .map(
-        (c) =>
+        ({ challenge: c }) =>
           `<article class="feature-achievement"><h3>${escapeHTML(c.title)}</h3><p>${c.completed ? "Lokið " + c.completed : c.end && c.end < today ? "Tímabili lokið" : "Í gangi"} · ${Math.min(challengeProgress(c), c.target)} / ${c.target}</p><p>Frá ${c.start}${c.end ? " til " + c.end : ""}</p><progress aria-label="${escapeHTML(c.title)}" max="${c.target}" value="${Math.min(challengeProgress(c), c.target)}"></progress><button type="button" class="feature-button secondary" data-id="${escapeHTML(c.id)}" onclick="removeChallenge(this.dataset.id)" aria-label="Eyða áskorun: ${escapeHTML(c.title)}">Eyða</button></article>`,
       )
       .join("") ||

@@ -143,3 +143,11 @@ test('weekly and monthly longest streaks match their goal definitions across bou
  const h=harness();h.run('userData=normalizeUserData({version:15,minutesGoal:60,goalType:"weekly",dailyProgress:{"2025-12-30":3600}})');assert.equal(h.run('activitySummary(new Date(2026,0,3)).longest'),5);h.run('userData.goalType="monthly"');assert.equal(h.run('activitySummary(new Date(2026,0,3)).longest'),2);assert.equal(h.run('activitySummary(new Date(2026,0,3)).current'),0);
 });
 console.log(`${passed} total regression tests passed`);
+test('built-in challenges block repeat joins, allow a new month and completed nonmonthly retries',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,challenges:[{id:"c",title:"Þrjár bækur í þessum mánuði",kind:"books",target:3,start:"2026-10-01",end:"2026-10-31",baseline:[]}]})');assert(h.run('existingBuiltInChallenge("month",new Date(2026,9,6))'));assert.equal(h.run('existingBuiltInChallenge("month",new Date(2026,10,1))'),null);h.run('userData.challenges[0].completed="2026-10-06"');assert(h.run('existingBuiltInChallenge("month",new Date(2026,9,6))'));
+ h.run('userData.challenges=[{id:"p",kind:"pages",title:"500 blaðsíður",target:500,start:"2026-10-06",end:null,baseline:[],completed:null}]');assert(h.run('existingBuiltInChallenge("pages")'));h.run('userData.challenges[0].completed="2026-10-06"');assert.equal(h.run('existingBuiltInChallenge("pages")'),null);assert.equal(h.run('existingBuiltInChallenge("invalid")'),null);
+});
+test('identical challenge cards group without deleting stored records or combining different progress',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,challenges:[{id:"a",title:"Same",kind:"books",target:3,start:"2026-10-01",baseline:[1,2]},{id:"b",title:"Same",kind:"books",target:3,start:"2026-10-01",baseline:[2,1]},{id:"c",title:"Same",kind:"books",target:3,start:"2026-10-01",baseline:[1]},{id:"d",title:"Same",kind:"books",target:3,start:"2026-10-01",baseline:[1,2],completed:"2026-10-06"}]})');assert.equal(h.run('challengeDisplayGroups(userData.challenges).length'),3);assert.equal(h.run('challengeDisplayGroups(userData.challenges)[0].ids.length'),2);assert.equal(h.data().challenges.length,4);h.run('saveUserData();loadUserData()');assert.equal(h.data().challenges.length,4);
+});
+console.log(`${passed} total regression tests passed`);
