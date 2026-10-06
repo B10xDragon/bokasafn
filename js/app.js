@@ -16,6 +16,12 @@ let allBooks = [];
         };
         
         let timerState = emptyTimerState();
+        let appReady = false;
+        const startupRegions = [document.querySelector('nav'), document.querySelector('main')].filter(Boolean);
+        startupRegions.forEach(region => {
+            region.inert = true;
+            region.setAttribute('aria-busy', 'true');
+        });
 
         // --- Defensive Safe DOM Manipulation Utilities ---
         const setInnerHTML = (id, html) => {
@@ -49,6 +55,11 @@ let allBooks = [];
             if (catalogLoaded) applyFilters();
             syncGoalUI();
             updateStatsUI();
+            appReady = true;
+            startupRegions.forEach(region => {
+                region.inert = false;
+                region.setAttribute('aria-busy', 'false');
+            });
         };
 
         function getLocalYYYYMMDD(d) {
@@ -72,8 +83,8 @@ let allBooks = [];
             // selected period target, rather than silently imposing a daily target.
             const threshold = userData.minutesGoal > 0 ? userData.minutesGoal * 60 : 600;
             function reached(date) {
-                if (userData.goalType === 'weekly') return getWeeklySeconds(date) >= threshold;
-                if (userData.goalType === 'monthly') return getMonthlySeconds(date) >= threshold;
+                if (userData.minutesGoal > 0 && userData.goalType === 'weekly') return getWeeklySeconds(date) >= threshold;
+                if (userData.minutesGoal > 0 && userData.goalType === 'monthly') return getMonthlySeconds(date) >= threshold;
                 return (userData.dailyProgress[getLocalYYYYMMDD(date)] || 0) >= threshold;
             }
             let date = new Date();
@@ -455,6 +466,10 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 if (icon) icon.className = 'fas fa-check';
             }
             if (msgEl) msgEl.innerText = msg;
+            if (typeof activeDialog !== 'undefined' && activeDialog) {
+                const status = activeDialog.content.querySelector('[data-dialog-status]');
+                if (status) status.textContent = msg;
+            }
             t.classList.remove('translate-y-48', 'opacity-0');
             t.classList.add('translate-y-0', 'opacity-100');
             setTimeout(() => {
@@ -492,6 +507,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         }
 
         function handleTimerPrimaryAction() {
+            if (!appReady) return;
             if (!timerState.active) {
                 timerState = emptyTimerState();
                 timerState.active = true;
@@ -535,8 +551,14 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             const previousTotal = userData.totalSeconds;
             const previousProgress = { ...userData.dailyProgress };
             const session = timerState;
-            for (const [date, ms] of Object.entries(session.dailyMilliseconds)) {
-                const seconds = Math.floor(ms / 1000);
+            const dates = Object.entries(session.dailyMilliseconds).sort(([a], [b]) => a.localeCompare(b));
+            const totalSeconds = Math.floor(session.elapsedBeforePause / 1000);
+            let remainingSeconds = totalSeconds;
+            for (const [index, [date, ms]] of dates.entries()) {
+                // Carry fractional seconds across midnight instead of losing a
+                // second for each date crossed. Totals match the timer display.
+                const seconds = index === dates.length - 1 ? remainingSeconds : Math.floor(ms / 1000);
+                remainingSeconds -= seconds;
                 userData.totalSeconds += seconds;
                 userData.dailyProgress[date] = (userData.dailyProgress[date] || 0) + seconds;
             }

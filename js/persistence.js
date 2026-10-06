@@ -1,6 +1,7 @@
 // Version 15 uses stable catalog IDs. Keep library_v14 untouched as a backup.
 const LIBRARY_STORAGE_KEY = 'library_v15';
 let storageWritable = true;
+let userDataLoaded = false;
 let lastStorageWarning = 0;
 
 function escapeHTML(value) {
@@ -117,6 +118,9 @@ function warnStorage() {
 }
 
 function saveUserData() {
+    // Leaving or interacting with a page before its catalog loads must never
+    // replace saved progress with the initial empty in-memory state.
+    if (!userDataLoaded) return false;
     if (!storageWritable) { warnStorage(); return false; }
     const { interval, ...session } = timerState;
     userData.session = timerState.active ? session : null;
@@ -157,6 +161,7 @@ function loadUserData() {
         warnStorage();
     }
     userData = normalizeUserData(raw);
+    userDataLoaded = true;
     timerState = normalizeSession(userData.session);
     if (timerState.active && !timerState.paused) timerState.interval = setInterval(updateTimerDisplay, 1000);
     updateTimerDisplay();

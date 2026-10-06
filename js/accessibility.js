@@ -11,12 +11,30 @@ function dialogFocusable(content) {
 }
 
 function focusDialog(content) {
+    // A mobile book dialog can be taller than the viewport. Focusing its review
+    // textarea immediately scrolls past the title, cover and close control.
+    if (content.id === 'desc-modal-content') {
+        content.focus({ preventScroll: true });
+        content.scrollTop = 0;
+        return;
+    }
     const target = content.querySelector('input, textarea') || dialogFocusable(content)[0] || content;
     target.focus();
 }
 
 function prepareDialog(modal, content) {
     if (!content || activeDialog?.modal === modal) return;
+    // Background live regions are inert while a modal is open. Announce the
+    // same validation/save messages inside the active dialog as well.
+    if (!content.querySelector('[data-dialog-status]')) {
+        const status = document.createElement('div');
+        status.dataset.dialogStatus = '';
+        status.className = 'sr-only';
+        status.setAttribute('role', 'status');
+        status.setAttribute('aria-live', 'polite');
+        status.setAttribute('aria-atomic', 'true');
+        content.appendChild(status);
+    }
     const trigger = document.activeElement;
     document.getElementById('appearance-panel')?.classList.add('hidden');
     document.getElementById('nav-appearance')?.setAttribute('aria-expanded', 'false');

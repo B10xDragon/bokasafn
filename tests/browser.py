@@ -79,7 +79,7 @@ with sync_playwright() as p:
         card = page.locator('.book-card [data-action="info"]').first
         card.focus();page.keyboard.press('Enter')
         expect(page.locator('#desc-modal')).to_be_visible()
-        expect(page.locator('#review-text')).to_be_focused()
+        expect(page.locator('#desc-modal-content')).to_be_focused()
         assert page.locator('main').evaluate('(el)=>el.inert')
         page.locator('#save-review-btn').focus();page.keyboard.press('Tab')
         expect(page.locator('#desc-modal-content button').first).to_be_focused()
@@ -166,6 +166,7 @@ with sync_playwright() as p:
         expect(page.locator('#book-search')).to_be_focused()
         page.fill('#book-search','')
         assert page.locator('img:not([alt])').count()==0
+        page.locator('.book-card img').first.evaluate('(img)=>img.src="Resources/Images/missing-cover.jpg"')
         page.wait_for_function('document.querySelector(".book-card img").src.endsWith("cover-placeholder.svg")')
         assert page.locator('.book-card img').first.evaluate('(img)=>img.onerror===null')
         assert page.locator('.book-card img').first.evaluate('(img)=>img.complete && img.naturalWidth>0')
