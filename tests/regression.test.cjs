@@ -10,12 +10,12 @@ function harness(stored = {}) {
     const storage = new Map(Object.entries(stored));
     const nodes = new Map();
     const makeNode = () => ({value:'', innerHTML:'', innerText:'', style:{}, children:[], classList:{add(){},remove(){},toggle(){},contains(){return false}},setAttribute(){},querySelector(){return null}});
-    const ctx = { console:{warn(){},error(){}}, Date, Intl, Math, crypto:require('node:crypto'),
+    const ctx = { console:{warn(){},error(){}}, Date, Intl, Math, TextEncoder, TextDecoder, Uint8Array, btoa, atob, bokasafnThemePreference:'system', crypto:require('node:crypto'),
         document:{getElementById(id){if (!nodes.has(id)) nodes.set(id,makeNode());return nodes.get(id)},querySelector(){return null},querySelectorAll(){return []},addEventListener(){},activeElement:null},
-        window:{addEventListener(){}}, localStorage:{getItem(key){return storage.get(key)??null},setItem(key,value){storage.set(key,value)}},
+        window:{addEventListener(){}}, localStorage:{get length(){return storage.size},key(i){return [...storage.keys()][i]??null},getItem(key){return storage.get(key)??null},setItem(key,value){storage.set(key,value)},removeItem(key){storage.delete(key)}},sessionStorage:{get length(){return 0},key(){return null},getItem(){return null},setItem(){},removeItem(){}},
         setInterval(){return 1},clearInterval(){},setTimeout(){},requestAnimationFrame(){},rememberBookFocus(){return null},restoreBookFocus(){},prepareDialog(){},restoreDialogFocus(){} };
     vm.createContext(ctx);
-    for (const file of ['js/persistence.js','js/insights.js','js/app.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
+    for (const file of ['js/persistence.js','js/insights.js','js/app.js','js/backups.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
     vm.runInContext('allBooks = '+JSON.stringify(catalog),ctx);
     vm.runInContext('appReady = true; userDataLoaded = true;', ctx);
     return {ctx,storage,nodes,run(code){return vm.runInContext(code,ctx)},data(){return JSON.parse(vm.runInContext('JSON.stringify(userData)',ctx))}};
@@ -111,7 +111,7 @@ test('saved sessions commit once and failed writes roll back sessions and unlock
 });
 test('backup parser accepts v14 and complete envelope; rejects malformed/newer files',()=>{
  const h=harness();assert.equal(h.run('parseBackup(JSON.stringify({read:[],liked:[],totalSeconds:90})).data.totalSeconds'),90);
- for(const bad of ['null','[]','{bad','{}',JSON.stringify({version:16,read:[]}),JSON.stringify({read:{}}),JSON.stringify({version:15,read:['title']}),JSON.stringify({read:[],dailyProgress:{'2026-02-30':90}}),JSON.stringify({read:[],reviews:{1:{rating:6,comment:''}}}),JSON.stringify({read:[],personalGoals:[{text:9}]}),JSON.stringify({read:[],sessions:[{}]}),JSON.stringify({format:'bokasafn-backup',backupVersion:2,data:{read:[]}})])assert.throws(()=>h.run('parseBackup('+JSON.stringify(bad)+')'));
+ for(const bad of ['null','[]','{bad','{}',JSON.stringify({version:16,read:[]}),JSON.stringify({read:{}}),JSON.stringify({version:15,read:['title']}),JSON.stringify({read:[],dailyProgress:{'2026-02-30':90}}),JSON.stringify({read:[],reviews:{1:{rating:6,comment:''}}}),JSON.stringify({read:[],personalGoals:[{text:9}]}),JSON.stringify({read:[],sessions:[{}]}),JSON.stringify({format:'bokasafn-backup',backupVersion:3,data:{read:[]}})])assert.throws(()=>h.run('parseBackup('+JSON.stringify(bad)+')'));
  const data=h.run('JSON.stringify(normalizeUserData({version:15,read:[1],sessions:[{id:"abc",date:"2026-01-01",seconds:60}]}))');assert.equal(h.run('parseBackup('+JSON.stringify(JSON.stringify({format:'bokasafn-backup',backupVersion:1,data:JSON.parse(data),preferences:{theme:'purple'}}))+').theme'),'purple');
 });
 test('safe merge is idempotent, retains conflicting existing reviews/goals and unknown titles',()=>{
@@ -159,5 +159,29 @@ test('repeat discovery challenges need new reading and history mode survives bac
  const h=harness();const fantasy=catalog.find(b=>b.categories.includes('Fantasía'));h.ctx.fantasy=fantasy;
  h.run('userData=normalizeUserData({version:15,read:[fantasy.id],challenges:[{id:"f",title:"Lestu fantasíubók",kind:"fantasy",target:1,start:"2026-10-06",baseline:[fantasy.id],historyMode:"since-start"},{id:"a",title:"Uppgötvaðu nýjan höfund",kind:"author",target:1,start:"2026-10-06",baseline:[fantasy.id],historyMode:"since-start"}]});refreshMilestones()');assert(h.data().challenges.every(c=>!c.completed));h.run('saveUserData();loadUserData()');assert(h.data().challenges.every(c=>c.historyMode==='since-start'));assert.equal(h.run('parseBackup(JSON.stringify({format:"bokasafn-backup",backupVersion:1,data:userData})).data.challenges[0].historyMode'),'since-start');
  h.run('const next=allBooks.find(b=>b.author!==fantasy.author);userData.read.push(next.id);userData.completedDates[next.id]=getLocalYYYYMMDD(new Date());refreshMilestones()');assert(h.data().challenges[1].completed);
+});
+console.log(`${passed} total regression tests passed`);
+test('one-line backups preserve full Unicode, unusual text, storage and versioned data exactly',()=>{
+ const h=harness({'library_v14':'original \n Þæö 😀','library_v15_recovery_1':'{corrupt original}','bokasafn-extra':'"\\ weird"','unrelated':'keep'});h.ctx.payload='Þú átt ævintýri „æöðþ“ 😀 中文 \n\r\t " \\ \u2028\u2029 \u0000 \ud800';h.run('userData=normalizeUserData({version:15,read:[1],liked:[2],reviews:{1:{rating:5,comment:payload,date:"6.10.2026"}},personalGoals:[{id:1,text:payload,completed:true}],totalSeconds:123,dailyProgress:{"2026-10-06":123}});saveUserData();var snapshot=createReadingBackup();var line=encodeBackupLine(snapshot)');const line=h.run('line');assert(!/[\r\n\u2028\u2029]/.test(line));assert.deepEqual(JSON.parse(h.run('decodeBackupLine(line)')),JSON.parse(h.run('JSON.stringify(snapshot)')));assert.equal(h.run('parseBackupLine(line).data.reviews[1].comment'),h.ctx.payload);assert.equal(h.run('parseBackupLine(line).raw.storage.local.library_v14'),'original \n Þæö 😀');assert(!h.run('Object.hasOwn(snapshot.storage.local,"unrelated")'));
+});
+test('integrity checks reject corrupted, incomplete, multiline and unsupported backups',()=>{
+ const h=harness();h.run('userData=normalizeUserData({});var line=encodeBackupLine(createReadingBackup())');const line=h.run('line');for(const bad of ['', 'wrong',line.slice(0,-3),line.replace(':1:',':9:'),line+'\n',line+'=',line.replace(/:[0-9a-f]{8}:/,':00000000:'),line.slice(0,-1)+(line.endsWith('A')?'B':'A')])assert.throws(()=>h.run('parseBackupLine('+JSON.stringify(bad)+')'));
+ h.run('var invalid=createReadingBackup();invalid.data.reviews={1:{rating:9,comment:"bad"}}');assert.throws(()=>h.run('parseBackupLine(encodeBackupLine(invalid))'));
+});
+test('large backups exceed old size limits without truncation',()=>{
+ const h=harness();h.ctx.longText='Æ😀"\\\n'.repeat(800000);h.run('userData=normalizeUserData({version:15,reviews:{1:{rating:4,comment:longText}},personalGoals:[{id:1,text:longText,completed:false}]});var line=encodeBackupLine(createReadingBackup())');assert(h.run('line.length')>5000000);assert.equal(h.run('parseBackupLine(line).data.reviews[1].comment'),h.ctx.longText);assert.equal(h.run('parseBackupLine(line).data.personalGoals[0].text'),h.ctx.longText);
+});
+test('storage reset removes every app namespace and all recovery copies while leaving unrelated data',()=>{
+ const h=harness({'library_v14':'old','library_v15':'saved','library_v15_recovery':'recover','library_import_backup_old':'backup','library_v99':'future','bokasafn-theme':'green','bokasafn-other':'future','unrelated':'keep'});h.run('clearAllUserStorage()');assert.equal(h.storage.size,1);assert.equal(h.storage.get('unrelated'),'keep');
+});
+test('reset failure restores removed data and does not claim success',()=>{
+ const h=harness({'library_v14':'old','library_v15':'saved','unrelated':'keep'});h.ctx.localStorage.removeItem=k=>{if(k==='library_v15')throw Error('denied');h.storage.delete(k)};assert.throws(()=>h.run('clearAllUserStorage()'));assert.equal(h.storage.get('library_v14'),'old');assert.equal(h.storage.get('library_v15'),'saved');
+});
+test('full snapshots reject unrelated storage keys and older JSON files still import',()=>{
+ const h=harness();h.run('userData=normalizeUserData({});var backup=createReadingBackup();backup.storage.local.unrelated="overwrite"');assert.throws(()=>h.run('parseBackup(JSON.stringify(backup))'));assert.equal(h.run('parseBackup(JSON.stringify({format:"bokasafn-backup",backupVersion:1,data:{version:15,read:[1]}})).data.read[0]'),1);assert.equal(h.run('parseBackup(JSON.stringify({read:[allBooks[0].title]})).data.read[0]'),first.id);
+});
+console.log(`${passed} total regression tests passed`);
+test('a stale tab cannot resurrect user data after another tab deletes or replaces it',()=>{
+ const h=harness();h.run('loadUserData();userData.read=[1];saveUserData();localStorage.removeItem(LIBRARY_STORAGE_KEY)');assert.equal(h.run('saveUserData()'),false);assert(!h.storage.has('library_v15'));h.storage.set('library_v15',JSON.stringify({version:15,read:[]}));assert.equal(h.run('saveUserData()'),false);assert.deepEqual(JSON.parse(h.storage.get('library_v15')).read,[]);
 });
 console.log(`${passed} total regression tests passed`);

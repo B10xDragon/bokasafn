@@ -11,6 +11,8 @@ function dialogFocusable(content) {
 }
 
 function focusDialog(content) {
+    const preferred = content.querySelector('[data-dialog-initial-focus]');
+    if (preferred) { preferred.focus(); return; }
     // A mobile book dialog can be taller than the viewport. Focusing its review
     // textarea immediately scrolls past the title, cover and close control.
     if (content.id === 'desc-modal-content') {

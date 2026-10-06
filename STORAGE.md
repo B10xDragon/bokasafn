@@ -38,19 +38,52 @@ the first attempt recognises authors already discovered in the reading history.
 
 # Import rules
 
-JSON envelopes use `format: bokasafn-backup`, `backupVersion: 1`, `data`,
-`preferences.theme`, export time/timezone, and archived legacy/recovery data.
-Exports also include exact persisted data. Raw v14/v15 objects can be imported.
-Unknown schema versions, invalid types/dates/reviews/history/challenges/sessions,
-files above 5 MB and excessively large arrays are rejected before mutation.
+JSON envelopes now use `format: bokasafn-backup`, `backupVersion: 2`, `data`,
+`preferences.theme`, export time/timezone and complete `storage.local` /
+`storage.session` snapshots of the app's namespaced user keys. The catalog is not
+part of user data. Older version 1 envelopes and raw v14/v15 objects still import.
+Unknown schema versions and invalid types/dates/reviews/history/challenges/timers
+are rejected before mutation. There is no application-imposed backup text/file
+length cap or truncation. Actual memory, clipboard and browser storage capacity
+still apply; failures are reported without claiming successful restoration.
 
-Import offers merge or explicit confirmed replacement. Active timer sessions must
-be finished first; imported running sessions are archived but never resumed (to
-avoid counting time spent transferring a file as reading). Before any write, the
-current data/preferences and import source are archived under
-`library_import_backup_<timestamp>` keys. Storage failure aborts without claiming
-success. Exports include these recovery copies; they can also be found in browser
-storage. Replacement does not remove v14 or recovery copies.
+Import offers merge or explicitly confirmed replacement. A current active timer
+must be finished first. Version 2 replacement restores a saved timer as well:
+paused timers stay paused; running timers continue from their saved checkpoint,
+including elapsed time while the backup was being transferred, consistent with
+existing refresh recovery. Merge and legacy version 1 imports do not resume an
+incoming timer. Both formats use exactly the same validation and import pipeline.
+
+Before changes, current data/preferences/storage and the import source are
+archived under `library_import_backup_<unique-ID>` keys. Version 2 replacement
+restores imported namespaced storage and preserves the new rollback copies.
+Merge keeps conflicting existing storage values. Storage failures attempt rollback
+to the exact preceding memory and storage state and report an error. App snapshots
+never read, replace or delete another site's unrelated storage keys.
+
+# One-line encoding
+
+`BOKASAFN:1:<UTF-8-byte-length>:<CRC32-hex>:<Base64URL-payload>` encodes compact
+JSON of the same version 2 envelope used by file export. The line is ASCII and
+contains no newline characters, even when reviews/goals contain line breaks,
+Icelandic, emoji, quotes, Unicode separators or lone surrogate code units (JSON
+escapes these before UTF-8 encoding). No fields are removed to shorten the line.
+Length and CRC32 checks detect missing/corrupted payloads before validation. The
+Base64URL encoding must be canonical. Unknown line/envelope versions are rejected
+with Icelandic errors. CRC32 detects accidental damage; it is not an authenticity
+signature. Encoding is not encryption. The UI explicitly treats backups as private.
+
+# Complete reset
+
+`Eyða öllum gögnum` opens the existing accessible dialog with a warning that only
+an external backup allows recovery, Cancel focused first, and a red confirmation
+button. Cancellation/Escape leave memory and storage intact. Confirmation removes
+all `library_*` and `bokasafn-*`/`bokasafn_*` local and session storage keys,
+including v14, recovery copies and imported backup sources. It stops the timer,
+clears all reading state, cached imports, text drafts, filters, sort, URL book
+selection and theme preference, then immediately shows the fresh-user catalog.
+A later page save may create an empty v15 record, but old data cannot resurrect
+from legacy/recovery keys. Unrelated origin storage and catalog/site files remain.
 
 Merge unions read/wishlist IDs, retains conflicting existing reviews and current
 goal/theme settings, deduplicates sessions/challenges by ID, retains earned
@@ -79,3 +112,8 @@ Identical old challenge records are grouped into one displayed card. Different
 baselines or completion dates remain separate. Grouping never deletes stored
 records, and exports retain every ID. Deleting the displayed card explicitly
 removes all identical copies represented by that card.
+
+Reset also guards against asynchronous resurrection: pending file reads are
+invalidated, other open tabs stop their timers and reload after deletion, and a
+save compares the persisted library with the tab's last observed value before
+writing. A stale tab must reload instead of overwriting a deletion/replacement.

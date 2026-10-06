@@ -203,3 +203,25 @@
 .feature-button {
   overflow-wrap: anywhere;
 }
+.feature-button.destructive {
+  background: #b91c1c;
+  color: #fff;
+  border: 2px solid #f87171;
+}
+.feature-button.destructive:hover {
+  background: #991b1b;
+}
+.feature-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.feature-field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--theme-border);
+  border-radius: 0.8rem;
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  resize: vertical;
+}

@@ -2,6 +2,7 @@
 const LIBRARY_STORAGE_KEY = 'library_v15';
 let storageWritable = true;
 let userDataLoaded = false;
+let lastPersistedLibraryValue;
 let lastStorageWarning = 0;
 
 function escapeHTML(value) {
@@ -126,7 +127,15 @@ function saveUserData() {
     const { interval, ...session } = timerState;
     userData.session = timerState.active ? session : null;
     try {
-        localStorage.setItem(LIBRARY_STORAGE_KEY, JSON.stringify(userData));
+        // A tab with old in-memory data must not resurrect a deleted/replaced
+        // library when it later saves or closes.
+        if (lastPersistedLibraryValue !== undefined && localStorage.getItem(LIBRARY_STORAGE_KEY) !== lastPersistedLibraryValue) {
+            showToast('Gögnin breyttust í öðrum glugga. Endurhlaðaðu síðuna áður en þú vistar.', 'error');
+            return false;
+        }
+        const serialized = JSON.stringify(userData);
+        localStorage.setItem(LIBRARY_STORAGE_KEY, serialized);
+        lastPersistedLibraryValue = serialized;
         return true;
     } catch (error) {
         console.warn('Ekki hægt að vista í LocalStorage.', error);
@@ -139,6 +148,7 @@ function loadUserData() {
     let raw = null;
     try {
         const saved = localStorage.getItem(LIBRARY_STORAGE_KEY);
+        lastPersistedLibraryValue = saved;
         const legacy = localStorage.getItem('library_v14');
         if (saved !== null) {
             try {

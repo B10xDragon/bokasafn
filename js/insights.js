@@ -107,7 +107,7 @@ function normalizeExtensions(source, result) {
     challengeIds.add(c.id);
     result.challenges.push({
       id: c.id,
-      title: c.title.slice(0, 500),
+      title: c.title,
       kind: c.kind,
       target: c.target,
       start: c.start,
@@ -325,13 +325,17 @@ function chooseRandom(books, random = Math.random) {
     : null;
 }
 function parseBackup(text) {
-  if (typeof text !== "string" || text.length > 5000000)
-    throw Error("Afritið er of stórt.");
-  const raw = JSON.parse(text);
+  if (typeof text !== "string") throw Error("Ógilt afrit: texta vantar.");
+  let raw;
+  try {
+    raw = JSON.parse(text);
+  } catch (error) {
+    throw Error("Ógilt afrit: gagnatextinn er ekki gilt JSON.");
+  }
   if (!isRecord(raw)) throw Error("Ógilt afrit.");
   const envelope = raw.format === "bokasafn-backup";
   if (raw.format != null && !envelope) throw Error("Óþekkt afritssnið.");
-  if (envelope && raw.backupVersion !== 1)
+  if (envelope && ![1, 2].includes(raw.backupVersion))
     throw Error("Þetta afrit er úr nýrri útgáfu.");
   const data = envelope ? raw.data : raw;
   if (
@@ -363,8 +367,6 @@ function parseBackup(text) {
     )
   )
     throw Error("Engin lestrargögn fundust.");
-  if (Object.values(data).some((v) => Array.isArray(v) && v.length > 10000))
-    throw Error("Of margar færslur í afriti.");
   if (
     data.totalSeconds != null &&
     (!Number.isSafeInteger(data.totalSeconds) || data.totalSeconds < 0)
@@ -393,7 +395,6 @@ function parseBackup(text) {
     if (
       !isRecord(g) ||
       typeof g.text !== "string" ||
-      g.text.length > 10000 ||
       (g.completed != null && typeof g.completed !== "boolean")
     )
       throw Error("Ógilt persónulegt markmið.");
@@ -450,7 +451,6 @@ function parseBackup(text) {
       (c.historyMode != null &&
         !["all", "since-start"].includes(c.historyMode)) ||
       typeof c.title !== "string" ||
-      c.title.length > 500 ||
       (c.baseline != null &&
         (!Array.isArray(c.baseline) ||
           c.baseline.some((id) => !Number.isSafeInteger(id) || id < 0))) ||
@@ -460,6 +460,44 @@ function parseBackup(text) {
         (!validDateKey(c.completed) || c.completed < c.start))
     )
       throw Error("Ógild áskorun.");
+  }
+  if (envelope && raw.backupVersion === 2) {
+    validateStorageSnapshot(raw.storage);
+    if (data.session != null) {
+      const session = data.session;
+      if (
+        !isRecord(session) ||
+        typeof session.paused !== "boolean" ||
+        !Number.isSafeInteger(session.startTime) ||
+        !Number.isSafeInteger(session.elapsedBeforePause) ||
+        session.elapsedBeforePause < 0 ||
+        !isRecord(session.dailyMilliseconds)
+      )
+        throw Error("Ógild virk lestrarlota.");
+      for (const [date, ms] of Object.entries(session.dailyMilliseconds))
+        if (!validDateKey(date) || !Number.isSafeInteger(ms) || ms < 0)
+          throw Error("Ógild saga virkrar lestrarlotu.");
+      if (
+        Object.values(session.dailyMilliseconds).reduce(
+          (n, ms) => n + ms,
+          0,
+        ) !== session.elapsedBeforePause
+      )
+        throw Error("Ósamræmi í virkum lestíma.");
+    }
+    if (
+      !["system", "light", "dark", "green", "purple", "orange"].includes(
+        raw.preferences?.theme,
+      )
+    )
+      throw Error("Ógild útlitsstilling.");
+    if (
+      data.session != null &&
+      (!isRecord(data.session) ||
+        data.session.active !== true ||
+        !normalizeSession(data.session).active)
+    )
+      throw Error("Ógild virk lestrarlota.");
   }
   const normalized = normalizeUserData(data);
   if (

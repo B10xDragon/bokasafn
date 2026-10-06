@@ -6,6 +6,7 @@ const field = (id, label, type = "number", extra = "") =>
 let pendingImport = null;
 let routeChange = false;
 function featureDialog(title, html) {
+  deleteConfirmationOpen = false;
   if (activeDialog)
     closeModal(
       activeDialog.modal.id,
@@ -58,32 +59,12 @@ function pickRandomBook() {
     : "<p>Engin bók passar. Prófaðu að víkka leitina.</p>";
 }
 function exportReadingData() {
-  checkpointTimer();
-  const { interval, ...session } = timerState;
-  const backup = {
-    format: "bokasafn-backup",
-    backupVersion: 1,
-    exportedAt: new Date().toISOString(),
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    data: { ...userData, session: timerState.active ? session : null },
-    preferences: { theme: bokasafnThemePreference },
-    legacy: null,
-    storedData: null,
-    recovery: {},
-  };
+  let backup;
   try {
-    backup.storedData = localStorage.getItem(LIBRARY_STORAGE_KEY);
-    backup.legacy = localStorage.getItem("library_v14");
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (
-        k.startsWith("library_v15_recovery") ||
-        k.startsWith("library_import_backup")
-      )
-        backup.recovery[k] = localStorage.getItem(k);
-    }
+    backup = createReadingBackup();
   } catch (error) {
-    showToast("Ekki tókst að lesa öll eldri afrit.", "error");
+    showToast("Ekki tókst að búa til heilt afrit: " + error.message, "error");
+    return;
   }
   const url = URL.createObjectURL(
     new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" }),
@@ -97,23 +78,30 @@ function exportReadingData() {
 async function previewImport(input) {
   const file = input.files?.[0];
   if (!file) return;
+  const generation = ++backupEditGeneration;
+  pendingImport = null;
   try {
-    if (file.size > 5000000) throw Error("Afritið er of stórt (hámark 5 MB).");
-    pendingImport = parseBackup(await file.text());
-    const d = pendingImport.data;
-    featureDialog(
-      "Flytja inn afrit",
-      `<p>${d.read.length} lesnar bækur · ${d.liked.length} á óskalista · ${Math.floor(d.totalSeconds / 60)} mínútur</p>
-        <p><strong>Sameina:</strong> núverandi umsagnir, markmið og útlit hafa forgang. Sami dagur notar meiri lestímann, ekki summu, til að forðast tvítalningu. Óháður lestur sama dags gæti því þurft handvirka yfirferð.</p>
-        <p><strong>Skipta út:</strong> öll núverandi lestrargögn og útlit víkja fyrir afritinu. Afrit af núverandi gögnum verður varðveitt í vafranum.</p>
-        <p>Virk lestrarlota verður ekki flutt inn. Ljúktu núverandi lotu áður en þú flytur inn.</p>
-        <div class="feature-actions">${featureButton("Sameina örugglega", "applyImport('merge')")}${featureButton("Skipta út gögnum", "confirmImportReplace()")}${featureButton("Hætta við", "closeModal('feature-modal','feature-modal-content')")}</div>`,
-    );
+    const text = await file.text();
+    if (generation !== backupEditGeneration) return;
+    pendingImport = parseBackup(text);
+    showImportPreview();
   } catch (error) {
+    if (generation !== backupEditGeneration) return;
     pendingImport = null;
     showToast("Ekki hægt að flytja inn: " + error.message, "error");
   }
   input.value = "";
+}
+function showImportPreview() {
+  const d = pendingImport.data;
+  featureDialog(
+    "Flytja inn afrit",
+    `<p>${d.read.length} lesnar bækur · ${d.liked.length} á óskalista · ${Math.floor(d.totalSeconds / 60)} mínútur</p>
+        <p><strong>Sameina:</strong> núverandi umsagnir, markmið og útlit hafa forgang. Sami dagur notar meiri lestímann, ekki summu, til að forðast tvítalningu. Óháður lestur sama dags gæti því þurft handvirka yfirferð.</p>
+        <p><strong>Skipta út:</strong> öll núverandi lestrargögn og útlit víkja fyrir afritinu. Afrit af núverandi gögnum verður varðveitt í vafranum.</p>
+        <p>${pendingImport.raw.backupVersion === 2 ? "Við útskiptingu verður lestrarlota úr afritinu endurheimt. Klukka sem var í gangi heldur áfram frá tímanum í afritinu, líkt og eftir endurhleðslu. Sameining varðveitir ekki innflutta virka lotu." : "Eldra afrit: virk lestrarlota verður ekki endurheimt."} Ljúktu núverandi lotu áður en þú flytur inn.</p>
+        <div class="feature-actions">${featureButton("Sameina örugglega", "applyImport('merge')")}${featureButton("Skipta út gögnum", "confirmImportReplace()")}${featureButton("Hætta við", "closeModal('feature-modal','feature-modal-content')")}</div>`,
+  );
 }
 function confirmImportReplace() {
   document.getElementById("feature-dialog-body").innerHTML =
@@ -121,46 +109,82 @@ function confirmImportReplace() {
   focusDialog(document.getElementById("feature-modal-content"));
 }
 function applyImport(mode) {
-  if (!pendingImport || !storageWritable)
+  if (
+    !pendingImport ||
+    !storageWritable ||
+    !["merge", "replace"].includes(mode)
+  )
     return showToast("Ekki hægt að flytja inn í þessa geymslu.", "error");
   if (timerState.active)
     return showToast("Vistaðu virku lestrarlotuna fyrst.", "error");
+  const imported = pendingImport;
+  const full = imported.raw.backupVersion === 2;
   const next =
     mode === "merge"
-      ? mergeReadingData(userData, pendingImport.data)
-      : normalizeUserData(pendingImport.data);
-  next.session = null;
-  const before = userData;
+      ? mergeReadingData(userData, imported.data)
+      : normalizeUserData(imported.data);
+  if (!full || mode === "merge") next.session = null;
+  const before = userData,
+    previousTimer = timerState,
+    previousTheme = bokasafnThemePreference;
+  let previousLocal, previousSession;
   try {
+    previousLocal = userStorageSnapshot(localStorage);
+    previousSession = userStorageSnapshot(sessionStorage);
     const key = "library_import_backup_" + newDataId();
-    localStorage.setItem(
-      key,
-      JSON.stringify({
-        format: "bokasafn-backup",
-        backupVersion: 1,
-        data: before,
-        preferences: { theme: bokasafnThemePreference },
-        legacy: localStorage.getItem("library_v14"),
-      }),
-    );
-    // Preserve auxiliary historic/recovery data before the atomic data write.
-    localStorage.setItem(key + "_source", JSON.stringify(pendingImport.raw));
-    userData = next;
-    if (!saveUserData()) {
-      userData = before;
-      return;
+    localStorage.setItem(key, JSON.stringify(createReadingBackup()));
+    localStorage.setItem(key + "_source", JSON.stringify(imported.raw));
+    if (full) {
+      const keep = new Set([LIBRARY_STORAGE_KEY, key, key + "_source"]);
+      if (mode === "merge") keep.add("bokasafn-theme");
+      restoreUserStorage(
+        localStorage,
+        imported.raw.storage.local,
+        mode === "replace",
+        keep,
+      );
+      restoreUserStorage(
+        sessionStorage,
+        imported.raw.storage.session,
+        mode === "replace",
+      );
     }
-    if (mode === "replace" && pendingImport.theme)
-      setBokasafnTheme(pendingImport.theme);
+    userData = next;
+    timerState = normalizeSession(next.session);
+    if (!saveUserData())
+      throw Error("Ekki tókst að vista gögn. Innflutningur var afturkallaður.");
+    if (mode === "replace" && imported.theme) {
+      if (full) {
+        bokasafnThemePreference = imported.theme;
+        renderBokasafnTheme();
+      } else setBokasafnTheme(imported.theme);
+    }
+    if (timerState.active && !timerState.paused)
+      timerState.interval = setInterval(updateTimerDisplay, 1000);
     pendingImport = null;
     syncGoalUI();
+    updateTimerDisplay();
+    updateTimerUI();
     applyFilters();
     updateStatsUI();
     closeModal("feature-modal", "feature-modal-content");
     showToast("Afrit flutt inn.");
   } catch (error) {
     userData = before;
-    showToast("Innflutningur mistókst. Athugaðu vafrageymsluna.", "error");
+    timerState = previousTimer;
+    bokasafnThemePreference = previousTheme;
+    renderBokasafnTheme();
+    try {
+      if (previousLocal) rollbackUserStorage(localStorage, previousLocal);
+      if (previousSession) rollbackUserStorage(sessionStorage, previousSession);
+      lastPersistedLibraryValue = localStorage.getItem(LIBRARY_STORAGE_KEY);
+    } catch (rollbackError) {
+      console.warn("Ekki tókst að endurheimta allar færslur.", rollbackError);
+    }
+    showToast(
+      error.message || "Innflutningur mistókst. Athugaðu vafrageymsluna.",
+      "error",
+    );
   }
 }
 function addChallenge(
@@ -491,6 +515,10 @@ function installFeatures() {
   const originalClose = window.closeModal;
   window.closeModal = function (modalId, contentId) {
     originalClose(modalId, contentId);
+    if (modalId === "feature-modal") {
+      deleteConfirmationOpen = false;
+      backupEditGeneration++;
+    }
     if (
       modalId === "desc-modal" &&
       !routeChange &&
@@ -504,6 +532,7 @@ function installFeatures() {
   window.addEventListener("popstate", () => {
     applyBookRoute();
   });
+  installBackupControls();
   refreshMilestones();
   saveUserData();
   renderInsights();

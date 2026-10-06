@@ -60,3 +60,23 @@ New feature checks:
 
 The older dialog tests locate the final focusable control rather than assuming
 that the review-save button is last, because book views now include a share link.
+
+Full reset and portable text-backup checks:
+
+- `node tests/regression.test.cjs` additionally checks CRC32/byte-length framing,
+  Unicode and lone-surrogate round trips, large backups beyond the previous size
+  limits, rejected corruption/truncation/versions, namespaced deletion/rollback
+  and version 1 / version 2 / v14 compatibility.
+- `python tests/backups_browser.py` uses real assets to check confirmation,
+  Cancel/Escape, fresh-user reset with an active timer, no refresh resurrection,
+  full native clipboard copy, matching JSON/text envelopes, exact restoration
+  of reading data/theme/recovery/session storage and a paused timer, merge and
+  replacement, validation, all themes at phone/tablet widths, and denied
+  deletion/clipboard fallback.
+
+Run all three real-asset suites plus `tests/browser.py` for complete verification.
+
+The reset suite also checks delayed file reads and two open tabs cannot revive
+old data, large clipboard export/delete/import, and a running timer's restoration,
+refresh recovery and final save. New York and Reykjavík regression runs include
+all reset/backup tests.
