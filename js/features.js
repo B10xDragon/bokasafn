@@ -163,7 +163,13 @@ function applyImport(mode) {
     showToast("Innflutningur mistókst. Athugaðu vafrageymsluna.", "error");
   }
 }
-function addChallenge(kind, target, title, monthly = false) {
+function addChallenge(
+  kind,
+  target,
+  title,
+  monthly = false,
+  historyMode = null,
+) {
   const now = new Date(),
     start = getLocalYYYYMMDD(
       monthly ? new Date(now.getFullYear(), now.getMonth(), 1) : now,
@@ -185,6 +191,7 @@ function addChallenge(kind, target, title, monthly = false) {
         )
       : [...userData.read],
     baselineSeconds: userData.dailyProgress[start] || 0,
+    historyMode,
     completed: null,
   });
   saveUserData();
@@ -197,7 +204,15 @@ function addBuiltInChallenge(kind) {
     showToast("Þú ert þegar með þessa áskorun.");
     return;
   }
-  addChallenge(...d);
+  const repeated = userData.challenges.some(
+    (c) => c.kind === d[0] && c.title === d[2] && c.target === d[1],
+  );
+  const historyMode = ["fantasy", "author"].includes(kind)
+    ? repeated
+      ? "since-start"
+      : "all"
+    : null;
+  addChallenge(...d, historyMode);
 }
 function createPersonalChallenge() {
   const title = document.getElementById("challenge-title").value.trim(),
@@ -297,8 +312,7 @@ function renderInsights() {
         ({ challenge: c }) =>
           `<article class="feature-achievement"><h3>${escapeHTML(c.title)}</h3><p>${c.completed ? "Lokið " + c.completed : c.end && c.end < today ? "Tímabili lokið" : "Í gangi"} · ${Math.min(challengeProgress(c), c.target)} / ${c.target}</p><p>Frá ${c.start}${c.end ? " til " + c.end : ""}</p><progress aria-label="${escapeHTML(c.title)}" max="${c.target}" value="${Math.min(challengeProgress(c), c.target)}"></progress><button type="button" class="feature-button secondary" data-id="${escapeHTML(c.id)}" onclick="removeChallenge(this.dataset.id)" aria-label="Eyða áskorun: ${escapeHTML(c.title)}">Eyða</button></article>`,
       )
-      .join("") ||
-    "<p>Veldu áskorun til að byrja. Aðeins lestur eftir upphaf áskorunar telst með.</p>";
+      .join("") || "<p>Veldu áskorun til að byrja.</p>";
   document.getElementById("personal-recommendations").innerHTML =
     recommendations()
       .map(
@@ -403,7 +417,7 @@ function installFeatures() {
   const stats = document.createElement("section");
   stats.id = "reading-insights";
   stats.className = "feature-panel";
-  stats.innerHTML = `<h2>Lestrarferðin þín</h2><div id="extended-metrics" class="feature-grid"></div><h3>Lestrarvirkni síðustu tólf mánaða</h3><p class="feature-note">Dekkri reitur merkir fleiri lestrarmínútur. Dagsetningar miðast við staðartíma þegar lestur var vistaður.</p><div class="heat-scroll"><div id="activity-heatmap"></div></div><p class="feature-note">Enginn lestur · &lt;10 · 10–29 · 30–59 · 60+ mínútur</p><p id="heatmap-detail" role="status">Veldu dag til að sjá mínútur.</p><p class="feature-note">Markmiðarunur nota valið markmið: daglega, síðustu sjö daga eða mánuðinn til dagsins í dag. Breytt markmið endurreiknar sögulegar runur. Án markmiðs gilda 10 mínútur daglega.</p><h3>Lestrartími eftir viku (frá mánudegi)</h3><div id="weekly-chart"></div><h3>Lestrartími eftir mánuði</h3><div id="monthly-chart"></div><p class="feature-note">Meðallengd og lengsta lota nota aðeins lotur vistaðar eftir þessa uppfærslu; eldri heildartími varðveitist.</p><h3>Afrek</h3><div id="achievement-list" class="feature-grid"></div><h3>Lestraráskoranir</h3><div class="feature-actions">${featureButton("3 bækur í þessum mánuði", "addBuiltInChallenge('month')")}${featureButton("500 blaðsíður", "addBuiltInChallenge('pages')")}${featureButton("Fantasíubók", "addBuiltInChallenge('fantasy')")}${featureButton("Nýr höfundur", "addBuiltInChallenge('author')")}</div><div id="challenge-list" class="feature-grid"></div><details><summary>Búa til eigin áskorun</summary><div class="feature-fields">${field("challenge-title", "Heiti", "text", 'maxlength="500"')}<label class="feature-field">Mælikvarði<select id="challenge-kind"><option value="books">Bækur</option><option value="pages">Blaðsíður í loknum bókum</option><option value="minutes">Lestrarmínútur</option></select></label>${field("challenge-target", "Markmið", "number", 'min="1" max="1000000" value="3"')}</div>${featureButton("Bæta við áskorun", "createPersonalChallenge()")}</details><h3>Afrit og flutningur gagna</h3><p>Gögnin þín eru geymd í þessum vafra. Vistaðu afrit til að flytja þau á annað tæki.</p><div class="feature-actions">${featureButton("Sækja JSON-afrit", "exportReadingData()")}<label class="feature-button">Flytja inn JSON-afrit<input id="backup-file" type="file" accept="application/json,.json" onchange="previewImport(this)"></label></div>`;
+  stats.innerHTML = `<h2>Lestrarferðin þín</h2><div id="extended-metrics" class="feature-grid"></div><h3>Lestrarvirkni síðustu tólf mánaða</h3><p class="feature-note">Dekkri reitur merkir fleiri lestrarmínútur. Dagsetningar miðast við staðartíma þegar lestur var vistaður.</p><div class="heat-scroll"><div id="activity-heatmap"></div></div><p class="feature-note">Enginn lestur · &lt;10 · 10–29 · 30–59 · 60+ mínútur</p><p id="heatmap-detail" role="status">Veldu dag til að sjá mínútur.</p><p class="feature-note">Markmiðarunur nota valið markmið: daglega, síðustu sjö daga eða mánuðinn til dagsins í dag. Breytt markmið endurreiknar sögulegar runur. Án markmiðs gilda 10 mínútur daglega.</p><h3>Lestrartími eftir viku (frá mánudegi)</h3><div id="weekly-chart"></div><h3>Lestrartími eftir mánuði</h3><div id="monthly-chart"></div><p class="feature-note">Meðallengd og lengsta lota nota aðeins lotur vistaðar eftir þessa uppfærslu; eldri heildartími varðveitist.</p><h3>Afrek</h3><div id="achievement-list" class="feature-grid"></div><h3>Lestraráskoranir</h3><p class="feature-note">Fyrsta fantasíu- og höfundaráskorunin telur einnig bækur sem þú hefur þegar lesið. Ef þú tekur þær aftur þarf nýjan lestur.</p><div class="feature-actions">${featureButton("3 bækur í þessum mánuði", "addBuiltInChallenge('month')")}${featureButton("500 blaðsíður", "addBuiltInChallenge('pages')")}${featureButton("Fantasíubók", "addBuiltInChallenge('fantasy')")}${featureButton("Nýr höfundur", "addBuiltInChallenge('author')")}</div><div id="challenge-list" class="feature-grid"></div><details><summary>Búa til eigin áskorun</summary><div class="feature-fields">${field("challenge-title", "Heiti", "text", 'maxlength="500"')}<label class="feature-field">Mælikvarði<select id="challenge-kind"><option value="books">Bækur</option><option value="pages">Blaðsíður í loknum bókum</option><option value="minutes">Lestrarmínútur</option></select></label>${field("challenge-target", "Markmið", "number", 'min="1" max="1000000" value="3"')}</div>${featureButton("Bæta við áskorun", "createPersonalChallenge()")}</details><h3>Afrit og flutningur gagna</h3><p>Gögnin þín eru geymd í þessum vafra. Vistaðu afrit til að flytja þau á annað tæki.</p><div class="feature-actions">${featureButton("Sækja JSON-afrit", "exportReadingData()")}<label class="feature-button">Flytja inn JSON-afrit<input id="backup-file" type="file" accept="application/json,.json" onchange="previewImport(this)"></label></div>`;
   document.querySelector("#stats-page > div").appendChild(stats);
   const modal = document.createElement("div");
   modal.id = "feature-modal";

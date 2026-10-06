@@ -13,7 +13,8 @@ Additive fields:
   timer session. Old aggregate time is not converted into fictional sessions.
 - `achievements`: achievement ID and first unlock date. Unlocks remain earned.
 - `challenges`: unique ID, escaped display title, kind, target, start/end local
-  dates, baseline book IDs, baseline seconds for the starting day, completion date.
+  dates, baseline book IDs, baseline seconds for the starting day, optional
+  history mode, and completion date.
 
 Daily reading history retains its recorded local date when moved between time
 zones. Timers split at local midnight using calendar arithmetic, including DST.
@@ -25,9 +26,15 @@ already unlocked achievements remain earned. Activity days mean days with any
 saved time, independently of the goal.
 
 A monthly book challenge includes known completions from that calendar month.
-Other book challenges count completions after joining and exclude baseline books.
+The first built-in fantasy and new-author challenges also recognise already-read
+books, including legacy flags without known completion dates. Existing first
+challenges recover this recognition automatically. Their completion date records
+recognition, not an invented historical book date. Repeat attempts store
+`historyMode: since-start` and require new completions after joining. Other book
+challenges count completions after joining and exclude baseline books.
 Minute challenges subtract reading already saved on the starting day. An author
-challenge compares authors against all books read when joining.
+challenge compares authors against all books read when joining on repeat attempts;
+the first attempt recognises authors already discovered in the reading history.
 
 # Import rules
 

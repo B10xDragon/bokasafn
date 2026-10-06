@@ -198,6 +198,28 @@ with sync_playwright() as p:
         page.get_by_role('button',name='3 bækur í þessum mánuði',exact=True).click();assert page.evaluate('userData.challenges.length')==1
         page.evaluate('userData.challenges[0].completed=getLocalYYYYMMDD(new Date());saveUserData();addBuiltInChallenge("month")');assert page.evaluate('userData.challenges.length')==1
     check('repeat taps block duplicates and old identical cards collapse without data loss across reload and export',duplicate_challenges)
+    def historical_discovery_challenges():
+        reset(page)
+        # Existing screenshot state: read fantasy book but challenges say 0/1.
+        page.evaluate('const b=allBooks.find(b=>b.categories.includes("Fantasía"));userData=normalizeUserData({version:15,read:[b.id],challenges:[{id:"old-fantasy",title:"Lestu fantasíubók",kind:"fantasy",target:1,start:getLocalYYYYMMDD(new Date()),baseline:[b.id]},{id:"old-author",title:"Uppgötvaðu nýjan höfund",kind:"author",target:1,start:getLocalYYYYMMDD(new Date()),baseline:[b.id]}]});saveUserData()')
+        page.reload();page.wait_for_function('window.featuresReady');page.evaluate('showPage("stats");setBokasafnTheme("green")');page.wait_for_timeout(350)
+        assert page.evaluate('userData.challenges.every(c=>c.completed)')
+        assert page.evaluate('Object.keys(userData.completedDates).length')==0
+        for card in page.locator('#challenge-list article').all():
+            assert 'Lokið' in card.text_content() and '1 / 1' in card.text_content()
+            assert card.locator('progress').get_attribute('value')=='1'
+        page.set_viewport_size({'width':1280,'height':889});page.screenshot(path=str(ARTIFACTS/'historical-challenges-complete.png'),full_page=True)
+        page.get_by_role('button',name='Fantasíubók',exact=True).click();assert page.evaluate('userData.challenges.length')==3
+        assert page.evaluate('userData.challenges[2].historyMode')=='since-start'
+        assert page.evaluate('challengeProgress(userData.challenges[2])')==0
+        page.evaluate('addBuiltInChallenge("fantasy")');assert page.evaluate('userData.challenges.length')==3
+        page.reload();page.wait_for_function('window.featuresReady');assert page.evaluate('userData.challenges[2].historyMode')=='since-start';assert not page.evaluate('userData.challenges[2].completed')
+        # First join after previous reading also recognises old history immediately.
+        page.evaluate('userData.challenges=[];saveUserData();renderInsights();showPage("stats")');page.wait_for_timeout(350)
+        page.get_by_role('button',name='Fantasíubók',exact=True).click();page.get_by_role('button',name='Nýr höfundur',exact=True).click()
+        assert page.evaluate('userData.challenges.every(c=>c.historyMode==="all"&&c.completed)')
+        page.evaluate('userData=normalizeUserData({});saveUserData();addBuiltInChallenge("fantasy");addBuiltInChallenge("author")');assert page.evaluate('userData.challenges.every(c=>!c.completed)')
+    check('historical fantasy/author completions recover screenshot state, persist and exclude old books on repeat attempts',historical_discovery_challenges)
     assert not ERRORS,ERRORS
     assert not FAILURES,FAILURES
     print(json.dumps({'groups_passed':COUNT,'uncaught_errors':ERRORS,'dependency_failures':FAILURES},indent=2))

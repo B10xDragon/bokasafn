@@ -49,6 +49,7 @@ function challengeDisplayGroups(challenges) {
       end: challenge.end,
       baseline: [...new Set(challenge.baseline)].sort((a, b) => a - b),
       baselineSeconds: challenge.baselineSeconds,
+      historyMode: challenge.historyMode,
       completed: challenge.completed,
     });
     if (!groups.has(key)) groups.set(key, { challenge, ids: [] });
@@ -115,6 +116,9 @@ function normalizeExtensions(source, result) {
         ? c.baseline.filter((x) => Number.isSafeInteger(x) && x >= 0)
         : [],
       baselineSeconds: Math.floor(nonnegativeNumber(c.baselineSeconds)),
+      historyMode: ["all", "since-start"].includes(c.historyMode)
+        ? c.historyMode
+        : null,
       completed: validDateKey(c.completed) ? c.completed : null,
     });
   }
@@ -203,12 +207,23 @@ const ACHIEVEMENTS = [
   ["five-genres", "Fimm bókmenntaflokkar", "genres", 5],
 ];
 function challengeProgress(c) {
+  // The first discovery challenges recognise reading already completed, even
+  // legacy read flags without dates. Repeat attempts require new reading.
+  const definition = BUILTIN_CHALLENGES[c.kind];
+  const includesHistory =
+    ["fantasy", "author"].includes(c.kind) &&
+    definition &&
+    c.title === definition[2] &&
+    c.target === definition[1] &&
+    !c.end &&
+    c.historyMode !== "since-start";
   const books = allBooks.filter(
     (b) =>
       userData.read.includes(b.id) &&
-      !c.baseline.includes(b.id) &&
-      userData.completedDates[b.id] >= c.start &&
-      (!c.end || userData.completedDates[b.id] <= c.end),
+      (includesHistory ||
+        (!c.baseline.includes(b.id) &&
+          userData.completedDates[b.id] >= c.start &&
+          (!c.end || userData.completedDates[b.id] <= c.end))),
   );
   if (c.kind === "books") return books.length;
   if (c.kind === "pages")
@@ -217,7 +232,9 @@ function challengeProgress(c) {
     return books.filter((b) => b.categories.includes("Fantasía")).length;
   if (c.kind === "author") {
     const previous = new Set(
-      allBooks.filter((b) => c.baseline.includes(b.id)).map((b) => b.author),
+      allBooks
+        .filter((b) => !includesHistory && c.baseline.includes(b.id))
+        .map((b) => b.author),
     );
     return new Set(
       books.filter((b) => !previous.has(b.author)).map((b) => b.author),
@@ -430,6 +447,8 @@ function parseBackup(text) {
   for (const c of data.challenges || []) {
     if (
       !isRecord(c) ||
+      (c.historyMode != null &&
+        !["all", "since-start"].includes(c.historyMode)) ||
       typeof c.title !== "string" ||
       c.title.length > 500 ||
       (c.baseline != null &&
