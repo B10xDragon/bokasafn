@@ -78,6 +78,7 @@ let allBooks = [];
 
         // Streak útreikningur
         function calculateStreak() {
+            if (typeof activitySummary === 'function') return activitySummary().current;
             // Weekly targets retain their rolling-seven-day meaning. Monthly targets
             // use calendar-month-to-date totals. The streak counts days meeting the
             // selected period target, rather than silently imposing a daily target.
@@ -497,6 +498,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             // Marka bókina sjálfkrafa sem lesna (grænt hak) ef hún er ekki þegar merkt
             if (!userData.read.includes(id)) {
                 userData.read.push(id);
+                if (userData.completedDates) userData.completedDates[id] = getLocalYYYYMMDD(new Date());
             }
             
             const saved = saveUserData();
@@ -548,6 +550,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         function confirmStopReading() {
             if (!timerState.active) { closeStopConfirmation(); return; }
             checkpointTimer();
+            const previousMilestones = JSON.stringify({achievements:userData.achievements,challenges:userData.challenges});
             const previousTotal = userData.totalSeconds;
             const previousProgress = { ...userData.dailyProgress };
             const session = timerState;
@@ -562,9 +565,13 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 userData.totalSeconds += seconds;
                 userData.dailyProgress[date] = (userData.dailyProgress[date] || 0) + seconds;
             }
+            const previousSessions = [...(userData.sessions || [])];
+            if (userData.sessions && totalSeconds > 0) userData.sessions.push({id: newDataId(),date:getLocalYYYYMMDD(new Date()),seconds:totalSeconds});
             timerState = emptyTimerState();
             // Commit the totals and removal of the session in one storage write.
             if (!saveUserData()) {
+                Object.assign(userData,JSON.parse(previousMilestones));
+                if (userData.sessions) userData.sessions = previousSessions;
                 userData.totalSeconds = previousTotal;
                 userData.dailyProgress = previousProgress;
                 timerState = session;
@@ -646,7 +653,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         function toggleRead(id) {
             if (!allBooks.some(book => book.id === id)) return;
             const index = userData.read.indexOf(id);
-            if (index > -1) userData.read.splice(index, 1); else userData.read.push(id);
+            if (index > -1) userData.read.splice(index, 1); else { userData.read.push(id); if(userData.completedDates) userData.completedDates[id]=getLocalYYYYMMDD(new Date()); }
             saveUserData(); applyFilters(); updateStatsUI();
         }
 

@@ -56,7 +56,7 @@ def context(browser, **options):
 
 def ready(page):
     page.goto(URL,wait_until='networkidle')
-    page.wait_for_function('appReady && allBooks.length===39')
+    page.wait_for_function('appReady && window.featuresReady && allBooks.length===39')
     page.evaluate('document.fonts.ready')
     page.wait_for_timeout(300)
 
@@ -198,8 +198,8 @@ with sync_playwright() as p:
                 box=close.bounding_box();assert box['y']>=0 and box['y']+box['height']<=height,box
                 page.screenshot(path=str(ARTIFACTS/f'live-{width}-{theme}-book.png'))
                 page.keyboard.press('Tab');expect(close).to_be_focused()
-                page.locator('#save-review-btn').focus();page.keyboard.press('Tab');expect(close).to_be_focused()
-                page.keyboard.press('Shift+Tab');expect(page.locator('#save-review-btn')).to_be_focused()
+                page.locator('#desc-modal-content button').last.focus();page.keyboard.press('Tab');expect(close).to_be_focused()
+                page.keyboard.press('Shift+Tab');expect(page.locator('#desc-modal-content button').last).to_be_focused()
                 page.keyboard.press('Escape');expect(trigger).to_be_focused();expect(page.locator('#desc-modal')).to_be_hidden()
                 recommend=page.locator('button[onclick="openRecommendModal()"]');recommend.click()
                 expect(page.locator('#rec-title')).to_be_focused();inside_viewport(page,'#recommend-modal-content')

@@ -1,0 +1,205 @@
+/* Existing theme tokens keep extensions consistent with every appearance. */
+.feature-panel {
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  border: 1px solid var(--theme-border);
+  border-radius: 1.5rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  margin: 1.5rem 0;
+  min-width: 0;
+}
+.feature-panel h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+}
+.feature-panel h3 {
+  font-weight: 800;
+  margin: 1.2rem 0 0.6rem;
+}
+.feature-panel p {
+  margin: 0.6rem 0;
+  overflow-wrap: anywhere;
+}
+.feature-heading,
+.feature-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.feature-heading {
+  justify-content: space-between;
+}
+.feature-button {
+  background: var(--theme-accent);
+  color: white;
+  border-radius: 0.9rem;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+  min-height: 44px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0.3rem 0;
+}
+.feature-button.secondary {
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  border: 1px solid var(--theme-border);
+}
+.feature-note,
+.feature-metric span,
+.feature-recommendation small {
+  color: var(--theme-muted);
+  font-size: 0.85rem;
+}
+.feature-grid,
+.feature-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.feature-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-width: 0;
+}
+.feature-field input,
+.feature-field select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--theme-border);
+  border-radius: 0.8rem;
+  background: var(--theme-bg);
+  color: var(--theme-text);
+}
+.feature-metric,
+.feature-achievement,
+.feature-recommendation {
+  background: var(--theme-bg);
+  border: 1px solid var(--theme-border);
+  border-radius: 1rem;
+  padding: 1rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.feature-metric strong,
+.feature-recommendation span,
+.feature-recommendation small {
+  display: block;
+}
+.feature-metric strong {
+  font-size: 1.6rem;
+}
+.feature-recommendation {
+  text-align: left;
+  min-height: 100px;
+}
+.feature-achievement h3 {
+  margin: 0;
+}
+.feature-achievement.unlocked {
+  border-color: var(--theme-accent);
+}
+.feature-achievement progress {
+  width: 100%;
+  accent-color: var(--theme-accent);
+}
+.feature-panel summary {
+  font-weight: 800;
+  cursor: pointer;
+  min-height: 44px;
+  padding: 0.6rem 0;
+}
+.feature-dialog {
+  max-width: 650px;
+  width: 100%;
+  max-height: 90dvh;
+  overflow-y: auto;
+  margin: 0;
+}
+.feature-result {
+  border: 1px solid var(--theme-accent);
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-top: 1rem;
+}
+.heat-scroll {
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+#activity-heatmap {
+  display: grid;
+  grid-template-rows: repeat(7, 14px);
+  grid-auto-flow: column;
+  grid-auto-columns: 14px;
+  gap: 4px;
+  width: max-content;
+}
+.heat-cell {
+  border-radius: 3px;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-bg);
+}
+.heat-cell.level-1 {
+  background: #bbf7d0;
+}
+.heat-cell.level-2 {
+  background: #4ade80;
+}
+.heat-cell.level-3 {
+  background: #16a34a;
+}
+.heat-cell.level-4 {
+  background: #166534;
+}
+.heat-cell:focus-visible {
+  outline: 3px solid var(--theme-accent);
+  outline-offset: 1px;
+}
+.feature-bar {
+  display: grid;
+  grid-template-columns: 85px 1fr 85px;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  margin: 0.7rem 0;
+}
+.feature-bar div {
+  background: var(--theme-bg);
+  height: 14px;
+  border-radius: 5px;
+}
+.feature-bar i {
+  display: block;
+  background: var(--theme-accent);
+  height: 100%;
+  border-radius: 5px;
+}
+.feature-panel :focus-visible {
+  outline: 3px solid var(--theme-accent);
+  outline-offset: 3px;
+}
+#backup-file {
+  max-width: 100%;
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+}
+.feature-actions > * {
+  max-width: 100%;
+  min-width: 0;
+}
+.feature-button input[type="file"] {
+  width: 100%;
+  min-width: 0;
+}
+.feature-button {
+  overflow-wrap: anywhere;
+}

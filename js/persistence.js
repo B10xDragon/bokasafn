@@ -107,7 +107,7 @@ function normalizeUserData(raw) {
         goalIds.add(id);
         result.personalGoals.push({ id, text: goal.text, completed: goal.completed === true });
     }
-    return result;
+    return typeof normalizeExtensions === 'function' ? normalizeExtensions(source, result) : result;
 }
 
 function warnStorage() {
@@ -122,6 +122,7 @@ function saveUserData() {
     // replace saved progress with the initial empty in-memory state.
     if (!userDataLoaded) return false;
     if (!storageWritable) { warnStorage(); return false; }
+    if (typeof refreshMilestones === 'function') refreshMilestones();
     const { interval, ...session } = timerState;
     userData.session = timerState.active ? session : null;
     try {

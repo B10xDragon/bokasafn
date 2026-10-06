@@ -10,12 +10,12 @@ function harness(stored = {}) {
     const storage = new Map(Object.entries(stored));
     const nodes = new Map();
     const makeNode = () => ({value:'', innerHTML:'', innerText:'', style:{}, children:[], classList:{add(){},remove(){},toggle(){},contains(){return false}},setAttribute(){},querySelector(){return null}});
-    const ctx = { console:{warn(){},error(){}}, Date, Intl, Math,
+    const ctx = { console:{warn(){},error(){}}, Date, Intl, Math, crypto:require('node:crypto'),
         document:{getElementById(id){if (!nodes.has(id)) nodes.set(id,makeNode());return nodes.get(id)},querySelector(){return null},querySelectorAll(){return []},addEventListener(){},activeElement:null},
         window:{addEventListener(){}}, localStorage:{getItem(key){return storage.get(key)??null},setItem(key,value){storage.set(key,value)}},
         setInterval(){return 1},clearInterval(){},setTimeout(){},requestAnimationFrame(){},rememberBookFocus(){return null},restoreBookFocus(){},prepareDialog(){},restoreDialogFocus(){} };
     vm.createContext(ctx);
-    for (const file of ['js/persistence.js','js/app.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
+    for (const file of ['js/persistence.js','js/insights.js','js/app.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
     vm.runInContext('allBooks = '+JSON.stringify(catalog),ctx);
     vm.runInContext('appReady = true; userDataLoaded = true;', ctx);
     return {ctx,storage,nodes,run(code){return vm.runInContext(code,ctx)},data(){return JSON.parse(vm.runInContext('JSON.stringify(userData)',ctx))}};
@@ -99,3 +99,47 @@ test('fallback disables the image error handler before assigning local asset',()
     const h=harness();const removed=[];const img={onerror:()=>{},classList:{remove(x){removed.push(x)}},parentElement:{classList:{remove(x){removed.push(x)}}}};h.ctx.img=img;h.run('handleCoverError(img)');assert.equal(img.onerror,null);assert.equal(img.src,'Resources/Assets/cover-placeholder.svg');assert.deepEqual(removed,['opacity-0','shimmer-placeholder']);
 });
 console.log(`${passed} regression tests passed`);
+
+test('extension schema preserves old totals without inventing dates or sessions',()=>{
+ const h=harness({library_v14:JSON.stringify({read:[first.title],totalSeconds:7200})});h.run('loadUserData()');assert.equal(h.data().totalSeconds,7200);assert.deepEqual(h.data().sessions,[]);assert.deepEqual(h.data().completedDates,{});assert(h.data().achievements.first);
+});
+test('new completion dates persist and old history stays unknown',()=>{
+ const h=harness();h.run(`loadUserData();toggleRead(${first.id});loadUserData()`);assert.equal(h.data().completedDates[first.id],h.run('getLocalYYYYMMDD(new Date())'));h.run(`toggleRead(${first.id})`);assert.equal(h.data().read.length,0);
+});
+test('saved sessions commit once and failed writes roll back sessions and unlocks',()=>{
+ const h=harness();h.run('loadUserData();handleTimerPrimaryAction();timerState.startTime=Date.now()-36001000;localStorage.setItem=()=>{throw Error("quota")};confirmStopReading()');assert.equal(h.data().sessions.length,0);assert(!h.data().achievements['10-hours']);h.ctx.localStorage.setItem=(k,v)=>h.storage.set(k,v);h.run('confirmStopReading();confirmStopReading()');assert.equal(h.data().sessions.length,1);assert(h.data().achievements['10-hours']);
+});
+test('backup parser accepts v14 and complete envelope; rejects malformed/newer files',()=>{
+ const h=harness();assert.equal(h.run('parseBackup(JSON.stringify({read:[],liked:[],totalSeconds:90})).data.totalSeconds'),90);
+ for(const bad of ['null','[]','{bad','{}',JSON.stringify({version:16,read:[]}),JSON.stringify({read:{}}),JSON.stringify({version:15,read:['title']}),JSON.stringify({read:[],dailyProgress:{'2026-02-30':90}}),JSON.stringify({read:[],reviews:{1:{rating:6,comment:''}}}),JSON.stringify({read:[],personalGoals:[{text:9}]}),JSON.stringify({read:[],sessions:[{}]}),JSON.stringify({format:'bokasafn-backup',backupVersion:2,data:{read:[]}})])assert.throws(()=>h.run('parseBackup('+JSON.stringify(bad)+')'));
+ const data=h.run('JSON.stringify(normalizeUserData({version:15,read:[1],sessions:[{id:"abc",date:"2026-01-01",seconds:60}]}))');assert.equal(h.run('parseBackup('+JSON.stringify(JSON.stringify({format:'bokasafn-backup',backupVersion:1,data:JSON.parse(data),preferences:{theme:'purple'}}))+').theme'),'purple');
+});
+test('safe merge is idempotent, retains conflicting existing reviews/goals and unknown titles',()=>{
+ const h=harness();h.run(`const a=normalizeUserData({version:15,read:[1],reviews:{1:{rating:5,comment:'local'}},minutesGoal:30,totalSeconds:100,dailyProgress:{'2026-01-01':100},personalGoals:[{id:1,text:'one',completed:false}],sessions:[{id:'a',date:'2026-01-01',seconds:100}]});const b=normalizeUserData({version:15,read:[2],reviews:{1:{rating:1,comment:'old'},2:{rating:4,comment:'new'}},minutesGoal:10,totalSeconds:150,dailyProgress:{'2026-01-01':150},personalGoals:[{id:1,text:'two',completed:false}],sessions:[{id:'a',date:'2026-01-01',seconds:100}]});userData=mergeReadingData(a,b)`);assert.deepEqual(h.data().read,[1,2]);assert.equal(h.data().reviews[1].comment,'local');assert.equal(h.data().minutesGoal,30);assert.equal(h.data().totalSeconds,150);assert.equal(h.data().sessions.length,1);assert.equal(h.data().personalGoals.length,2);const before=h.data();h.run('userData=mergeReadingData(userData,b)');assert.deepEqual(h.data(),before);
+});
+test('longest streak, active days and current streak use goals and exclude future dates',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,minutesGoal:20,dailyProgress:{"2025-12-30":1200,"2025-12-31":1200,"2026-01-01":1200,"2026-01-02":600,"2099-01-01":9000}})');const m=JSON.parse(h.run('JSON.stringify(activitySummary(new Date(2026,0,3)))'));assert.equal(m.longest,3);assert.equal(m.active,4);assert.equal(m.recordSeconds,1200);
+});
+test('achievements use completed pages and unlock permanently',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,read:allBooks.map(b=>b.id),totalSeconds:36000});refreshMilestones()');assert(h.data().achievements['1000-pages']);assert(h.data().achievements['five-genres']);h.run('userData.read=[];refreshMilestones()');assert(h.data().achievements.first);
+});
+test('challenges count new completions and ignore unknown historical completion dates',()=>{
+ const h=harness();h.run(`userData=normalizeUserData({version:15,read:[${first.id}],completedDates:{${first.id}:'2026-01-02'},challenges:[{id:'c',title:'books',kind:'books',target:1,start:'2026-01-01',end:'2026-01-31',baseline:[]}]});refreshMilestones()`);assert(h.data().challenges[0].completed);h.run('userData.completedDates={};userData.challenges[0].completed=null');assert.equal(h.run('challengeProgress(userData.challenges[0])'),0);
+});
+test('minute challenges subtract activity from before their start on the same day',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,dailyProgress:{"2026-01-01":3600},challenges:[{id:"c",title:"minutes",kind:"minutes",target:30,start:"2026-01-01",baselineSeconds:3000}]})');assert.equal(h.run('challengeProgress(userData.challenges[0])'),10);
+});
+test('recommendations are deterministic, explainable and exclude read/disliked books',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,read:[allBooks[0].id],reviews:{[allBooks[1].id]:{rating:1,comment:"no"}},liked:[allBooks[2].id]})');const rec=JSON.parse(h.run('JSON.stringify(recommendations())'));assert(rec.length);assert(rec.every(r=>r.book.id!==catalog[0].id&&r.book.id!==catalog[1].id));assert.equal(rec[0].book.id,catalog[2].id);assert.deepEqual(rec,JSON.parse(h.run('JSON.stringify(recommendations())')));h.run('userData=normalizeUserData({})');assert.equal(h.run('recommendations().length'),6);
+});
+test('advanced filters combine and random picker handles empty and singleton sets',()=>{
+ const h=harness();h.run(`userData=normalizeUserData({version:15,read:[${first.id}],liked:[${first.id}],reviews:{${first.id}:{rating:5,comment:''}}})`);h.ctx.book=first;assert(h.run('matchesAdvanced(book,{state:"read",min:1,max:10000,rating:4,author:book.author,category:book.categories[0]})'));assert(!h.run('matchesAdvanced(book,{state:"unread"})'));assert.equal(h.run('chooseRandom([])'),null);assert.equal(h.run('chooseRandom([book],()=>0.99).id'),first.id);
+});
+console.log(`${passed} total regression tests passed`);
+test('corrupt extension fields recover safely without losing valid legacy progress',()=>{
+ const h=harness({library_v15:JSON.stringify({version:15,totalSeconds:90,read:[first.id],sessions:[null,{id:'bad',date:'wrong',seconds:90}],completedDates:{bad:'not-date'},challenges:[{},null],achievements:{first:'not-date'}})});h.run('loadUserData();updateStatsUI()');assert.equal(h.data().totalSeconds,90);assert.deepEqual(h.data().sessions,[]);assert.deepEqual(h.data().challenges,[]);assert(h.data().achievements.first);
+});
+test('weekly and monthly longest streaks match their goal definitions across boundaries',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,minutesGoal:60,goalType:"weekly",dailyProgress:{"2025-12-30":3600}})');assert.equal(h.run('activitySummary(new Date(2026,0,3)).longest'),5);h.run('userData.goalType="monthly"');assert.equal(h.run('activitySummary(new Date(2026,0,3)).longest'),2);assert.equal(h.run('activitySummary(new Date(2026,0,3)).current'),0);
+});
+console.log(`${passed} total regression tests passed`);

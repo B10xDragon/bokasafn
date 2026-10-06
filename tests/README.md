@@ -47,3 +47,16 @@ days meeting the rolling-seven-day target; monthly streaks count consecutive day
 meeting the calendar-month-to-date target. With no target, the existing ten-minute
 daily reading threshold remains. Historical streaks are recalculated when the
 target changes because the original app does not record goal history.
+
+New feature checks:
+
+- `node tests/regression.test.cjs` includes additive v15 history, safe backups/merge,
+  achievements, challenge baselines, recommendations, advanced filters and random
+  selection. Run with `TZ=America/New_York` and `TZ=Atlantic/Reykjavik` too.
+- `python tests/features_browser.py` uses the same real CDN assets as the live suite.
+  It checks all five themes at 320/390/768/1440/1920px, actual downloads/imports,
+  cross-browser storage transfer, deep links and history, random/filter controls,
+  achievements/challenges and keyboard heatmap navigation.
+
+The older dialog tests locate the final focusable control rather than assuming
+that the review-save button is last, because book views now include a share link.
