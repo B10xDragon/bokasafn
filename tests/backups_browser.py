@@ -182,7 +182,7 @@ with sync_playwright() as p:
         page.evaluate('() => {window.nativeRemove=Storage.prototype.removeItem;Storage.prototype.removeItem=function(){throw new DOMException("denied","SecurityError")};}')
         page.locator('#feature-dialog-body .destructive').click();assert page.evaluate('JSON.stringify(userData)')==before;assert page.locator('#feature-modal-content [data-dialog-status]').text_content()
         page.evaluate('() => {Storage.prototype.removeItem=window.nativeRemove;}');page.keyboard.press('Escape');page.wait_for_timeout(350)
-        page.evaluate('navigator.clipboard.writeText=()=>Promise.reject(Error("denied"));openTextBackup()');page.wait_for_timeout(350);page.get_by_role('button',name='Afrita línuna',exact=True).click();assert 'handvirkt' in page.locator('#backup-line-copy-status').text_content()
+        page.evaluate('navigator.clipboard.writeText=()=>Promise.reject(Error("denied"));document.execCommand=()=>false;openTextBackup()');page.wait_for_timeout(350);page.get_by_role('button',name='Afrita línuna',exact=True).click();assert 'handvirkt' in page.locator('#backup-line-copy-status').text_content()
         page.keyboard.press('Escape')
     check('new dialogs at phone/tablet widths in all themes, keyboard Escape, denied deletion and clipboard fallback',layouts_failures)
     def large_and_running():

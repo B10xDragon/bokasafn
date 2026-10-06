@@ -80,3 +80,12 @@ The reset suite also checks delayed file reads and two open tabs cannot revive
 old data, large clipboard export/delete/import, and a running timer's restoration,
 refresh recovery and final save. New York and Reykjavík regression runs include
 all reset/backup tests.
+
+`python tests/clipboard_browser.py` adds nine real-asset clipboard groups covering
+canonical framing/display, native clipboard writes independent of DOM/selection,
+partial manual copying, Safari selection simulation, absent/rejected Clipboard
+API fallback, iPad desktop-user-agent dispatch, honest failure reporting, real
+copy/paste/validate/delete/import with Unicode, and backups larger than 1 MB.
+These tests use Chromium's actual system clipboard. iOS detection and partial
+selection are simulated; they do not replace verification on a physical iPad.
+Run this suite in addition to all four existing browser suites and regression tests.

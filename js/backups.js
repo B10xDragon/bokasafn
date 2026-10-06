@@ -1,6 +1,7 @@
 // Both portable formats share one complete envelope and the existing validator.
 let deleteConfirmationOpen = false;
 let backupEditGeneration = 0;
+let generatedBackupLine = "";
 function isUserStorageKey(key) {
   return typeof key === "string" && /^(library_|bokasafn[-_])/.test(key);
 }
@@ -228,41 +229,93 @@ function openTextBackup() {
       "Afrit í einni línu",
       `<p>Línan inniheldur einkagögn um lesturinn þinn. Geymdu hana á öruggum stað og deildu henni aðeins með þeim sem mega sjá gögnin.</p><label class="feature-field">Heildarafrit<textarea id="backup-line-output" readonly wrap="off" spellcheck="false" rows="4"></textarea></label><div class="feature-actions">${featureButton("Velja alla línuna", "selectBackupLine()")}${featureButton("Afrita línuna", "copyBackupLine()")}</div><p id="backup-line-copy-status" role="status" aria-live="polite"></p>`,
     );
-    document.getElementById("backup-line-output").value = line;
+    // Keep the encoded envelope independently of the DOM and its selection.
+    generatedBackupLine = line;
+    const field = document.getElementById("backup-line-output");
+    field.value = line;
+    field.addEventListener("copy", (event) => {
+      // iOS may select only part of a long readonly textarea. Manual Copy must
+      // still copy the complete envelope, including its framing and checksum.
+      event.preventDefault();
+      if (event.clipboardData && generatedBackupLine === line)
+        event.clipboardData.setData("text/plain", line);
+    });
   } catch (error) {
     showToast("Ekki tókst að búa til heilt afrit: " + error.message, "error");
   }
 }
 function selectBackupLine() {
   const field = document.getElementById("backup-line-output");
-  field.focus();
+  if (!field || !generatedBackupLine) return;
+  field.value = generatedBackupLine;
+  field.focus({ preventScroll: true });
   field.select();
+  field.setSelectionRange(0, generatedBackupLine.length);
+  field.scrollLeft = 0;
+}
+function copyBackupTextFallback(line) {
+  // An editable, on-screen textarea works around iOS readonly selection bugs.
+  // It must be inside the dialog so the existing focus trap does not steal focus.
+  const container = document.getElementById("backup-line-output")?.parentElement;
+  if (!container) return false;
+  const previousFocus = document.activeElement;
+  const field = document.createElement("textarea");
+  field.value = line;
+  field.setAttribute("inputmode", "none");
+  field.setAttribute("aria-label", "Heildarafrit til afritunar");
+  field.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px;pointer-events:none";
+  let wroteCompleteLine = false;
+  const onCopy = (event) => {
+    event.preventDefault();
+    if (event.clipboardData) {
+      event.clipboardData.setData("text/plain", line);
+      wroteCompleteLine = event.clipboardData.getData("text/plain") === line;
+    }
+  };
+  try {
+    container.appendChild(field);
+    document.addEventListener("copy", onCopy, true);
+    field.focus({ preventScroll: true });
+    field.select();
+    field.setSelectionRange(0, line.length);
+    return document.execCommand("copy") && wroteCompleteLine;
+  } catch (error) {
+    return false;
+  } finally {
+    document.removeEventListener("copy", onCopy, true);
+    field.remove();
+    if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
+  }
 }
 async function copyBackupLine() {
-  const generation = backupEditGeneration,
-    line = document.getElementById("backup-line-output").value;
-  try {
-    if (navigator.clipboard?.writeText)
+  const generation = backupEditGeneration, line = generatedBackupLine;
+  if (!line || !document.getElementById("backup-line-output")) return;
+  document.getElementById("backup-line-output").value = line;
+  const stillOpen = () => generation === backupEditGeneration &&
+    generatedBackupLine === line && document.getElementById("backup-line-output");
+  let copied = false;
+  // On iOS, perform execCommand synchronously in the original tap. Awaiting a
+  // rejected clipboard permission promise can lose Safari's user activation.
+  const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (ios) copied = copyBackupTextFallback(line);
+  if (!copied && navigator.clipboard?.writeText) {
+    try {
       await navigator.clipboard.writeText(line);
-    else {
-      selectBackupLine();
-      if (!document.execCommand("copy")) throw Error("clipboard");
+      copied = true;
+    } catch (error) {
+      // Retry through the copy event; never use the export selection as data.
     }
-    if (
-      generation === backupEditGeneration &&
-      document.getElementById("backup-line-copy-status")
-    )
-      document.getElementById("backup-line-copy-status").textContent =
-        "Öll línan hefur verið afrituð.";
-  } catch (error) {
-    if (
-      generation === backupEditGeneration &&
-      document.getElementById("backup-line-output")
-    ) {
-      selectBackupLine();
-      document.getElementById("backup-line-copy-status").textContent =
-        "Sjálfvirk afritun tókst ekki. Afritaðu valda línu handvirkt.";
-    }
+  }
+  if (!stillOpen()) return;
+  if (!copied) copied = copyBackupTextFallback(line);
+  if (copied) {
+    document.getElementById("backup-line-copy-status").textContent =
+      "Öll línan hefur verið afrituð.";
+  } else {
+    selectBackupLine();
+    document.getElementById("backup-line-copy-status").textContent =
+      "Sjálfvirk afritun tókst ekki. Afritaðu valda línu handvirkt eða reyndu aftur með afritunarhnappinum.";
   }
 }
 function openTextImport() {

@@ -117,3 +117,13 @@ Reset also guards against asynchronous resurrection: pending file reads are
 invalidated, other open tabs stop their timers and reload after deletion, and a
 save compares the persisted library with the tab's last observed value before
 writing. A stale tab must reload instead of overwriting a deletion/replacement.
+
+Text-backup copying uses a canonical generated envelope, never the export field's
+selection. Both the native Clipboard API and the editable-textarea fallback copy
+that exact envelope. The fallback supplies the complete string in the copy event
+and requires both a successful copy command and a populated clipboard event;
+API rejection automatically retries it. On iOS it runs synchronously during the
+original tap to retain user activation. Manual copying from the export field also
+supplies the complete envelope, even when only part was selected. Closing the
+dialog clears the private canonical string. Framing and integrity validation are
+unchanged; payload-only strings remain invalid.

@@ -517,6 +517,7 @@ function installFeatures() {
     originalClose(modalId, contentId);
     if (modalId === "feature-modal") {
       deleteConfirmationOpen = false;
+      generatedBackupLine = "";
       backupEditGeneration++;
     }
     if (
