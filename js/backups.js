@@ -2,6 +2,8 @@
 let deleteConfirmationOpen = false;
 let backupEditGeneration = 0;
 let generatedBackupLine = "";
+const BACKUP_LINE_MARKER = "BOKASAFN";
+const BACKUP_LINE_PREFIX = BACKUP_LINE_MARKER + ":1:";
 function isUserStorageKey(key) {
   return typeof key === "string" && /^(library_|bokasafn[-_])/.test(key);
 }
@@ -54,7 +56,7 @@ function bytesToBase64URL(bytes) {
 }
 function encodeBackupLine(backup) {
   const bytes = new TextEncoder().encode(JSON.stringify(backup));
-  return `BOKASAFN:1:${bytes.length}:${crc32(bytes)}:${bytesToBase64URL(bytes)}`;
+  return `${BACKUP_LINE_PREFIX}${bytes.length}:${crc32(bytes)}:${bytesToBase64URL(bytes)}`;
 }
 function decodeBackupLine(line) {
   if (typeof line !== "string" || !line)
@@ -62,7 +64,7 @@ function decodeBackupLine(line) {
   if (/[\r\n\u2028\u2029]/.test(line))
     throw Error("Ógilt afrit: línan má ekki innihalda línuskipti.");
   const parts = line.split(":");
-  if (parts[0] !== "BOKASAFN")
+  if (parts[0] !== BACKUP_LINE_MARKER)
     throw Error("Ógilt afrit: merkið BOKASAFN vantar.");
   if (parts.length < 2)
     throw Error("Afritið er ófullkomið eða hefur verið stytt.");
@@ -227,18 +229,19 @@ function openTextBackup() {
     const line = encodeBackupLine(createReadingBackup());
     featureDialog(
       "Afrit í einni línu",
-      `<p>Línan inniheldur einkagögn um lesturinn þinn. Geymdu hana á öruggum stað og deildu henni aðeins með þeim sem mega sjá gögnin.</p><label class="feature-field">Heildarafrit<textarea id="backup-line-output" readonly wrap="off" spellcheck="false" rows="4"></textarea></label><div class="feature-actions">${featureButton("Velja alla línuna", "selectBackupLine()")}${featureButton("Afrita línuna", "copyBackupLine()")}</div><p id="backup-line-copy-status" role="status" aria-live="polite"></p>`,
+      `<p>Línan inniheldur einkagögn um lesturinn þinn. Geymdu hana á öruggum stað og deildu henni aðeins með þeim sem mega sjá gögnin.</p><label class="feature-field">Heildarafrit<textarea id="backup-line-output" readonly wrap="off" spellcheck="false" autocapitalize="off" autocorrect="off" rows="4"></textarea></label><div class="feature-actions">${featureButton("Velja alla línuna", "selectBackupLine()")}${featureButton("Afrita línuna", "copyBackupLine()")}</div><p id="backup-line-copy-status" role="status" aria-live="polite"></p>`,
     );
     // Keep the encoded envelope independently of the DOM and its selection.
     generatedBackupLine = line;
     const field = document.getElementById("backup-line-output");
     field.value = line;
     field.addEventListener("copy", (event) => {
-      // iOS may select only part of a long readonly textarea. Manual Copy must
-      // still copy the complete envelope, including its framing and checksum.
       event.preventDefault();
-      if (event.clipboardData && generatedBackupLine === line)
-        event.clipboardData.setData("text/plain", line);
+      try {
+        writeBackupCopyEvent(event);
+      } catch (error) {
+        document.getElementById("backup-line-copy-status").textContent = error.message;
+      }
     });
   } catch (error) {
     showToast("Ekki tókst að búa til heilt afrit: " + error.message, "error");
@@ -253,7 +256,34 @@ function selectBackupLine() {
   field.setSelectionRange(0, generatedBackupLine.length);
   field.scrollLeft = 0;
 }
-function copyBackupTextFallback(line) {
+function requireGeneratedBackupLine() {
+  const field = document.getElementById("backup-line-output");
+  if (!generatedBackupLine.startsWith(BACKUP_LINE_PREFIX) ||
+      !field || field.value !== generatedBackupLine)
+    throw Error("Ekki tókst að afrita: afritslínan er ekki óbreytt heildarafrit. Búðu til nýtt afrit.");
+  return generatedBackupLine;
+}
+function backupClipboardRepresentations() {
+  const line = requireGeneratedBackupLine();
+  // A plain-only iOS pasteboard can promote BOKASAFN: to a URL scheme and
+  // lowercase it (WebKit #253708). Explicit HTML + plain text keep it text.
+  // Neither representation changes the canonical line or adds hidden characters.
+  return {
+    "text/html": `<span data-bokasafn-backup="1">${escapeHTML(line)}</span>`,
+    "text/plain": line,
+  };
+}
+function writeBackupCopyEvent(event) {
+  if (!event.clipboardData) return false;
+  const representations = backupClipboardRepresentations();
+  event.clipboardData.clearData(); // Do not leave a URL representation behind.
+  for (const [type, value] of Object.entries(representations))
+    event.clipboardData.setData(type, value);
+  return event.clipboardData.getData("text/plain") === representations["text/plain"] &&
+    event.clipboardData.getData("text/html") === representations["text/html"];
+}
+function copyBackupTextFallback() {
+  const line = requireGeneratedBackupLine();
   // An editable, on-screen textarea works around iOS readonly selection bugs.
   // It must be inside the dialog so the existing focus trap does not steal focus.
   const container = document.getElementById("backup-line-output")?.parentElement;
@@ -267,10 +297,7 @@ function copyBackupTextFallback(line) {
   let wroteCompleteLine = false;
   const onCopy = (event) => {
     event.preventDefault();
-    if (event.clipboardData) {
-      event.clipboardData.setData("text/plain", line);
-      wroteCompleteLine = event.clipboardData.getData("text/plain") === line;
-    }
+    wroteCompleteLine = writeBackupCopyEvent(event);
   };
   try {
     container.appendChild(field);
@@ -293,22 +320,41 @@ async function copyBackupLine() {
   document.getElementById("backup-line-output").value = line;
   const stillOpen = () => generation === backupEditGeneration &&
     generatedBackupLine === line && document.getElementById("backup-line-output");
+  try { requireGeneratedBackupLine(); }
+  catch (error) {
+    document.getElementById("backup-line-copy-status").textContent = error.message;
+    return;
+  }
   let copied = false;
   // On iOS, perform execCommand synchronously in the original tap. Awaiting a
   // rejected clipboard permission promise can lose Safari's user activation.
   const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  if (ios) copied = copyBackupTextFallback(line);
-  if (!copied && navigator.clipboard?.writeText) {
+  if (ios) copied = copyBackupTextFallback();
+  if (!copied && navigator.clipboard) {
     try {
-      await navigator.clipboard.writeText(line);
+      if (ios) {
+        // Do not send a URL-shaped backup through iOS's plain-only writeText.
+        // Typed data provides the same exact text plus its literal HTML form.
+        if (!navigator.clipboard.write || typeof ClipboardItem === "undefined")
+          throw Error("clipboard");
+        const representations = backupClipboardRepresentations();
+        const item = new ClipboardItem(Object.fromEntries(
+          Object.entries(representations).map(([type, value]) =>
+            [type, new Blob([value], { type })]),
+        ));
+        await navigator.clipboard.write([item]);
+      } else {
+        if (!navigator.clipboard.writeText) throw Error("clipboard");
+        await navigator.clipboard.writeText(line);
+      }
       copied = true;
     } catch (error) {
       // Retry through the copy event; never use the export selection as data.
     }
   }
   if (!stillOpen()) return;
-  if (!copied) copied = copyBackupTextFallback(line);
+  if (!copied) copied = copyBackupTextFallback();
   if (copied) {
     document.getElementById("backup-line-copy-status").textContent =
       "Öll línan hefur verið afrituð.";
@@ -322,8 +368,19 @@ function openTextImport() {
   pendingImport = null;
   featureDialog(
     "Flytja inn afritslínu",
-    `<p>Afritslínan getur innihaldið einkagögn. Límdu alla línuna hér; ekkert verður vistað fyrr en þú velur að sameina eða skipta út.</p><label class="feature-field">Afritslína<textarea id="backup-line-input" rows="5" wrap="off" spellcheck="false" oninput="invalidateBackupLine()"></textarea></label><p id="backup-line-status" role="status" aria-live="polite"></p><div class="feature-actions">${featureButton("Athuga afrit", "validateBackupLineInput()")}<button id="backup-line-import" type="button" class="feature-button" disabled onclick="previewTextImport()">Flytja inn</button></div>`,
+    `<p>Afritslínan getur innihaldið einkagögn. Límdu alla línuna hér; ekkert verður vistað fyrr en þú velur að sameina eða skipta út.</p><label class="feature-field">Afritslína<textarea id="backup-line-input" rows="5" wrap="off" spellcheck="false" autocapitalize="off" autocorrect="off" oninput="invalidateBackupLine()" onpaste="pasteBackupLine(event)"></textarea></label><p id="backup-line-status" role="status" aria-live="polite"></p><div class="feature-actions">${featureButton("Athuga afrit", "validateBackupLineInput()")}<button id="backup-line-import" type="button" class="feature-button" disabled onclick="previewTextImport()">Flytja inn</button></div>`,
   );
+}
+function pasteBackupLine(event) {
+  // iOS default insertion may choose a URL representation and lowercase its
+  // scheme. Insert the literal text/plain bytes instead; never change case.
+  if (!event.clipboardData || !Array.from(event.clipboardData.types).includes("text/plain"))
+    return;
+  event.preventDefault();
+  const field = event.currentTarget;
+  field.setRangeText(event.clipboardData.getData("text/plain"),
+    field.selectionStart, field.selectionEnd, "end");
+  field.dispatchEvent(new Event("input", { bubbles: true }));
 }
 function invalidateBackupLine() {
   pendingImport = null;

@@ -225,3 +225,9 @@
   color: var(--theme-text);
   resize: vertical;
 }
+
+/* Backup contents are literal, case-sensitive data, not styled labels. */
+#backup-line-output,
+#backup-line-input {
+  text-transform: none;
+}

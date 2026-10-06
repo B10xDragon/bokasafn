@@ -127,3 +127,18 @@ original tap to retain user activation. Manual copying from the export field als
 supplies the complete envelope, even when only part was selected. Closing the
 dialog clears the private canonical string. Framing and integrity validation are
 unchanged; payload-only strings remain invalid.
+
+The case-sensitive marker is shared by the sole encoder and strict decoder.
+Every copy representation uses the generated canonical string and checks that it
+is identical to the export DOM value with the exact uppercase prefix. Fallback
+and manual copying clear inherited URL types and write both HTML (literal span)
+and plain text. iOS uses these two representations via ClipboardItem if the
+synchronous fallback fails, rather than plain-only writeText. Other browsers
+retain writeText. No invisible characters or format changes are introduced.
+The import field inserts raw text/plain from paste events without allowing the
+browser to substitute a URL representation; no case conversion is performed.
+
+This addresses the transport risk documented in WebKit bug 253708
+(https://bugs.webkit.org/show_bug.cgi?id=253708), where `Hello:` copies/pastes as
+`hello:`. Chromium tests verify literal clipboard contents and model URL-preferred
+insertion; physical iOS remains necessary to confirm the platform workaround.
