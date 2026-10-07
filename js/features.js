@@ -458,7 +458,9 @@ function installFeatures() {
   const originalFilter = window.applyFilters;
   window.applyFilters = function () {
     if (!allBooks.length) return;
-    originalFilter();
+    bookRenderSuspended++;
+    try { originalFilter(); }
+    finally { bookRenderSuspended--; }
     filteredBooks = filteredBooks.filter((b) =>
       matchesAdvanced(b, filtersValue()),
     );

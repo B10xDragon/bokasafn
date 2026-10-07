@@ -56,7 +56,7 @@ def context(browser, **options):
 
 def ready(page):
     page.goto(URL,wait_until='networkidle')
-    page.wait_for_function('appReady && window.featuresReady && allBooks.length===39')
+    page.wait_for_function(f'appReady && window.featuresReady && allBooks.length==={len(CATALOG)}')
     page.evaluate('document.fonts.ready')
     page.wait_for_timeout(300)
 
@@ -137,7 +137,7 @@ with sync_playwright() as p:
         assert page.evaluate('!timerState.active && timerState.elapsedBeforePause===0 && pendingImport===null && currentRating===0 && searchQuery==="" && activeCategories.length===0')
         assert page.locator('#main-timer-display').text_content()=='00:00:00'
         assert page.locator('#personal-goal-input').input_value()=='';assert page.locator('#book-sort').input_value()=='default';assert page.locator('#filter-min').input_value()==''
-        assert page.evaluate('bokasafnThemePreference')=='system';assert page.locator('.book-card').count()==39
+        assert page.evaluate('bokasafnThemePreference')=='system';assert page.locator('.book-card').count()==min(len(CATALOG),60)
         expect(page.locator('#library-page')).to_be_visible()
         page.reload();page.wait_for_function('window.featuresReady');assert page.evaluate('userData.read.length===0&&userData.totalSeconds===0&&!timerState.active&&Object.keys(userData.achievements).length===0&&userData.challenges.length===0')
         assert page.evaluate('localStorage.getItem("library_v14")') is None

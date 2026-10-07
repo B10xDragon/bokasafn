@@ -25,7 +25,7 @@ python tests/live_browser.py
 
 This suite starts a local HTTP server and downloads the actual Tailwind script,
 Font Awesome CSS/fonts, and Google Fonts through curl using the environment's
-proxy and CA trust. It checks all 39 repository cover images, five viewport sizes
+proxy and CA trust. It checks the initial cover batch, five viewport sizes
 (320, 390, 768, 1440, and 1920 pixels), both views, every theme, mobile touch,
 search/filter/sorting flows, reviews, timers, goals, migration, slow startup, and
 failed saves. Dependency caches and screenshots are saved in the system temporary
@@ -74,7 +74,7 @@ Full reset and portable text-backup checks:
   replacement, validation, all themes at phone/tablet widths, and denied
   deletion/clipboard fallback.
 
-Run all three real-asset suites plus `tests/browser.py` for complete verification.
+Run every real-asset suite plus `tests/browser.py` for complete verification.
 
 The reset suite also checks delayed file reads and two open tabs cannot revive
 old data, large clipboard export/delete/import, and a running timer's restoration,
@@ -96,3 +96,25 @@ writeText, manual copy and the fallback. Additional checks exercise typed iOS
 ClipboardItems with identical plain/HTML text, clear stale URL types, model the
 iOS URL-promotion bug, and insert literal text/plain on paste while the importer
 continues rejecting lowercase input. The URL-promotion model is not physical iOS.
+
+Expanded Forlagið catalog checks:
+
+```sh
+python tests/catalog_tools.py
+python scripts/validate_catalog.py
+python tests/catalog_browser.py
+```
+
+These check edition normalization, explicit language evidence, the original 39
+complete records, unique IDs, normalized categories, known/unknown page counts,
+metadata and local cover hashes, real-server loading of every cover, new book IDs,
+Unicode normalization in search, bounded rendering and keyboard load-more,
+combined filters/sorting/recommendations/random selection, deep links/history,
+320px dialogs, pre-expansion JSON/text imports and measured filter latency.
+Performance results are written to the temporary verification artifact directory.
+The grid shows at most 60 cards initially; tests check the full filtered result
+independently of this displayed slice.
+
+Complete pass: run the Node suite (UTC, New York and Reykjavík), catalog tools
+and validator, then all six Python browser suites: `browser`, `live_browser`,
+`features_browser`, `backups_browser`, `clipboard_browser` and `catalog_browser`.

@@ -12,6 +12,7 @@ from urllib.parse import urlparse, unquote
 from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[1]
+CATALOG = json.loads((ROOT/'Resources/books.json').read_text())
 URL = 'http://bokasafn.test/'
 UTILITY_CSS = '''.hidden{display:none!important}.opacity-0{opacity:0}.pointer-events-none{pointer-events:none}
 .fixed{position:fixed}.inset-0{inset:0}.flex{display:flex}.items-center{align-items:center}
@@ -52,7 +53,7 @@ with sync_playwright() as p:
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
     page.goto(URL)
-    page.wait_for_function('allBooks.length === 39 && document.querySelectorAll(".book-card").length === 39')
+    page.wait_for_function(f'allBooks.length === {len(CATALOG)} && document.querySelectorAll(".book-card").length === Math.min(allBooks.length, BOOK_BATCH_SIZE)')
     expect(page.locator('#book-sort')).to_have_count(1)
     first = page.evaluate('allBooks[0]')
     print('PASS catalog startup and existing sorting enhancement', flush=True)
@@ -71,7 +72,7 @@ with sync_playwright() as p:
         page.evaluate('toggleCategory("Allir")')
         page.select_option('#book-sort', 'title-desc')
         titles = page.locator('.book-card h3').all_text_contents()
-        assert titles == page.evaluate('filteredBooks.map(book=>book.title)')
+        assert titles == page.evaluate('filteredBooks.slice(0,renderedBookLimit).map(book=>book.title)')
         page.select_option('#book-sort', 'default')
     check('keyboard wishlist/read controls recompute filters and preserve sorting', filters)
 
@@ -113,7 +114,7 @@ with sync_playwright() as p:
         assert payload in page.locator('#personal-goals-list').text_content()
         assert page.locator('#personal-goals-list img, #personal-goals-list script').count()==0
         assert page.evaluate('window.injected === undefined')
-        page.reload();page.wait_for_function('allBooks.length===39');page.evaluate('showPage("stats")');page.wait_for_timeout(250)
+        page.reload();page.wait_for_function(f'allBooks.length==={len(CATALOG)}');page.evaluate('showPage("stats")');page.wait_for_timeout(250)
         assert payload in page.locator('#personal-goals-list').text_content()
         page.click('#nav-library');page.wait_for_timeout(250)
     check('hostile review and goal text remains literal before and after reload', hostile_text)
@@ -132,7 +133,7 @@ with sync_playwright() as p:
         expect(page.locator('body')).to_have_attribute('data-theme','light')
         page.emulate_media(color_scheme='dark')
         expect(page.locator('body')).to_have_attribute('data-theme','dark')
-        page.evaluate('setBokasafnTheme("purple")');page.reload();page.wait_for_function('allBooks.length===39')
+        page.evaluate('setBokasafnTheme("purple")');page.reload();page.wait_for_function(f'allBooks.length==={len(CATALOG)}')
         expect(page.locator('body')).to_have_attribute('data-theme','purple')
         page.click('#nav-appearance');expect(page.locator('#nav-appearance')).to_have_attribute('aria-expanded','true')
         page.keyboard.press('Escape');expect(page.locator('#nav-appearance')).to_be_focused()
@@ -140,7 +141,7 @@ with sync_playwright() as p:
 
     def timer():
         page.evaluate('handleTimerPrimaryAction();timerState.startTime=Date.now()-65000;saveUserData()')
-        page.reload();page.wait_for_function('allBooks.length===39 && timerState.active')
+        page.reload();page.wait_for_function(f'allBooks.length==={len(CATALOG)} && timerState.active')
         assert page.evaluate('timerState.active && !timerState.paused')
         page.evaluate('handleTimerPrimaryAction()')
         elapsed = page.evaluate('timerState.elapsedBeforePause')
@@ -152,7 +153,7 @@ with sync_playwright() as p:
         assert page.evaluate('timerState.active')
         page.evaluate('confirmStopReading()');total = page.evaluate('userData.totalSeconds')
         assert total>=65
-        page.reload();page.wait_for_function('allBooks.length===39')
+        page.reload();page.wait_for_function(f'allBooks.length==={len(CATALOG)}')
         assert page.evaluate('userData.totalSeconds')==total
         assert not page.evaluate('timerState.active')
     check('running and paused timers survive real reloads without double counting', timer)
@@ -178,7 +179,7 @@ with sync_playwright() as p:
         isolated.route('**/*', route_files)
         isolated.add_init_script('Object.defineProperty(window,"localStorage",{get(){throw new DOMException("Denied","SecurityError")}})')
         q=isolated.new_page();local_errors=[];q.on('pageerror',lambda e:local_errors.append(str(e)))
-        q.goto(URL);q.wait_for_function('allBooks.length===39')
+        q.goto(URL);q.wait_for_function(f'allBooks.length==={len(CATALOG)}')
         q.evaluate('setBokasafnTheme("green");toggleLike(1);handleTimerPrimaryAction()')
         assert not local_errors,local_errors
         expect(q.locator('body')).to_have_attribute('data-theme','green')

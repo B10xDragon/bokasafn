@@ -9,7 +9,7 @@ function test(name, fn) { fn(); passed++; console.log('PASS ' + name); }
 function harness(stored = {}) {
     const storage = new Map(Object.entries(stored));
     const nodes = new Map();
-    const makeNode = () => ({value:'', innerHTML:'', innerText:'', style:{}, children:[], classList:{add(){},remove(){},toggle(){},contains(){return false}},setAttribute(){},querySelector(){return null}});
+    const makeNode = () => ({value:'', innerHTML:'', innerText:'', style:{}, children:[], classList:{add(){},remove(){},toggle(){},contains(){return false}},insertAdjacentHTML(position,html){this.innerHTML+=html},setAttribute(){},querySelector(){return null}});
     const ctx = { console:{warn(){},error(){}}, Date, Intl, Math, TextEncoder, TextDecoder, Uint8Array, btoa, atob, bokasafnThemePreference:'system', crypto:require('node:crypto'),
         document:{getElementById(id){if (!nodes.has(id)) nodes.set(id,makeNode());return nodes.get(id)},querySelector(){return null},querySelectorAll(){return []},addEventListener(){},activeElement:null},
         window:{addEventListener(){}}, localStorage:{get length(){return storage.size},key(i){return [...storage.keys()][i]??null},getItem(key){return storage.get(key)??null},setItem(key,value){storage.set(key,value)},removeItem(key){storage.delete(key)}},sessionStorage:{get length(){return 0},key(){return null},getItem(){return null},setItem(){},removeItem(){}},
@@ -183,5 +183,33 @@ test('full snapshots reject unrelated storage keys and older JSON files still im
 console.log(`${passed} total regression tests passed`);
 test('a stale tab cannot resurrect user data after another tab deletes or replaces it',()=>{
  const h=harness();h.run('loadUserData();userData.read=[1];saveUserData();localStorage.removeItem(LIBRARY_STORAGE_KEY)');assert.equal(h.run('saveUserData()'),false);assert(!h.storage.has('library_v15'));h.storage.set('library_v15',JSON.stringify({version:15,read:[]}));assert.equal(h.run('saveUserData()'),false);assert.deepEqual(JSON.parse(h.storage.get('library_v15')).read,[]);
+});
+console.log(`${passed} total regression tests passed`);
+test('original 39 identities and pre-expansion JSON/text backups remain compatible',()=>{
+ const originals=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/original-39-books.json')));
+ for(const book of originals)assert.deepEqual(catalog.find(b=>b.id===book.id),book);
+ const h=harness(),json=fs.readFileSync(path.join(root,'tests/fixtures/pre-expansion-reading.json'),'utf8'),line=fs.readFileSync(path.join(root,'tests/fixtures/pre-expansion-reading.txt'),'utf8');
+ h.ctx.oldJSON=json;h.ctx.oldLine=line;
+ assert.equal(h.run('JSON.stringify(parseBackup(oldJSON).data)'),h.run('JSON.stringify(parseBackupLine(oldLine).data)'));
+ h.run('userData=normalizeUserData(parseBackupLine(oldLine).data);saveUserData();loadUserData()');
+ assert.deepEqual(h.data().read,[1,21,39]);assert.deepEqual(h.data().liked,[2,32]);assert.equal(h.data().reviews[21].comment,'Gömul umsögn – Þ æ ö 😀');
+ for(const id of h.data().read)assert.equal(catalog.find(b=>b.id===id).title,originals.find(b=>b.id===id).title);
+});
+test('unavailable page counts are excluded from page filters and completed-page totals',()=>{
+ const h=harness();h.run('userData=normalizeUserData({});var unknown={id:9999999,title:"Óþekkt lengd",author:"Höfundur",pages:null,categories:["Barnabækur"]};allBooks.push(unknown)');
+ assert(h.run('matchesAdvanced(unknown,{})'));assert.equal(h.run('matchesAdvanced(unknown,{min:1})'),false);assert.equal(h.run('matchesAdvanced(unknown,{max:1000})'),false);
+ h.run('userData.read=[unknown.id]');assert.equal(h.run('readingMetrics().pages'),0);
+});
+console.log(`${passed} total regression tests passed`);
+
+test('legacy data for newly available Forlagið titles migrates to stable IDs and survives portable backups',()=>{
+ const book=catalog.find(b=>b.id>39);assert(book);
+ const legacy={read:[book.title],liked:[book.title],reviews:{[book.title]:{rating:4,comment:'Ný bók – Þ æ ö 😀',date:'nú'}}};
+ const h=harness({library_v14:JSON.stringify(legacy)});h.run('loadUserData()');
+ assert.deepEqual(h.data().read,[book.id]);assert.deepEqual(h.data().liked,[book.id]);assert.equal(h.data().reviews[book.id].comment,'Ný bók – Þ æ ö 😀');
+ h.ctx.newID=book.id;h.run('allBooks.find(b=>b.id===newID).title="Annar titill";saveUserData();loadUserData()');
+ assert.deepEqual(h.data().read,[book.id]);assert.equal(h.run('parseBackupLine(encodeBackupLine(createReadingBackup())).data.read[0]'),book.id);
+ assert.equal(h.run('parseBackup(JSON.stringify(createReadingBackup())).data.liked[0]'),book.id);
+ assert.equal(h.storage.get('library_v14'),JSON.stringify(legacy));
 });
 console.log(`${passed} total regression tests passed`);

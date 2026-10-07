@@ -56,7 +56,7 @@ def context(browser, **options):
 
 def ready(page):
     page.goto(URL,wait_until='networkidle')
-    page.wait_for_function('appReady && window.featuresReady && allBooks.length===39')
+    page.wait_for_function(f'appReady && window.featuresReady && allBooks.length==={len(CATALOG)}')
     page.evaluate('document.fonts.ready')
     page.wait_for_timeout(300)
 
@@ -94,10 +94,10 @@ with sync_playwright() as p:
         height=page.evaluate('document.documentElement.scrollHeight')
         for y in range(0,height,600):page.evaluate('(y)=>window.scrollTo(0,y)',y);page.wait_for_timeout(30)
         page.wait_for_function('[...document.querySelectorAll(".book-card img")].every(img=>img.complete&&img.naturalWidth>0)')
-        assert page.locator('.book-card img').count()==39
+        assert page.locator('.book-card img').count()==min(len(CATALOG),60)
         assert page.evaluate('[...document.querySelectorAll(".book-card img")].every(img=>!img.src.endsWith("cover-placeholder.svg")&&img.alt)')
         page.evaluate('window.scrollTo(0,0)')
-    check('actual Tailwind, Google Font, Font Awesome and all 39 original covers load',assets)
+    check('actual Tailwind, Google Font, Font Awesome and the initial cover batch load',assets)
 
     def responsive_themes():
         palettes={'light':'rgb(248, 250, 252)','dark':'rgb(9, 9, 11)','green':'rgb(7, 19, 14)','purple':'rgb(13, 7, 21)','orange':'rgb(18, 11, 5)'}
@@ -140,7 +140,8 @@ with sync_playwright() as p:
             page.fill('#book-search',query)
             expected=[book['id'] for book in CATALOG if query.lower() in book['title'].lower() or query.lower() in book['author'].lower()]
             actual=page.locator('#book-grid .book-card').evaluate_all('(cards)=>cards.map(card=>Number(card.dataset.bookId))')
-            assert actual==expected,(query,actual,expected)
+            assert page.evaluate('filteredBooks.map(book=>book.id)')==expected,(query,expected)
+            assert actual==expected[:60],(query,actual,expected[:60])
             assert page.locator('#search-suggestions [role=button]').count()==min(5,len(expected)) if expected else page.locator('#search-suggestions').is_hidden()
         page.fill('#book-search','Hildur');page.keyboard.press('ArrowDown')
         first=page.locator('#search-suggestions [role=button]').first
@@ -152,7 +153,7 @@ with sync_playwright() as p:
         page.fill('#book-search','Hildur');first=page.locator('#search-suggestions [role=button]').first;first.click()
         expect(page.locator('#search-suggestions')).to_be_hidden()
         page.fill('#book-search','')
-        expect(page.locator('.book-card')).to_have_count(39)
+        expect(page.locator('.book-card')).to_have_count(min(len(CATALOG),60))
     check('title/author/case/Icelandic searches, no results, mouse and keyboard suggestions',searching)
 
     def categories_sorting():
@@ -165,11 +166,11 @@ with sync_playwright() as p:
         assert page.locator('[data-category="Fantasia"]').count()==0
         for mode in ['title-asc','title-desc','author-asc','pages-asc','pages-desc','default']:
             page.select_option('#book-sort',mode)
-            assert page.locator('.book-card').count()==39
+            assert page.locator('.book-card').count()==min(len(CATALOG),60)
             actual=page.evaluate('filteredBooks.map(book=>book.id)')
             if mode.startswith('pages'):
-                values=page.evaluate('filteredBooks.map(book=>Number(book.pages))');assert values==sorted(values,reverse=mode.endswith('desc'))
-            elif mode=='default':assert actual==list(range(1,40))
+                values=page.evaluate('filteredBooks.filter(book=>Number(book.pages)>0).map(book=>Number(book.pages))');assert values==sorted(values,reverse=mode.endswith('desc'))
+            elif mode=='default':assert actual==sorted(book["id"] for book in CATALOG)
         page.locator('.book-card[data-book-id="1"]').hover();page.locator('.book-card[data-book-id="1"] [data-action=like]').click()
         page.locator('.book-card[data-book-id="1"] [data-action=read]').click()
         page.locator('[data-category="❤️ Óskalisti"]').click();page.locator('[data-category="✅ Lesið"]').click()
@@ -299,7 +300,7 @@ with sync_playwright() as p:
         for saved in ['{malformed','null','{"reviews":null,"read":null,"liked":null,"dailyProgress":null,"personalGoals":null}']:
             ctx=context(browser);ctx.add_init_script('localStorage.setItem("library_v14",'+json.dumps(saved)+')');q=new_page(ctx)
             assert q.evaluate('localStorage.getItem("library_v14")')==saved
-            assert q.locator('.book-card').count()==39
+            assert q.locator('.book-card').count()==min(len(CATALOG),60)
             ctx.close()
     check('real v14 migration, backup/unmatched preservation, title renaming and corrupt/partial storage',migration)
 

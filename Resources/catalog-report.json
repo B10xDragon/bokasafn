@@ -1,0 +1,106 @@
+{
+  "candidatesExplored": 1132,
+  "previous": 39,
+  "final": 1046,
+  "added": 1007,
+  "withCovers": 1046,
+  "withPageCounts": 861,
+  "newWithExplicitIcelandicEvidence": 329,
+  "newIcelandicListingsWithoutExplicitLanguage": 678,
+  "categories": {
+    "Barnabækur": 226,
+    "Fantasía": 95,
+    "Fræðibækur": 154,
+    "Glæpir": 57,
+    "Grín": 1,
+    "Hrollvekja": 22,
+    "Klassík": 93,
+    "Ljóð": 5,
+    "Myndasögur": 94,
+    "Ráðgáta": 22,
+    "Rómantík": 24,
+    "Skáldsögur": 291,
+    "Skáldverk": 337,
+    "Spenna": 106,
+    "Ungmenni": 487,
+    "Vísindaskáldsaga": 20,
+    "Ævintýri": 13,
+    "Ævisögur": 14,
+    "Þýddar bækur": 173
+  },
+  "duplicateListingsRejected": 27,
+  "skipped": 98,
+  "verificationFailuresSkipped": 79,
+  "newWithPublicationYear": 874,
+  "skipReasons": {
+    "Activity/stationery item outside reading scope": 9,
+    "Missing author": 75,
+    "No reliable description": 4,
+    "Foreign-language/map listing outside scope": 5,
+    "Ambiguous same title with different author": 1,
+    "Activity workbook supplement rather than a standalone reading book": 1,
+    "Collected trilogy/bundle; prefer individual works instead of counting overlapping books twice": 1,
+    "Activity journal rather than a reading book: the description identifies a 100-day diary for children": 1,
+    "Poster rather than a book: the product describes an A3 alphabet poster derived from a separate book": 1
+  },
+  "discovery": [
+    {
+      "url": "https://www.forlagid.is/voruflokkur/barna-og-unglingabaekur/13-ara-og-eldri/",
+      "availablePages": 27,
+      "visitedPages": 27,
+      "listings": 534
+    },
+    {
+      "url": "https://www.forlagid.is/voruflokkur/barna-og-unglingabaekur/6-12-ara/",
+      "availablePages": 86,
+      "visitedPages": 6,
+      "listings": 120
+    },
+    {
+      "url": "https://www.forlagid.is/voruflokkur/barna-og-unglingabaekur/myndasogur-born-unglingar/",
+      "availablePages": 8,
+      "visitedPages": 3,
+      "listings": 60
+    },
+    {
+      "url": "https://www.forlagid.is/voruflokkur/barna-og-unglingabaekur/fraedi-og-handbaekur/",
+      "availablePages": 10,
+      "visitedPages": 10,
+      "listings": 200
+    },
+    {
+      "url": "https://www.forlagid.is/voruflokkur/skaldverk/islenskar-skaldsogur/",
+      "availablePages": 54,
+      "visitedPages": 4,
+      "listings": 80
+    },
+    {
+      "url": "https://www.forlagid.is/voruflokkur/skaldverk/klassisk-verk/",
+      "availablePages": 4,
+      "visitedPages": 4,
+      "listings": 79
+    },
+    {
+      "url": "https://www.forlagid.is/voruflokkur/skaldverk/visindaskaldskapur/",
+      "availablePages": 1,
+      "visitedPages": 1,
+      "listings": 16
+    },
+    {
+      "url": "https://www.forlagid.is/voruflokkur/skaldverk/spennusogur/",
+      "availablePages": 26,
+      "visitedPages": 4,
+      "listings": 80
+    },
+    {
+      "url": "https://www.forlagid.is/voruflokkur/skaldverk/thyddar-skaldsogur/",
+      "availablePages": 76,
+      "visitedPages": 4,
+      "listings": 80
+    }
+  ],
+  "summaries": {
+    "original bibliographic summary": 749,
+    "reviewed original summary": 258
+  }
+}

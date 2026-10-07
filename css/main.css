@@ -105,6 +105,11 @@
         .shake-element { animation: shake 0.3s ease-in-out; }
 
 
+/* Long Icelandic compound words must fit narrow book dialogs. */
+#modal-inner-content {
+    overflow-wrap: anywhere;
+}
+
 /* Keyboard equivalents of the existing hover affordances. */
 :focus-visible {
     outline: 3px solid var(--theme-accent, #6366f1);

@@ -54,7 +54,9 @@
         const originalApplyFilters = window.applyFilters;
 
         window.applyFilters = function () {
-            originalApplyFilters();
+            bookRenderSuspended++;
+            try { originalApplyFilters(); }
+            finally { bookRenderSuspended--; }
             filteredBooks = sortBooks(filteredBooks);
             renderBooks();
         };

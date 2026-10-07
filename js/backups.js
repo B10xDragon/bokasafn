@@ -191,6 +191,7 @@ function confirmDeleteAllData() {
   currentRating = 0;
   searchQuery = "";
   activeCategories = [];
+  resetBookPagination();
   document
     .querySelectorAll("#personal-goal-input,#rec-title,#rec-author,#rec-ideas")
     .forEach((node) => (node.value = ""));

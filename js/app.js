@@ -1,4 +1,8 @@
 let allBooks = [];
+const BOOK_BATCH_SIZE = 60;
+let renderedBookLimit = BOOK_BATCH_SIZE;
+let bookFilterSignature = '';
+let bookRenderSuspended = 0;
         let filteredBooks = [];
         let searchQuery = '';
         let activeCategories = [];
@@ -147,7 +151,10 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                         : ['Almennt'],
                     description: String(book.description || '').trim(),
                     cover: String(book.cover || '').trim(),
-                    pages: Number.isFinite(Number(book.pages)) && Number(book.pages) > 0 ? Number(book.pages) : ''
+                    pages: Number.isFinite(Number(book.pages)) && Number(book.pages) > 0 ? Number(book.pages) : '',
+                    publicationYear: Number.isInteger(book.publicationYear) ? book.publicationYear : null,
+                    sourceURL: typeof book.sourceURL === 'string' ? book.sourceURL : '',
+                    searchText: (String(book.title || '') + '\n' + String(book.author || '')).normalize('NFC').toLocaleLowerCase('is')
                 })).filter(book => book.title);
 
 
@@ -219,9 +226,19 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             applyFilters();
         }
 
+        function resetBookPagination() {
+            renderedBookLimit = BOOK_BATCH_SIZE;
+            bookFilterSignature = '';
+        }
+
         function applyFilters() {
+            const signature = JSON.stringify([searchQuery, activeCategories,
+                typeof filtersValue === 'function' ? filtersValue() : null,
+                document.getElementById('book-sort')?.value || 'default']);
+            if (signature !== bookFilterSignature) renderedBookLimit = BOOK_BATCH_SIZE;
+            bookFilterSignature = signature;
             filteredBooks = allBooks.filter(b => {
-                const search = b.title.toLowerCase().includes(searchQuery) || b.author.toLowerCase().includes(searchQuery);
+                const search = (b.searchText || (b.title + '\n' + b.author).normalize('NFC').toLocaleLowerCase('is')).includes(searchQuery);
                 
                 if (activeCategories.length === 0) {
                     return search;
@@ -238,7 +255,15 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             renderBooks();
         }
 
+        function showMoreBooks() {
+            const previous = Math.min(renderedBookLimit, filteredBooks.length);
+            renderedBookLimit += BOOK_BATCH_SIZE;
+            renderBooks();
+            document.querySelectorAll('#book-grid .book-card')[previous]?.querySelector('[data-action="info"]')?.focus({ preventScroll: true });
+        }
+
         function renderBooks() {
+            if (bookRenderSuspended) return;
             const container = document.getElementById('book-grid');
             if (!container) return;
             const rememberedFocus = rememberBookFocus();
@@ -251,7 +276,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 restoreBookFocus(rememberedFocus);
                 return;
             }
-            container.innerHTML = filteredBooks.map(b => {
+            container.innerHTML = filteredBooks.slice(0, renderedBookLimit).map(b => {
                 const isLiked = userData.liked.includes(b.id);
                 const isRead = userData.read.includes(b.id);
                 const review = userData.reviews[b.id];
@@ -290,6 +315,10 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                     </div>
                 `;
             }).join('');
+            if (filteredBooks.length > BOOK_BATCH_SIZE) {
+                const shown = Math.min(renderedBookLimit, filteredBooks.length);
+                container.insertAdjacentHTML('beforeend', `<div class="col-span-full text-center py-6"><p role="status" class="feature-note">Sýnir ${shown} af ${filteredBooks.length} bókum</p>${shown < filteredBooks.length ? '<button type="button" class="feature-button secondary" aria-controls="book-grid" onclick="showMoreBooks()">Sýna fleiri bækur</button>' : ''}</div>`);
+            }
             restoreBookFocus(rememberedFocus);
         }
 
@@ -350,7 +379,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                             ${b.categories.map(c => `<span class="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase border border-indigo-100/50">${escapeHTML(c)}</span>`).join('')}
                         </div>
                     </div>
-                    <div class="flex-grow space-y-6 w-full">
+                    <div class="flex-grow min-w-0 space-y-6 w-full">
                         <div>
                             <h2 id="book-dialog-title" class="text-2xl font-black text-slate-900 tracking-tighter leading-tight">${escapeHTML(b.title)}</h2>
                             <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-slate-400 font-bold uppercase tracking-widest text-[9px] mt-2">
@@ -360,7 +389,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                             </div>
                         </div>
                         <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                            <h5 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Söguþráður</h5>
+                            <h5 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Um bókina</h5>
                             <p class="text-slate-600 text-sm leading-relaxed">${escapeHTML(b.description || 'Engin lýsing fannst.')}</p>
                         </div>
                         
@@ -727,7 +756,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 return `
                     <div class="bg-white p-5 rounded-3xl border border-slate-100 flex gap-4 shadow-sm cursor-pointer transition-all hover:scale-[1.01]" role="button" tabindex="0" data-book-id="${b?.id ?? ''}" aria-label="Opna umsögn" onclick="openBookInfo(${b?.id}, event)">
                         <div class="w-12 h-18 shimmer-placeholder rounded-xl shrink-0 overflow-hidden shadow-md">
-                            <img src="${escapeHTML(b?.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b?.title || 'Óþekkt bók')}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
+                            <img src="${escapeHTML(b?.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b?.title || 'Óþekkt bók')}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" loading="lazy" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                         </div>
                         <div>
                             <h4 class="text-[11px] font-black line-clamp-1 mb-1">${escapeHTML(b?.title || 'Bók ekki í safninu')}</h4>
@@ -743,7 +772,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             const readItemsHtml = allBooks.filter(b => userData.read.includes(b.id)).map(b => `
                 <div class="flex items-center gap-4 p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition cursor-pointer" role="button" tabindex="0" data-book-id="${b.id}" aria-label="Upplýsingar um ${escapeHTML(b.title)}" onclick="openBookInfo(${b.id}, event)">
                     <div class="w-10 h-14 shimmer-placeholder rounded-lg shrink-0 overflow-hidden">
-                        <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
+                        <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" loading="lazy" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                     </div>
                     <div class="flex-grow overflow-hidden">
                         <p class="font-bold text-xs line-clamp-1">${escapeHTML(b.title)}</p>
@@ -755,7 +784,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             const wishlistHtml = allBooks.filter(b => userData.liked.includes(b.id)).map(b => `
                 <div class="flex items-center gap-4 p-3 bg-white rounded-2xl hover:bg-slate-50 transition cursor-pointer border border-slate-100" role="button" tabindex="0" data-book-id="${b.id}" aria-label="Upplýsingar um ${escapeHTML(b.title)}" onclick="openBookInfo(${b.id}, event)">
                     <div class="w-10 h-14 shimmer-placeholder rounded-lg shrink-0 overflow-hidden">
-                        <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
+                        <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" loading="lazy" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                     </div>
                     <div class="flex-grow overflow-hidden">
                         <p class="font-bold text-xs text-slate-900 line-clamp-1">${escapeHTML(b.title)}</p>
@@ -949,7 +978,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
 
         function handleSearch() {
             const searchInput = document.getElementById('book-search');
-            searchQuery = searchInput ? searchInput.value.toLowerCase() : '';
+            searchQuery = searchInput ? searchInput.value.normalize('NFC').toLocaleLowerCase('is') : '';
             if (searchQuery) showPage('library');
             applyFilters();
             
@@ -961,7 +990,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 return; 
             }
             
-            let matchT = allBooks.filter(b => b.title.toLowerCase().includes(searchQuery) || b.author.toLowerCase().includes(searchQuery)).slice(0,5);
+            let matchT = allBooks.filter(b => (b.searchText || (b.title + '\n' + b.author).normalize('NFC').toLocaleLowerCase('is')).includes(searchQuery)).slice(0,5);
             if (matchT.length) {
                 sBox.innerHTML = matchT.map(b => `<li role="button" tabindex="0" onclick="selectSug(${b.id})" class="px-6 py-4 hover:bg-indigo-50 cursor-pointer text-sm font-bold border-b border-slate-50 flex items-center gap-4"><i aria-hidden="true" class="fas fa-book text-indigo-400"></i> ${escapeHTML(b.title)}</li>`).join('');
                 sBox.classList.remove('hidden');
