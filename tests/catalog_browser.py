@@ -70,14 +70,14 @@ with sync_playwright() as p:
   q.get_by_role('button',name='Skipta út gögnum',exact=True).click();q.get_by_role('button',name='Já, skipta út',exact=True).click();q.wait_for_timeout(350)
   assert q.evaluate('JSON.stringify(userData.read)')=='[1,21,39]'
   assert q.evaluate('userData.reviews[21].comment')=='Gömul umsögn – Þ æ ö 😀'
-  q.reload();q.wait_for_function('window.featuresReady');assert q.evaluate('allBooks.find(b=>b.id===21).title')=='Mýrin'
+  q.reload();q.wait_for_function('window.featuresReady');assert q.evaluate('allBooks.find(b=>b.id===21).title')==next(b['title'] for b in CATALOG if b['id']==21)
   line=(ROOT/'tests/fixtures/pre-expansion-reading.txt').read_text();q.evaluate('openTextImport()');q.wait_for_timeout(350);q.fill('#backup-line-input',line);q.get_by_role('button',name='Athuga afrit',exact=True).click();assert q.evaluate('pendingImport.data.read[2]')==39
   q.get_by_role('button',name='Flytja inn',exact=True).click();q.wait_for_timeout(350);q.get_by_role('button',name='Sameina örugglega',exact=True).click();q.wait_for_timeout(350);assert q.evaluate('JSON.stringify(userData.read)')=='[1,21,39]'
   other.close()
  check('pre-expansion JSON replacement/text merge and refresh retain all original reading identities',old_backup)
  def performance():
   page.set_viewport_size({'width':1440,'height':1000});reset(page)
-  result=page.evaluate('''async ()=>{const full=allBooks,results={};for(const [name,books] of [['original39',full.filter(b=>b.id<=39)],['expanded',full]]){allBooks=books;const times=[];for(let i=0;i<18;i++){searchQuery=['','ó','hildur','unknown search'][i%4];const start=performance.now();applyFilters();document.getElementById('book-grid').getBoundingClientRect();await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);times.push(performance.now()-start);}results[name]=times;}allBooks=full;searchQuery='';applyFilters();return results;}''')
+  result=page.evaluate('''async ()=>{const full=allBooks,original=historyBooks().filter(b=>b.id<=39),results={};for(const [name,books] of [['original39',original],['expanded',full]]){allBooks=books;const times=[];for(let i=0;i<18;i++){searchQuery=['','ó','hildur','unknown search'][i%4];const start=performance.now();applyFilters();document.getElementById('book-grid').getBoundingClientRect();await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);times.push(performance.now()-start);}results[name]=times;}allBooks=full;searchQuery='';applyFilters();return results;}''')
   for name,times in result.items():
    PERFORMANCE[name]={'medianFilterToLayoutMs':round(statistics.median(times),1),'maxFilterToLayoutMs':round(max(times),1)}
   assert PERFORMANCE['expanded']['medianFilterToLayoutMs']<250,PERFORMANCE

@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-08",
+  "catalogBooks": 493,
+  "regression": {
+    "tests": 51,
+    "timezones": [
+      "UTC",
+      "America/New_York",
+      "Atlantic/Reykjavik"
+    ],
+    "result": "passed"
+  },
+  "catalogToolTests": 20,
+  "browserGroups": {
+    "browser": 9,
+    "live": 11,
+    "features": 8,
+    "backups": 9,
+    "clipboard": 11,
+    "catalog": 6,
+    "cleanup": 3
+  },
+  "totalBrowserGroups": 57,
+  "browser": "Chromium with desktop/tablet/mobile emulation, actual CDN assets in real-server suites",
+  "uncaughtErrors": [],
+  "dependencyFailures": [],
+  "catalogValidation": {
+    "books": 493,
+    "errors": [],
+    "warnings": [],
+    "categories": {
+      "Fantasía": 50,
+      "Fræðibækur": 9,
+      "Glæpir": 52,
+      "Hrollvekja": 10,
+      "Klassík": 74,
+      "Ljóð": 4,
+      "Ráðgáta": 9,
+      "Rómantík": 18,
+      "Skáldsögur": 286,
+      "Skáldverk": 326,
+      "Spenna": 91,
+      "Ungmenni": 191,
+      "Vísindaskáldsaga": 18,
+      "Ævintýri": 8,
+      "Ævisögur": 12,
+      "Þýddar bækur": 155
+    }
+  },
+  "sourceCacheVerification": {
+    "productPages": 493,
+    "cachedSourceCovers": 29,
+    "coversUsingPriorEvidence": 464,
+    "networkRequests": 0,
+    "errors": []
+  },
+  "performance": {
+    "initialReadyMs": 1611.6,
+    "initialGridElements": 783,
+    "original39": {
+      "medianFilterToLayoutMs": 77.1,
+      "maxFilterToLayoutMs": 253
+    },
+    "expanded": {
+      "medianFilterToLayoutMs": 188.9,
+      "maxFilterToLayoutMs": 417.3
+    },
+    "catalogBooks": 493,
+    "catalogBytes": 274143,
+    "coverBytes": 16208854,
+    "allBooksReadWishlistReviewedRenderMs": 491.2
+  },
+  "limitations": [
+    "183 catalog entries require teacher/librarian review before reinstatement.",
+    "192 active edition languages lack explicit publisher language labels.",
+    "Unchanged expansion cover bytes use recorded 2026-10-07 publisher provenance, with current local hash and browser loading checks.",
+    "Mobile testing uses Chromium emulation; physical iOS/Safari were not tested."
+  ]
+}

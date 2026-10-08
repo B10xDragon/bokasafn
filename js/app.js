@@ -365,7 +365,8 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
 
         // Opnar bókaupplýsingar í öruggum fixed glugga með mjúkri hreyfingu
         function openBookInfo(id, event) {
-            const b = allBooks.find(x => x.id === id); if (!b) return;
+            id = canonicalBookId(id);
+            const b = historyBook(id); if (!b) return;
             const rev = userData.reviews[b.id] || { rating: 0, comment: '' };
             currentRating = rev.rating;
             
@@ -381,6 +382,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                     </div>
                     <div class="flex-grow min-w-0 space-y-6 w-full">
                         <div>
+                            ${b.archived ? '<p class="text-xs font-bold">Varðveitt bók úr eldra safni. Lestrarsaga og umsagnir eru varðveittar.</p>' : ''}
                             <h2 id="book-dialog-title" class="text-2xl font-black text-slate-900 tracking-tighter leading-tight">${escapeHTML(b.title)}</h2>
                             <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-slate-400 font-bold uppercase tracking-widest text-[9px] mt-2">
                                 <span>Höfundur: ${escapeHTML(b.author)}</span>
@@ -512,7 +514,8 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             const btn = document.getElementById('save-review-btn');
             const reviewEl = document.getElementById('review-text');
             const comment = reviewEl ? reviewEl.value.trim() : '';
-            if (!allBooks.some(book => book.id === id)) return;
+            id = canonicalBookId(id);
+            if (!historyBook(id)) return;
             if (!Number.isInteger(currentRating) || currentRating < 1 || currentRating > 5) {
                 if (btn) {
                     btn.classList.add('shake-element'); 
@@ -752,7 +755,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             setInnerHTML('personal-goals-list', goalsHtml);
             
             const reviewsHtml = Object.keys(userData.reviews).map(t => {
-                const r = userData.reviews[t]; const b = allBooks.find(x => x.id === Number(t));
+                const r = userData.reviews[t]; const b = historyBook(Number(t));
                 return `
                     <div class="bg-white p-5 rounded-3xl border border-slate-100 flex gap-4 shadow-sm cursor-pointer transition-all hover:scale-[1.01]" role="button" tabindex="0" data-book-id="${b?.id ?? ''}" aria-label="Opna umsögn" onclick="openBookInfo(${b?.id}, event)">
                         <div class="w-12 h-18 shimmer-placeholder rounded-xl shrink-0 overflow-hidden shadow-md">
@@ -765,29 +768,33 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                         </div>
                     </div>`;
             }).join('') || '<p class="col-span-full text-center py-10 text-slate-300 font-bold italic text-[10px]">Engar umsagnir ennþá.</p>';
-            setInnerHTML('reviews-archive', reviewsHtml);
+            const conflictsHtml = (userData.reviewConflicts || []).map(r => {
+                const b = historyBook(r.bookId);
+                return `<div class="bg-white p-5 rounded-3xl border border-slate-100"><h4 class="text-xs font-bold">${escapeHTML(b?.title || 'Varðveitt bók')} · Varðveitt umsögn</h4><p>${r.rating} / 5</p><p class="text-xs">${escapeHTML(r.comment)}</p><p class="text-xs">${escapeHTML(r.date)}</p></div>`;
+            }).join('');
+            setInnerHTML('reviews-archive', reviewsHtml + conflictsHtml);
             
             setInnerText('total-read-books-badge', userData.read.length);
             
-            const readItemsHtml = allBooks.filter(b => userData.read.includes(b.id)).map(b => `
+            const readItemsHtml = historyBooks().filter(b => userData.read.includes(b.id)).map(b => `
                 <div class="flex items-center gap-4 p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition cursor-pointer" role="button" tabindex="0" data-book-id="${b.id}" aria-label="Upplýsingar um ${escapeHTML(b.title)}" onclick="openBookInfo(${b.id}, event)">
                     <div class="w-10 h-14 shimmer-placeholder rounded-lg shrink-0 overflow-hidden">
                         <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" loading="lazy" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                     </div>
                     <div class="flex-grow overflow-hidden">
-                        <p class="font-bold text-xs line-clamp-1">${escapeHTML(b.title)}</p>
+                        <p class="font-bold text-xs line-clamp-1">${escapeHTML(b.title)}${b.archived ? ' · Varðveitt bók' : ''}</p>
                         <p class="text-[8px] font-black opacity-50 uppercase tracking-widest">${escapeHTML(b.author)}</p>
                     </div>
                 </div>`).join('');
             setInnerHTML('read-items', readItemsHtml);
             
-            const wishlistHtml = allBooks.filter(b => userData.liked.includes(b.id)).map(b => `
+            const wishlistHtml = historyBooks().filter(b => userData.liked.includes(b.id)).map(b => `
                 <div class="flex items-center gap-4 p-3 bg-white rounded-2xl hover:bg-slate-50 transition cursor-pointer border border-slate-100" role="button" tabindex="0" data-book-id="${b.id}" aria-label="Upplýsingar um ${escapeHTML(b.title)}" onclick="openBookInfo(${b.id}, event)">
                     <div class="w-10 h-14 shimmer-placeholder rounded-lg shrink-0 overflow-hidden">
                         <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" loading="lazy" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                     </div>
                     <div class="flex-grow overflow-hidden">
-                        <p class="font-bold text-xs text-slate-900 line-clamp-1">${escapeHTML(b.title)}</p>
+                        <p class="font-bold text-xs text-slate-900 line-clamp-1">${escapeHTML(b.title)}${b.archived ? ' · Varðveitt bók' : ''}</p>
                         <p class="text-[8px] font-black text-indigo-400 uppercase tracking-widest">${escapeHTML(b.author)}</p>
                     </div>
                 </div>`).join('');
@@ -799,7 +806,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
 
         // Teiknar tölfræði yfir flokka og höfunda
         function renderVisualStats() {
-            const readBooks = allBooks.filter(b => userData.read.includes(b.id));
+            const readBooks = historyBooks().filter(b => userData.read.includes(b.id));
             const catContainer = document.getElementById('visual-stats-categories');
             const authContainer = document.getElementById('visual-stats-authors');
 

@@ -142,3 +142,36 @@ This addresses the transport risk documented in WebKit bug 253708
 (https://bugs.webkit.org/show_bug.cgi?id=253708), where `Hello:` copies/pastes as
 `hello:`. Chromium tests verify literal clipboard contents and model URL-preferred
 insertion; physical iOS remains necessary to confirm the platform workaround.
+
+# Reviewed catalog cleanup (8 October 2026)
+
+`Resources/catalog-identities.json` reserves every previously shipped identity.
+Its generated static script loads before storage migration. Duplicate IDs map to
+the retained ID; arrays and challenge baselines deduplicate after mapping. Unknown
+IDs stay unknown and cannot be assigned by catalog position. Retired books remain
+in a separate archive, outside search, category filters, recommendations and random
+selection. History, wishlist and review views can still show them, including their
+covers. Archived book links remain readable and explicitly identify archived books.
+Retained and merged `?book=ID` links resolve through the same identity map.
+
+Both local loads and old JSON/BOKASAFN imports use the same normalization pipeline.
+The first duplicate migration saves the exact prior v15 stored text in
+`library_catalog_backup_20261008`; v14 remains untouched. If that rollback copy
+cannot be saved, the original persisted library is not overwritten. Reset removes
+this namespaced copy too. Import retains its existing exact rollback snapshots.
+
+Additive v15 fields `reviewConflicts` and `completionHistory` preserve conflicting
+reviews/ratings and historical completion dates. The canonical review remains the
+active rating; secondary reviews are visible in the existing review archive and
+included in both backup formats. Merging conflicting imports also preserves both
+reviews. Historical dates retain source IDs; the latest completion date remains
+active for existing challenge semantics. These records never add another completed
+book, page total or reading session. Repeated normalization/import is idempotent.
+Totals, recorded reading time, goals, sessions and earned achievements retain their
+existing semantics. Statistics can include retired books already in the user's
+history; current discovery always uses the approved catalog only.
+
+Verified metadata corrections can change derived page totals when an old page
+count was wrong or cannot be established from the publisher. The per-entry audit
+preserves before/after metadata so those changes can be inspected. Stored timer
+totals and reading dates are not inferred from corrected metadata.

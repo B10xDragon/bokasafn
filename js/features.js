@@ -413,9 +413,9 @@ function applyBookRoute() {
   if (
     value !== null &&
     /^\d+$/.test(value) &&
-    allBooks.some((b) => b.id === Number(value))
+    historyBook(Number(value))
   )
-    openBookInfo(Number(value));
+    openBookInfo(canonicalBookId(Number(value)));
   else {
     if (activeDialog?.modal.id === "desc-modal")
       closeModal("desc-modal", "desc-modal-content");
@@ -493,7 +493,8 @@ function installFeatures() {
   };
   const originalOpen = window.openBookInfo;
   window.openBookInfo = function (id, event) {
-    if (!allBooks.some((b) => b.id === id)) return;
+    id = canonicalBookId(id);
+    if (!historyBook(id)) return;
     if (activeDialog && activeDialog.modal.id !== "desc-modal")
       closeModal(
         activeDialog.modal.id,

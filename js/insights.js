@@ -176,7 +176,7 @@ function activitySummary(now = new Date()) {
   };
 }
 function readingMetrics() {
-  const books = allBooks.filter((b) => userData.read.includes(b.id));
+  const books = historyBooks().filter((b) => userData.read.includes(b.id));
   const ratings = Object.values(userData.reviews).map((r) => r.rating);
   const sessions = userData.sessions || [];
   return {
@@ -217,7 +217,7 @@ function challengeProgress(c) {
     c.target === definition[1] &&
     !c.end &&
     c.historyMode !== "since-start";
-  const books = allBooks.filter(
+  const books = historyBooks().filter(
     (b) =>
       userData.read.includes(b.id) &&
       (includesHistory ||
@@ -232,7 +232,7 @@ function challengeProgress(c) {
     return books.filter((b) => b.categories.includes("Fantasía")).length;
   if (c.kind === "author") {
     const previous = new Set(
-      allBooks
+      historyBooks()
         .filter((b) => !includesHistory && c.baseline.includes(b.id))
         .map((b) => b.author),
     );
@@ -384,6 +384,17 @@ function parseBackup(text) {
       (r.comment != null && typeof r.comment !== "string")
     )
       throw Error("Ógild umsögn.");
+  for (const field of ['reviewConflicts', 'completionHistory']) {
+    if (data[field] != null && !Array.isArray(data[field])) throw Error('Ógild varðveitt bókagögn.');
+    for (const item of data[field] || []) {
+      if (!isRecord(item) || !Number.isSafeInteger(item.bookId) || item.bookId < 0 ||
+          !Number.isSafeInteger(item.sourceId) || item.sourceId < 0 ||
+          (field === 'completionHistory' ? !validDateKey(item.date) :
+            !Number.isInteger(item.rating) || item.rating < 1 || item.rating > 5 ||
+            typeof item.comment !== 'string' || typeof item.date !== 'string'))
+        throw Error('Ógild varðveitt bókagögn.');
+    }
+  }
   const legacy = data.version !== 15;
   for (const f of ["read", "liked"])
     for (const ref of data[f] || [])
@@ -524,6 +535,10 @@ function mergeReadingData(existing, incoming) {
   a.liked = [...new Set([...a.liked, ...b.liked])];
   for (const [id, r] of Object.entries(b.reviews))
     if (!Object.hasOwn(a.reviews, id)) a.reviews[id] = r;
+    else if (JSON.stringify(a.reviews[id]) !== JSON.stringify(r)) appendReviewConflict(a, id, id, r);
+  for (const r of b.reviewConflicts) appendReviewConflict(a, r.bookId, r.sourceId, r);
+  for (const h of b.completionHistory)
+    if (!a.completionHistory.some(x => JSON.stringify(x) === JSON.stringify(h))) a.completionHistory.push(h);
   for (const [d, s] of Object.entries(b.dailyProgress))
     a.dailyProgress[d] = Math.max(a.dailyProgress[d] || 0, s);
   a.totalSeconds = Math.max(
@@ -531,9 +546,15 @@ function mergeReadingData(existing, incoming) {
     b.totalSeconds,
     Object.values(a.dailyProgress).reduce((n, s) => n + s, 0),
   );
-  for (const [id, date] of Object.entries(b.completedDates))
-    if (!a.completedDates[id] || date > a.completedDates[id])
-      a.completedDates[id] = date;
+  for (const [id, date] of Object.entries(b.completedDates)) {
+    if (a.completedDates[id] && a.completedDates[id] !== date) {
+      for (const savedDate of [a.completedDates[id], date]) {
+        const h = {bookId: Number(id), sourceId: Number(id), date: savedDate};
+        if (!a.completionHistory.some(x => JSON.stringify(x) === JSON.stringify(h))) a.completionHistory.push(h);
+      }
+    }
+    if (!a.completedDates[id] || date > a.completedDates[id]) a.completedDates[id] = date;
+  }
   for (const [id, date] of Object.entries(b.achievements))
     if (!a.achievements[id] || date < a.achievements[id])
       a.achievements[id] = date;

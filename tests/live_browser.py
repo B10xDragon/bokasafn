@@ -171,8 +171,8 @@ with sync_playwright() as p:
             if mode.startswith('pages'):
                 values=page.evaluate('filteredBooks.filter(book=>Number(book.pages)>0).map(book=>Number(book.pages))');assert values==sorted(values,reverse=mode.endswith('desc'))
             elif mode=='default':assert actual==sorted(book["id"] for book in CATALOG)
-        page.locator('.book-card[data-book-id="1"]').hover();page.locator('.book-card[data-book-id="1"] [data-action=like]').click()
-        page.locator('.book-card[data-book-id="1"] [data-action=read]').click()
+        page.locator(f'.book-card[data-book-id="{CATALOG[0]["id"]}"]').hover();page.locator(f'.book-card[data-book-id="{CATALOG[0]["id"]}"] [data-action=like]').click()
+        page.locator(f'.book-card[data-book-id="{CATALOG[0]["id"]}"] [data-action=read]').click()
         page.locator('[data-category="❤️ Óskalisti"]').click();page.locator('[data-category="✅ Lesið"]').click()
         expect(page.locator('.book-card')).to_have_count(1)
         page.select_option('#book-sort','title-desc')
@@ -214,7 +214,7 @@ with sync_playwright() as p:
             button=page.get_by_role('button',name=f'{rating} stjörnur',exact=True);button.focus();page.keyboard.press('Space');expect(button).to_have_attribute('aria-pressed','true')
         page.fill('#review-text',payload);page.click('#save-review-btn')
         expect(page.locator('#review-text')).to_have_value(payload)
-        assert page.evaluate('userData.read.includes(1)&&userData.reviews[1].rating===5&&window.injected===undefined')
+        assert page.evaluate('(id)=>userData.read.includes(id)&&userData.reviews[id].rating===5&&window.injected===undefined',CATALOG[0]['id'])
         page.keyboard.press('Escape');page.reload(wait_until='networkidle');page.wait_for_function('appReady')
         page.click('#nav-stats');page.wait_for_timeout(300)
         assert payload in page.locator('#reviews-archive').text_content()
@@ -222,14 +222,14 @@ with sync_playwright() as p:
         page.locator('#reviews-archive [role=button]').first.focus();page.keyboard.press('Enter')
         expect(page.locator('#review-text')).to_have_value(payload)
         page.get_by_role('button',name='2 stjörnur',exact=True).click();page.fill('#review-text','Edited review');page.click('#save-review-btn');page.keyboard.press('Escape')
-        assert page.evaluate('userData.reviews[1].rating')==2
+        assert page.evaluate('(id)=>userData.reviews[id].rating',CATALOG[0]['id'])==2
         page.click('#nav-library');page.wait_for_timeout(300)
     check('desktop/mobile book & recommendation dialogs in every theme, focus trapping, all ratings, validation, edits and escaped reviews',reviews_dialogs)
 
     def mobile_touch():
         mobile=context(browser,viewport={'width':390,'height':844},is_mobile=True,has_touch=True,device_scale_factor=2)
         q=new_page(mobile)
-        card=q.locator('.book-card[data-book-id="1"]');card.scroll_into_view_if_needed()
+        card=q.locator(f'.book-card[data-book-id="{CATALOG[0]["id"]}"]');card.scroll_into_view_if_needed()
         expect(card.locator('[data-action=like]')).to_be_visible();card.locator('[data-action=like]').tap()
         q.locator('[data-category="❤️ Óskalisti"]').tap();expect(q.locator('.book-card')).to_have_count(1)
         q.locator('[data-action=info]').tap();expect(q.locator('#desc-modal-content')).to_be_focused()
@@ -288,14 +288,14 @@ with sync_playwright() as p:
         legacy={'liked':[CATALOG[0]['title'],'Missing old title'],'read':[CATALOG[0]['title']],'reviews':{CATALOG[0]['title']:{'rating':4,'comment':'Old <b>literal</b> review','date':'1.10.2026'}},'totalSeconds':1234,'dailyProgress':{'2026-10-01':1234},'minutesGoal':20,'goalType':'weekly','personalGoals':[{'id':10,'text':'Old goal','completed':True}]}
         ctx=context(browser);ctx.add_init_script('if(!sessionStorage.seeded){localStorage.setItem("library_v14",'+json.dumps(json.dumps(legacy))+');sessionStorage.seeded="yes";}')
         q=new_page(ctx)
-        state=q.evaluate('userData');assert state['liked']==[1] and state['read']==[1] and state['totalSeconds']==1234 and state['reviews']['1']['rating']==4
+        state=q.evaluate('userData');assert state['liked']==[CATALOG[0]['id']] and state['read']==[CATALOG[0]['id']] and state['totalSeconds']==1234 and state['reviews'][str(CATALOG[0]['id'])]['rating']==4
         assert state['unresolved']['liked']==['Missing old title']
         assert json.loads(q.evaluate('localStorage.getItem("library_v14")'))==legacy
         altered=[dict(book) for book in CATALOG];altered[0]['title']='Renamed book title'
         q.route('**/Resources/books.json',lambda route:route.fulfill(content_type='application/json',body=json.dumps(altered)))
         q.reload(wait_until='networkidle');q.wait_for_function('appReady')
-        assert q.evaluate('userData.liked.includes(1)&&userData.read.includes(1)&&userData.reviews[1].rating===4')
-        assert 'Renamed book title' in q.locator('.book-card[data-book-id="1"]').text_content()
+        assert q.evaluate('(id)=>userData.liked.includes(id)&&userData.read.includes(id)&&userData.reviews[id].rating===4',CATALOG[0]['id'])
+        assert 'Renamed book title' in q.locator(f'.book-card[data-book-id="{CATALOG[0]["id"]}"]').text_content()
         ctx.close()
         for saved in ['{malformed','null','{"reviews":null,"read":null,"liked":null,"dailyProgress":null,"personalGoals":null}']:
             ctx=context(browser);ctx.add_init_script('localStorage.setItem("library_v14",'+json.dumps(saved)+')');q=new_page(ctx)

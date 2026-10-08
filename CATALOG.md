@@ -1,4 +1,47 @@
-# Forlagið catalog maintenance
+# Reviewed 13+ catalog
+
+The 8 October 2026 cleanup supersedes the expansion policy below. The active
+catalog contains only approved Forlagið products. Every pre-cleanup ID has an
+explicit decision in `Resources/catalog-decisions.json` and a corresponding
+six-question result in `Resources/catalog-audit.json`. Uncertain entries are
+quarantined for teacher/librarian review, not assumed to be unsuitable or silently
+removed. The audit records source categories, a short description excerpt,
+verification date/hash, reasons, and every metadata correction.
+
+Never delete historical identities or renumber books. The frozen baseline is
+`tests/fixtures/pre-cleanup-books.json`. `Resources/catalog-identities.json` holds
+reviewed duplicate aliases and complete archived book records. Its generated
+`js/catalog-identities.js` is part of the static deployment. Keep it synchronized.
+
+To repeat curation, reverify product pages using the collector, preserve its cache,
+review every decision, then run:
+
+```sh
+python scripts/curate_catalog.py --verified /path/to/verified.json --cache /path/to/cache
+python scripts/validate_catalog.py
+python tests/catalog_tools.py
+```
+
+`verified.json` contains one `{catalogId, record}` or `{catalogId, url, error}`
+for each baseline ID. `record` is the collector's parsed Forlagið metadata. The
+curator refuses missing decisions, unverified retained products, missing identity
+approval, alias chains and absent verification attempts. Category/author exceptions
+require explicit per-book decisions, with reasons from the publisher text. Unknown
+edition page/year values remain null. Explicit translator credits in the source
+text are separated from novel authors; unqualified creator credits remain as the
+publisher lists them.
+
+The validator fails definite errors, including duplicate IDs/title-author pairs,
+missing metadata, broken/altered covers, invalid numeric metadata, excluded
+categories, missing Forlagið evidence, inconsistent audit membership and reused
+archived IDs. Likely subtitle/creator variants and easy-reader signals are reported
+for review rather than automatically merged. Meaningful volume numbers and different
+authors remain distinct. The expansion builder refuses to resurrect retired entries
+once this audit exists; any further additions need reviewed source/identity evidence.
+Keep the site static; these Python tools run only during maintenance.
+
+## Historical expansion notes (superseded where they conflict with the audit)
+
 
 All additions use individual product pages on https://www.forlagid.is/ as the
 sole metadata source. Category pages discover candidates; they do not substitute

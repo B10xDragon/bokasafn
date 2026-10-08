@@ -77,7 +77,7 @@ class Collector:
    print('DISCOVER',category,len(seen),'unique total',len(candidates),flush=True)
   write_json(self.cache/'discovery.json',{'categories':report,'candidates':list(candidates.values())})
   return candidates
- def parse(self,item):
+ def parse(self,item,allow_unmapped=False):
   raw=self.fetch(item['url']);soup=BeautifulSoup(raw,'html.parser');root=soup.select_one('[data-elementor-type="product"]')
   if not root:raise ValueError('Missing product template')
   canonical=soup.select_one('link[rel=canonical]')
@@ -130,7 +130,7 @@ class Collector:
   if suitable:cover=min(suitable)[1]
   source_url(cover)
   normalized=normalize_categories(cats,desc)
-  if not normalized:raise ValueError('Unmapped book category')
+  if not normalized and not allow_unmapped:raise ValueError('Unmapped book category')
   language='is' if any(c in cats for c in ['Íslenskar skáldsögur','Þýddar skáldsögur']) or translators else None
   language_basis='Icelandic fiction category' if 'Íslenskar skáldsögur' in cats else 'Icelandic translation category/translator credit' if language else 'Icelandic title and presentation; edition language not explicitly stated'
   return {**item,'id':1000000+pid,'sourceProductId':pid,'title':title,'author':', '.join(authors),'sourceCategories':cats,'categories':normalized,'edition':edition or {'format':None,'pages':None,'year':None},'sourceDescription':desc,'coverSourceURL':cover,'language':language,'languageEvidence':language_basis,'translators':translators,'sourceHTMLSHA256':hashlib.sha256(raw).hexdigest(),'verifiedAt':datetime.now(timezone.utc).date().isoformat()}

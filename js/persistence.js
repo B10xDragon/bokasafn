@@ -62,12 +62,12 @@ function normalizeUserData(raw) {
         minutesGoal: nonnegativeNumber(source.minutesGoal),
         goalType: ['daily', 'weekly', 'monthly'].includes(source.goalType) ? source.goalType : 'daily',
         personalGoals: [], unresolved: { liked: [], read: [], reviews: Object.create(null) },
-        session: legacy ? null : source.session };
+        session: legacy ? null : source.session, reviewConflicts: [] };
 
     // Unknown titles are retained and retried on future loads; never silently discard them.
     function resolve(reference, titleReference) {
         if (titleReference && typeof reference === 'string') {
-            const book = allBooks.find(book => book.title === reference);
+            const book = allBooks.find(book => book.title === reference) || catalogLegacyBook(reference);
             return book ? book.id : null;
         }
         return Number.isSafeInteger(reference) && reference >= 0 ? reference : null;
@@ -95,6 +95,7 @@ function normalizeUserData(raw) {
             const id = resolve(titleReference ? reference : (/^\d+$/.test(reference) ? Number(reference) : null), titleReference);
             if (id !== null) {
                 if (!Object.hasOwn(result.reviews, id)) result.reviews[id] = clean;
+                else if (JSON.stringify(result.reviews[id]) !== JSON.stringify(clean)) appendReviewConflict(result, id, id, clean);
             } else if (titleReference) result.unresolved.reviews[reference] = clean;
         }
     }
@@ -108,7 +109,8 @@ function normalizeUserData(raw) {
         goalIds.add(id);
         result.personalGoals.push({ id, text: goal.text, completed: goal.completed === true });
     }
-    return typeof normalizeExtensions === 'function' ? normalizeExtensions(source, result) : result;
+    const extended = typeof normalizeExtensions === 'function' ? normalizeExtensions(source, result) : result;
+    return migrateCatalogData(source, extended);
 }
 
 function warnStorage() {
@@ -171,6 +173,13 @@ function loadUserData() {
         storageWritable = false;
         warnStorage();
     }
+    // Keep an exact rollback copy before the first catalog identity migration.
+    if (isRecord(raw) && raw.version === 15 && catalogMigrationNeeded(raw)) {
+        try {
+            const key = 'library_catalog_backup_20261008';
+            if (localStorage.getItem(key) === null) localStorage.setItem(key, lastPersistedLibraryValue ?? JSON.stringify(raw));
+        } catch (error) { storageWritable = false; warnStorage(); }
+    }
     userData = normalizeUserData(raw);
     userDataLoaded = true;
     timerState = normalizeSession(userData.session);
@@ -207,4 +216,78 @@ function handleCoverError(image) {
     image.onerror = null; // Even a missing fallback cannot trigger a retry loop.
     image.src = COVER_PLACEHOLDER;
     finishCoverLoading(image);
+}
+
+// Catalog identities are shipped with the static site, separately from discovery.
+function catalogIdentityData() {
+    return globalThis.BOKASAFN_CATALOG_IDENTITIES || { aliases: {}, archived: [], legacyTitles: {} };
+}
+function canonicalBookId(id) {
+    return Number(catalogIdentityData().aliases[id] ?? id);
+}
+function catalogLegacyBook(title) {
+    const titles = catalogIdentityData().legacyTitles;
+    return Object.hasOwn(titles, title) ? { id: titles[title] } : null;
+}
+function historyBooks() {
+    const ids = new Set(allBooks.map(b => b.id));
+    return allBooks.concat(catalogIdentityData().archived.filter(b => !ids.has(b.id)));
+}
+function historyBook(id) {
+    id = canonicalBookId(id);
+    return allBooks.find(b => b.id === id) || catalogIdentityData().archived.find(b => b.id === id);
+}
+function appendReviewConflict(data, bookId, sourceId, review) {
+    const item = { bookId: canonicalBookId(Number(bookId)), sourceId: Number(sourceId),
+        rating: review.rating, comment: review.comment || '', date: review.date || '' };
+    if (!data.reviewConflicts.some(r => JSON.stringify(r) === JSON.stringify(item))) data.reviewConflicts.push(item);
+}
+function migrateCatalogData(source, data) {
+    const resolvedConflicts = data.reviewConflicts || [];
+    data.reviewConflicts = [];
+    for (const r of [...resolvedConflicts, ...(Array.isArray(source.reviewConflicts) ? source.reviewConflicts : [])]) {
+        if (isRecord(r) && Number.isSafeInteger(r.bookId) && Number.isSafeInteger(r.sourceId) &&
+            Number.isInteger(r.rating) && r.rating >= 1 && r.rating <= 5 &&
+            typeof r.comment === 'string' && typeof r.date === 'string')
+            appendReviewConflict(data, r.bookId, r.sourceId, r);
+    }
+    for (const f of ['read', 'liked']) data[f] = [...new Set(data[f].map(canonicalBookId))];
+    const reviews = Object.create(null);
+    // Canonical review wins consistently regardless of object iteration order.
+    const entries = Object.entries(data.reviews).sort(([a], [b]) =>
+        Number(canonicalBookId(Number(a)) !== Number(a)) - Number(canonicalBookId(Number(b)) !== Number(b)) || Number(a) - Number(b));
+    for (const [sourceId, review] of entries) {
+        const id = canonicalBookId(Number(sourceId));
+        if (!Object.hasOwn(reviews, id)) reviews[id] = review;
+        else if (JSON.stringify(reviews[id]) !== JSON.stringify(review)) appendReviewConflict(data, id, sourceId, review);
+    }
+    data.reviews = reviews;
+    data.completionHistory = [];
+    for (const h of Array.isArray(source.completionHistory) ? source.completionHistory : []) {
+        if (isRecord(h) && Number.isSafeInteger(h.bookId) && Number.isSafeInteger(h.sourceId) && validDateKey(h.date)) {
+            const item = {bookId: canonicalBookId(h.bookId), sourceId: h.sourceId, date: h.date};
+            if (!data.completionHistory.some(x => JSON.stringify(x) === JSON.stringify(item))) data.completionHistory.push(item);
+        }
+    }
+    const dates = Object.create(null);
+    for (const [sourceId, date] of Object.entries(data.completedDates || {})) {
+        const id = canonicalBookId(Number(sourceId));
+        if (Number(sourceId) !== id || Object.keys(data.completedDates || {}).some(other => Number(other) !== Number(sourceId) && canonicalBookId(Number(other)) === id)) {
+            const item = {bookId: id, sourceId: Number(sourceId), date};
+            if (!data.completionHistory.some(x => JSON.stringify(x) === JSON.stringify(item))) data.completionHistory.push(item);
+        }
+        // Preserve the latest completion for the existing challenge semantics.
+        if (!dates[id] || date > dates[id]) dates[id] = date;
+    }
+    data.completedDates = dates;
+    for (const c of data.challenges || []) c.baseline = [...new Set(c.baseline.map(canonicalBookId))];
+    return data;
+}
+
+function catalogMigrationNeeded(data) {
+    const identities = catalogIdentityData();
+    const references = [...(Array.isArray(data.read) ? data.read : []), ...(Array.isArray(data.liked) ? data.liked : []),
+        ...Object.keys(data.reviews || {}), ...Object.keys(data.completedDates || {}),
+        ...(Array.isArray(data.challenges) ? data.challenges : []).flatMap(c => Array.isArray(c?.baseline) ? c.baseline : [])];
+    return references.some(id => Object.hasOwn(identities.aliases, id));
 }

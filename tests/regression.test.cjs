@@ -15,7 +15,7 @@ function harness(stored = {}) {
         window:{addEventListener(){}}, localStorage:{get length(){return storage.size},key(i){return [...storage.keys()][i]??null},getItem(key){return storage.get(key)??null},setItem(key,value){storage.set(key,value)},removeItem(key){storage.delete(key)}},sessionStorage:{get length(){return 0},key(){return null},getItem(){return null},setItem(){},removeItem(){}},
         setInterval(){return 1},clearInterval(){},setTimeout(){},requestAnimationFrame(){},rememberBookFocus(){return null},restoreBookFocus(){},prepareDialog(){},restoreDialogFocus(){} };
     vm.createContext(ctx);
-    for (const file of ['js/persistence.js','js/insights.js','js/app.js','js/backups.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
+    for (const file of ['js/catalog-identities.js','js/persistence.js','js/insights.js','js/app.js','js/backups.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
     vm.runInContext('allBooks = '+JSON.stringify(catalog),ctx);
     vm.runInContext('appReady = true; userDataLoaded = true;', ctx);
     return {ctx,storage,nodes,run(code){return vm.runInContext(code,ctx)},data(){return JSON.parse(vm.runInContext('JSON.stringify(userData)',ctx))}};
@@ -187,13 +187,13 @@ test('a stale tab cannot resurrect user data after another tab deletes or replac
 console.log(`${passed} total regression tests passed`);
 test('original 39 identities and pre-expansion JSON/text backups remain compatible',()=>{
  const originals=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/original-39-books.json')));
- for(const book of originals)assert.deepEqual(catalog.find(b=>b.id===book.id),book);
+ for(const book of originals){const h=harness();h.ctx.oldBook=book;assert.equal(h.run("canonicalBookId(oldBook.id)"),book.id);assert(h.run("historyBook(oldBook.id)"));}
  const h=harness(),json=fs.readFileSync(path.join(root,'tests/fixtures/pre-expansion-reading.json'),'utf8'),line=fs.readFileSync(path.join(root,'tests/fixtures/pre-expansion-reading.txt'),'utf8');
  h.ctx.oldJSON=json;h.ctx.oldLine=line;
  assert.equal(h.run('JSON.stringify(parseBackup(oldJSON).data)'),h.run('JSON.stringify(parseBackupLine(oldLine).data)'));
  h.run('userData=normalizeUserData(parseBackupLine(oldLine).data);saveUserData();loadUserData()');
  assert.deepEqual(h.data().read,[1,21,39]);assert.deepEqual(h.data().liked,[2,32]);assert.equal(h.data().reviews[21].comment,'Gömul umsögn – Þ æ ö 😀');
- for(const id of h.data().read)assert.equal(catalog.find(b=>b.id===id).title,originals.find(b=>b.id===id).title);
+ for(const id of h.data().read)assert.equal(h.run(`historyBook(${id}).id`),id);
 });
 test('unavailable page counts are excluded from page filters and completed-page totals',()=>{
  const h=harness();h.run('userData=normalizeUserData({});var unknown={id:9999999,title:"Óþekkt lengd",author:"Höfundur",pages:null,categories:["Barnabækur"]};allBooks.push(unknown)');
@@ -211,5 +211,41 @@ test('legacy data for newly available Forlagið titles migrates to stable IDs an
  assert.deepEqual(h.data().read,[book.id]);assert.equal(h.run('parseBackupLine(encodeBackupLine(createReadingBackup())).data.read[0]'),book.id);
  assert.equal(h.run('parseBackup(JSON.stringify(createReadingBackup())).data.liked[0]'),book.id);
  assert.equal(h.storage.get('library_v14'),JSON.stringify(legacy));
+});
+console.log(`${passed} total regression tests passed`);
+
+test('duplicate aliases migrate every saved reference once without inflating reading statistics',()=>{
+ const h=harness();h.run(`globalThis.BOKASAFN_CATALOG_IDENTITIES={aliases:{900001:37},archived:[{id:900002,title:'Gömul barnabók',author:'Höfundur',pages:40,categories:['Barnabækur'],archived:true}],legacyTitles:{'Gamalt Eragon':900001,'Gömul barnabók':900002}};
+ userData=normalizeUserData({version:15,read:[37,900001,900002],liked:[900001,37],completedDates:{37:'2026-01-01',900001:'2026-01-03'},reviews:{37:{rating:5,comment:'fyrri',date:'í dag'},900001:{rating:2,comment:'seinni Þ æ ö',date:'í gær'}},totalSeconds:600,dailyProgress:{'2026-01-01':600},challenges:[{id:'c',kind:'books',title:'Áskorun',target:1,start:'2026-01-01',baseline:[37,900001]}]});`);
+ assert.deepEqual(h.data().read,[37,900002]);assert.deepEqual(h.data().liked,[37]);assert.deepEqual(h.data().challenges[0].baseline,[37]);assert.equal(h.data().reviews[37].rating,5);assert.equal(h.data().reviewConflicts[0].comment,'seinni Þ æ ö');assert.equal(h.data().totalSeconds,600);assert.equal(h.data().completedDates[37],'2026-01-03');assert(h.data().completionHistory.some(x=>x.sourceId===900001));assert(h.data().completionHistory.some(x=>x.sourceId===37&&x.date==='2026-01-01'));
+ assert.equal(h.run('readingMetrics().books'),2);assert.equal(h.run('readingMetrics().pages'),h.run('(Number(historyBook(37).pages)||0)+40'));
+ const before=h.data();h.run('saveUserData();loadUserData()');assert.deepEqual(h.data().reviewConflicts,before.reviewConflicts);assert.deepEqual(h.data().completionHistory,before.completionHistory);assert.deepEqual(h.data().read,before.read);
+ h.run('updateStatsUI()');assert(h.nodes.get('reviews-archive').innerHTML.includes('seinni Þ æ ö'));assert(h.nodes.get('read-items').innerHTML.includes('Gömul barnabók'));
+ assert(h.run('recommendations(1000).every(r=>r.book.id!==900002)'));assert.equal(h.run('canonicalBookId(900099)'),900099);assert.equal(h.run('historyBook(900099)'),undefined);
+});
+test('old JSON and BOKASAFN backups migrate duplicate IDs and preserve archived reviews on repeated merge',()=>{
+ const h=harness();h.run(`globalThis.BOKASAFN_CATALOG_IDENTITIES={aliases:{900001:37},archived:[],legacyTitles:{'Gamalt Eragon':900001}};
+ var old={version:15,read:[37,900001],reviews:{37:{rating:4,comment:'p'},900001:{rating:1,comment:'q'}},completedDates:{900001:'2026-01-01'},totalSeconds:123};
+ var incoming=parseBackup(JSON.stringify({format:'bokasafn-backup',backupVersion:1,data:old})).data;
+ userData=mergeReadingData(normalizeUserData({}),incoming);var line=encodeBackupLine(createReadingBackup());var restored=parseBackupLine(line).data;`);
+ assert.deepEqual(h.data().read,[37]);assert.equal(h.data().reviewConflicts.length,1);assert.equal(h.run('restored.reviewConflicts[0].comment'),'q');assert.equal(h.run('restored.totalSeconds'),123);
+ const before=h.data();h.run('userData=mergeReadingData(userData,incoming)');assert.deepEqual(h.data(),before);
+ assert.equal(h.run('parseBackup(JSON.stringify({read:["Gamalt Eragon"]})).data.read[0]'),37);
+ h.run('var invalid=createReadingBackup();invalid.data.reviewConflicts=[{bookId:37,sourceId:900001,rating:99,comment:"bad",date:""}]');assert.throws(()=>h.run('parseBackup(JSON.stringify(invalid))'));
+});
+console.log(`${passed} total regression tests passed`);
+test('all deployed duplicate mappings preserve identities and old saved history',()=>{
+ const identities=JSON.parse(fs.readFileSync(path.join(root,'Resources/catalog-identities.json')));
+ assert.deepEqual(identities.aliases,{'1030282':37,'1099991':29,'1275924':21});
+ const frozen=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/pre-cleanup-books.json')));
+ const h=harness();for(const book of frozen){assert(h.run(`historyBook(${book.id})`));assert.equal(h.run(`canonicalBookId(${book.id})`),identities.aliases[book.id]||book.id);}
+ const refs=Object.entries(identities.aliases).flatMap(([id,target])=>[Number(id),target]);h.ctx.refs=refs;
+ h.run('userData=normalizeUserData({version:15,read:refs,liked:refs,totalSeconds:900});');assert.equal(h.run('readingMetrics().books'),3);assert.equal(h.data().totalSeconds,900);
+});
+test('rollback preserves exact stored text and denied rollback never overwrites the original',()=>{
+ const raw=' { "version":15, "read":[1030282,37], "totalSeconds":123 } ';
+ const h=harness({library_v15:raw});h.run('loadUserData()');assert.equal(h.storage.get('library_catalog_backup_20261008'),raw);assert.deepEqual(h.data().read,[37]);
+ const denied=harness({library_v15:raw});denied.ctx.localStorage.setItem=(key,value)=>{if(key==='library_catalog_backup_20261008')throw Error('quota');denied.storage.set(key,value);};
+ denied.run('loadUserData();saveUserData()');assert.equal(denied.storage.get('library_v15'),raw);assert.equal(denied.run('storageWritable'),false);
 });
 console.log(`${passed} total regression tests passed`);

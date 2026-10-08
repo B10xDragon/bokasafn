@@ -1,5 +1,8 @@
 # Catalog expansion verification — 7 October 2026
 
+Historical report. The 8 October cleanup and its current counts, policy, identity
+archives and test results are documented in [CATALOG_CLEANUP.md](CATALOG_CLEANUP.md).
+
 ## Final inventory
 
 | Measure | Result |

@@ -59,7 +59,7 @@ with sync_playwright() as p:
     print('PASS catalog startup and existing sorting enhancement', flush=True)
 
     def filters():
-        page.evaluate('toggleLike(1);toggleRead(1);toggleCategory("❤️ Óskalisti")')
+        page.evaluate('(id)=>{toggleLike(id);toggleRead(id);toggleCategory("❤️ Óskalisti")}',first['id'])
         expect(page.locator('.book-card')).to_have_count(1)
         page.locator('[data-action="like"]').focus()
         page.keyboard.press('Enter')
@@ -180,10 +180,10 @@ with sync_playwright() as p:
         isolated.add_init_script('Object.defineProperty(window,"localStorage",{get(){throw new DOMException("Denied","SecurityError")}})')
         q=isolated.new_page();local_errors=[];q.on('pageerror',lambda e:local_errors.append(str(e)))
         q.goto(URL);q.wait_for_function(f'allBooks.length==={len(CATALOG)}')
-        q.evaluate('setBokasafnTheme("green");toggleLike(1);handleTimerPrimaryAction()')
+        q.evaluate('(id)=>{setBokasafnTheme("green");toggleLike(id);handleTimerPrimaryAction()}',first['id'])
         assert not local_errors,local_errors
         expect(q.locator('body')).to_have_attribute('data-theme','green')
-        assert q.evaluate('userData.liked.includes(1)')
+        assert q.evaluate('(id)=>userData.liked.includes(id)',first['id'])
         q.evaluate('confirmStopReading()')
         assert q.evaluate('timerState.active')
         isolated.close()

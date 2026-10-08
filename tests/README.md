@@ -105,8 +105,8 @@ python scripts/validate_catalog.py
 python tests/catalog_browser.py
 ```
 
-These check edition normalization, explicit language evidence, the original 39
-complete records, unique IDs, normalized categories, known/unknown page counts,
+These check edition normalization, explicit language evidence, preservation of the
+original 39 identities (including archived records), unique IDs, normalized categories, known/unknown page counts,
 metadata and local cover hashes, real-server loading of every cover, new book IDs,
 Unicode normalization in search, bounded rendering and keyboard load-more,
 combined filters/sorting/recommendations/random selection, deep links/history,
@@ -118,3 +118,19 @@ independently of this displayed slice.
 Complete pass: run the Node suite (UTC, New York and Reykjavík), catalog tools
 and validator, then all six Python browser suites: `browser`, `live_browser`,
 `features_browser`, `backups_browser`, `clipboard_browser` and `catalog_browser`.
+
+Reviewed cleanup checks:
+
+```sh
+python tests/cleanup_browser.py
+```
+
+Run this seventh browser suite in addition to all six existing suites. It exercises
+real mobile Chromium, exact pre-migration rollback, duplicate and archived history,
+conflicting review visibility, date/challenge preservation, JSON and BOKASAFN
+round trips, repeated imports, statistics, excluded discovery/random/recommendation
+candidates and retained/alias/archive/unknown book routes. The Node suite adds
+idempotent normalization and conflicting import checks; catalog tools now exercise
+strict errors versus likely-match warnings and legitimate same-title/different-author
+and numbered-series cases. Frozen pre-cleanup identities replace the former
+assumption that original metadata could never be corrected.
