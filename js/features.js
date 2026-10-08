@@ -410,6 +410,7 @@ function copyBookLink(id) {
 function applyBookRoute() {
   const value = new URL(location.href).searchParams.get("book");
   routeChange = true;
+  if (window.browseReady) applyBrowseRoute();
   if (
     value !== null &&
     /^\d+$/.test(value) &&
@@ -501,6 +502,7 @@ function installFeatures() {
         DIALOG_CONTENT_IDS[activeDialog.modal.id],
       );
     originalOpen(id, event);
+    if (window.browseReady) decorateBrowseBook(id);
     const content = document.getElementById("modal-inner-content");
     content.insertAdjacentHTML(
       "beforeend",

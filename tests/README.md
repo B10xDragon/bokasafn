@@ -134,3 +134,14 @@ idempotent normalization and conflicting import checks; catalog tools now exerci
 strict errors versus likely-match warnings and legitimate same-title/different-author
 and numbered-series cases. Frozen pre-cleanup identities replace the former
 assumption that original metadata could never be corrected.
+
+Series and author browsing adds `node tests/browse.test.cjs` (10 unit checks),
+`python tests/browsing_tools.py` (7 validator checks), and
+`python tests/browse_browser.py` (7 real-server browser groups). These exercise
+verified ordering with gaps, unknown numbers, multiple authors, conservative
+name normalization, typed search, catalog-only progress, direct links and
+Back/Forward, unchanged portable backups, all five themes and 320–1920px
+layouts, keyboard focus and complete-catalog performance.
+
+Run `python scripts/validate_browsing.py` after changing catalog metadata;
+see [BROWSING.md](../BROWSING.md) for the source review and maintenance process.

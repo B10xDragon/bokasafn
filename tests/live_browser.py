@@ -2,6 +2,7 @@
 Run: python tests/live_browser.py (requires Playwright, Chromium, curl and network).
 Downloaded dependencies and screenshots stay in the system temporary directory.
 """
+import unicodedata
 import hashlib
 import json
 import mimetypes
@@ -138,11 +139,14 @@ with sync_playwright() as p:
         reset(page)
         for query in ['Hildur','vetrar','ORRI','ó','no such book 000']:
             page.fill('#book-search',query)
-            expected=[book['id'] for book in CATALOG if query.lower() in book['title'].lower() or query.lower() in book['author'].lower()]
+            def fold(value):
+                return ''.join(c for c in unicodedata.normalize('NFKD',value).lower() if not unicodedata.combining(c)).replace('þ','th').replace('ð','d').replace('æ','ae')
+            expected=[book['id'] for book in CATALOG if fold(query) in fold(book['title']+'\n'+book['author']+'\n'+book.get('series',{}).get('name',''))]
             actual=page.locator('#book-grid .book-card').evaluate_all('(cards)=>cards.map(card=>Number(card.dataset.bookId))')
             assert page.evaluate('filteredBooks.map(book=>book.id)')==expected,(query,expected)
             assert actual==expected[:60],(query,actual,expected[:60])
-            assert page.locator('#search-suggestions [role=button]').count()==min(5,len(expected)) if expected else page.locator('#search-suggestions').is_hidden()
+            assert page.locator('#search-suggestions [data-result-type=book]').count()==min(5,len(expected))
+            assert page.locator('#search-suggestions [role=button]').count()<=11
         page.fill('#book-search','Hildur');page.keyboard.press('ArrowDown')
         first=page.locator('#search-suggestions [role=button]').first
         expect(first).to_be_focused();page.keyboard.press('ArrowDown');expect(first.locator('xpath=following-sibling::li[1]')).to_be_focused()

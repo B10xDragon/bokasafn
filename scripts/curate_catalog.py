@@ -11,6 +11,8 @@ from catalog_categories import normalize_categories
 from catalog_language import icelandic_evidence
 ROOT=Path(__file__).resolve().parents[1]
 def apply(verified,decisions,cache):
+ current_path=ROOT/'Resources/books.json'
+ current={b['id']:b for b in json.loads(current_path.read_text())} if current_path.exists() else {}
  original=json.loads((ROOT/'tests/fixtures/pre-cleanup-books.json').read_text())
  old_sources={r['id']:r for r in json.loads((ROOT/'Resources/catalog-sources.json').read_text())}
  byid={b['id']:b for b in original};fresh={r['catalogId']:r for r in verified};decisions={int(k):v for k,v in decisions.items()}
@@ -44,6 +46,8 @@ def apply(verified,decisions,cache):
    if not d.get('identityVerified'):raise ValueError(f'Identity must be established {bid}')
    b={**old,'title':r['title'],'author':d.get('verifiedAuthor',r['author']),
       'pages':r['edition']['pages'],'publicationYear':r['edition']['year'],'sourceURL':r['url']}
+   for key in ['series','authorIds']:
+    if key in current.get(bid,{}):b[key]=current[bid][key]
    translators=[]
    for creator in r['author'].split(', '):
     name=re.sub(r'\s+þýddi$','',creator)

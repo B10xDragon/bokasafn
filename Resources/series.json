@@ -1,0 +1,255 @@
+[
+  {
+    "id": "eragon",
+    "name": "Eragon"
+  },
+  {
+    "id": "harry-potter",
+    "name": "Harry Potter",
+    "total": 7
+  },
+  {
+    "id": "hungurleikarnir",
+    "name": "Hungurleikarnir",
+    "total": 3
+  },
+  {
+    "id": "hvisl-hrafnanna",
+    "name": "Hvísl hrafnanna",
+    "total": 3
+  },
+  {
+    "id": "thriggja-heima-saga",
+    "name": "Þriggja heima saga"
+  },
+  {
+    "id": "artemis-fowl",
+    "name": "Artemis Fowl"
+  },
+  {
+    "id": "anna-i-graenuhlid",
+    "name": "Anna í Grænuhlíð",
+    "total": 8
+  },
+  {
+    "id": "nornasaga",
+    "name": "Nornasaga",
+    "total": 3
+  },
+  {
+    "id": "john-john",
+    "name": "John-John",
+    "total": 3
+  },
+  {
+    "id": "freyju-saga",
+    "name": "Freyju saga"
+  },
+  {
+    "id": "saga-eftirlifenda",
+    "name": "Saga eftirlifenda",
+    "total": 3
+  },
+  {
+    "id": "hafsfolkid",
+    "name": "Hafsfólkið",
+    "total": 3
+  },
+  {
+    "id": "alex-rider",
+    "name": "Alex Rider"
+  },
+  {
+    "id": "mjallhvit",
+    "name": "Mjallhvít",
+    "total": 3
+  },
+  {
+    "id": "bert",
+    "name": "Bert"
+  },
+  {
+    "id": "ulfur-og-edda",
+    "name": "Úlfur og Edda"
+  },
+  {
+    "id": "jarmalandskronikan",
+    "name": "Jarmalandskrónikan",
+    "total": 4
+  },
+  {
+    "id": "dulstafir",
+    "name": "Dulstafir"
+  },
+  {
+    "id": "skuggasaga",
+    "name": "Skuggasaga"
+  },
+  {
+    "id": "erlendur",
+    "name": "Erlendur"
+  },
+  {
+    "id": "konrad",
+    "name": "Konráð"
+  },
+  {
+    "id": "mordin-i-are",
+    "name": "Morðin í Åre"
+  },
+  {
+    "id": "shetland",
+    "name": "Shetland",
+    "total": 8
+  },
+  {
+    "id": "vera",
+    "name": "Vera"
+  },
+  {
+    "id": "hildur",
+    "name": "Hildur"
+  },
+  {
+    "id": "ruth-galloway",
+    "name": "Dr. Ruth Galloway"
+  },
+  {
+    "id": "deild-q",
+    "name": "Deild Q"
+  },
+  {
+    "id": "stella-blomkvist",
+    "name": "Stella Blómkvist"
+  },
+  {
+    "id": "joona-linna",
+    "name": "Joona Linna"
+  },
+  {
+    "id": "heimilishjalpin",
+    "name": "Heimilishjálpin"
+  },
+  {
+    "id": "agentarnir",
+    "name": "Agentarnir"
+  },
+  {
+    "id": "kongsrikid",
+    "name": "Kóngsríkið"
+  },
+  {
+    "id": "jack-reacher",
+    "name": "Jack Reacher"
+  },
+  {
+    "id": "kronikuserian",
+    "name": "Kroníkuserían"
+  },
+  {
+    "id": "malin-fors",
+    "name": "Malin Fors"
+  },
+  {
+    "id": "maigret",
+    "name": "Maigret"
+  },
+  {
+    "id": "dora-og-rado",
+    "name": "Dóra og Rado"
+  },
+  {
+    "id": "osterlen-mordin",
+    "name": "Österlen-morðin"
+  },
+  {
+    "id": "litilmagnar",
+    "name": "Lítilmagnar"
+  },
+  {
+    "id": "seidmagn-andstaednanna",
+    "name": "Seiðmagn andstæðnanna"
+  },
+  {
+    "id": "ronning-og-stilton",
+    "name": "Olivia Rönning og Tom Stilton"
+  },
+  {
+    "id": "evert-backstrom",
+    "name": "Evert Bäckström"
+  },
+  {
+    "id": "emma-skold",
+    "name": "Emma Sköld"
+  },
+  {
+    "id": "millennium",
+    "name": "Millennium"
+  },
+  {
+    "id": "haparanda",
+    "name": "Haparanda"
+  },
+  {
+    "id": "hagfors",
+    "name": "Hagfors"
+  },
+  {
+    "id": "bergthora-i-hvommum",
+    "name": "Bergþóra í Hvömmum",
+    "total": 3
+  },
+  {
+    "id": "sjoleikurinn",
+    "name": "Sjöleikurinn",
+    "total": 3
+  },
+  {
+    "id": "baekur-duftsins",
+    "name": "Bækur duftsins",
+    "total": 3
+  },
+  {
+    "id": "brjalina-hansen",
+    "name": "Ótrúleg ævintýri Brjálínu Hansen",
+    "total": 3
+  },
+  {
+    "id": "skuggabruin",
+    "name": "Skuggabrúin",
+    "total": 3
+  },
+  {
+    "id": "rokkurhaedir",
+    "name": "Rökkurhæðir"
+  },
+  {
+    "id": "kepler-62",
+    "name": "Kepler 62"
+  },
+  {
+    "id": "bolvun-mumiunnar",
+    "name": "Bölvun múmíunnar"
+  },
+  {
+    "id": "a-morgun",
+    "name": "Á morgun",
+    "total": 7
+  },
+  {
+    "id": "kurt-wallander",
+    "name": "Kurt Wallander"
+  },
+  {
+    "id": "hordur-grimsson",
+    "name": "Hörður Grímsson"
+  },
+  {
+    "id": "gunnhildur",
+    "name": "Gunnhildur"
+  },
+  {
+    "id": "nora-sand",
+    "name": "Nora Sand"
+  }
+]

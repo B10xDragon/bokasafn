@@ -15,7 +15,10 @@
     "cover": "Resources/Images/forlagid-5363.webp",
     "pages": 263,
     "publicationYear": 2015,
-    "sourceURL": "https://www.forlagid.is/vara/vetrarfri/"
+    "sourceURL": "https://www.forlagid.is/vara/vetrarfri/",
+    "authorIds": [
+      "hildur-knutsdottir"
+    ]
   },
   {
     "id": 4,
@@ -29,7 +32,10 @@
     "cover": "Resources/Images/forlagid-99756.webp",
     "pages": 410,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/ljonid/"
+    "sourceURL": "https://www.forlagid.is/vara/ljonid/",
+    "authorIds": [
+      "hildur-knutsdottir"
+    ]
   },
   {
     "id": 5,
@@ -42,7 +48,10 @@
     "cover": "Resources/Images/forlagid-117250.webp",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/40-vikur/"
+    "sourceURL": "https://www.forlagid.is/vara/40-vikur/",
+    "authorIds": [
+      "ragnheidur-gestsdottir"
+    ]
   },
   {
     "id": 6,
@@ -55,7 +64,10 @@
     "cover": "Resources/Images/forlagid-163648.webp",
     "pages": 176,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/ofurhetjan/"
+    "sourceURL": "https://www.forlagid.is/vara/ofurhetjan/",
+    "authorIds": [
+      "hjalti-halldorsson"
+    ]
   },
   {
     "id": 7,
@@ -69,7 +81,10 @@
     "cover": "Resources/Images/forlagid-38116.webp",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/sver%c3%b0berinn/"
+    "sourceURL": "https://www.forlagid.is/vara/sver%c3%b0berinn/",
+    "authorIds": [
+      "ragnheidur-gestsdottir"
+    ]
   },
   {
     "id": 8,
@@ -84,7 +99,10 @@
     "cover": "Resources/Images/forlagid-110478.webp",
     "pages": 213,
     "publicationYear": 2008,
-    "sourceURL": "https://www.forlagid.is/vara/draugaslod/"
+    "sourceURL": "https://www.forlagid.is/vara/draugaslod/",
+    "authorIds": [
+      "kristin-helga-gunnarsdottir"
+    ]
   },
   {
     "id": 11,
@@ -99,7 +117,10 @@
     "cover": "Resources/Images/forlagid-226701.webp",
     "pages": 168,
     "publicationYear": 2022,
-    "sourceURL": "https://www.forlagid.is/vara/skrimslin-vakna/"
+    "sourceURL": "https://www.forlagid.is/vara/skrimslin-vakna/",
+    "authorIds": [
+      "eva-run-thorgeirsdottir"
+    ]
   },
   {
     "id": 12,
@@ -112,7 +133,11 @@
     "cover": "Resources/Images/forlagid-152726.webp",
     "pages": 137,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/hingad-og-ekki-lengra/"
+    "sourceURL": "https://www.forlagid.is/vara/hingad-og-ekki-lengra/",
+    "authorIds": [
+      "hildur-knutsdottir",
+      "thordis-gisladottir"
+    ]
   },
   {
     "id": 13,
@@ -126,7 +151,11 @@
     "cover": "Resources/Images/forlagid-182540.webp",
     "pages": 115,
     "publicationYear": 2023,
-    "sourceURL": "https://www.forlagid.is/vara/veikindadagur/"
+    "sourceURL": "https://www.forlagid.is/vara/veikindadagur/",
+    "authorIds": [
+      "bergrun-iris-saevarsdottir",
+      "sigmundur-breidfjord-thorgeirsson"
+    ]
   },
   {
     "id": 14,
@@ -142,7 +171,10 @@
     "pages": 244,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/hrafnsklo/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "stefan-mani"
+    ]
   },
   {
     "id": 15,
@@ -155,7 +187,10 @@
     "cover": "Resources/Images/forlagid-285382.webp",
     "pages": 151,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/solgos/"
+    "sourceURL": "https://www.forlagid.is/vara/solgos/",
+    "authorIds": [
+      "arndis-thorarinsdottir"
+    ]
   },
   {
     "id": 17,
@@ -169,7 +204,10 @@
     "cover": "Resources/Images/forlagid-49245.webp",
     "pages": 282,
     "publicationYear": 2016,
-    "sourceURL": "https://www.forlagid.is/vara/vetrarhoerkur/"
+    "sourceURL": "https://www.forlagid.is/vara/vetrarhoerkur/",
+    "authorIds": [
+      "hildur-knutsdottir"
+    ]
   },
   {
     "id": 20,
@@ -184,7 +222,10 @@
     "cover": "Resources/Images/forlagid-99989.webp",
     "pages": 273,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/rotturnar/"
+    "sourceURL": "https://www.forlagid.is/vara/rotturnar/",
+    "authorIds": [
+      "ragnheidur-eyjolfsdottir"
+    ]
   },
   {
     "id": 21,
@@ -201,7 +242,15 @@
     "pages": 280,
     "publicationYear": 2014,
     "sourceURL": "https://www.forlagid.is/vara/myrin/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "arnaldur-indridason"
+    ],
+    "series": {
+      "id": "erlendur",
+      "name": "Erlendur",
+      "number": 6
+    }
   },
   {
     "id": 22,
@@ -218,7 +267,15 @@
     "pages": null,
     "publicationYear": 2001,
     "sourceURL": "https://www.forlagid.is/vara/grafarthogn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "arnaldur-indridason"
+    ],
+    "series": {
+      "id": "erlendur",
+      "name": "Erlendur",
+      "number": 7
+    }
   },
   {
     "id": 23,
@@ -232,7 +289,10 @@
     "cover": "Resources/Images/forlagid-72056.webp",
     "pages": 392,
     "publicationYear": 2017,
-    "sourceURL": "https://www.forlagid.is/vara/eg-man-tig-biokapa/"
+    "sourceURL": "https://www.forlagid.is/vara/eg-man-tig-biokapa/",
+    "authorIds": [
+      "yrsa-sigurdardottir"
+    ]
   },
   {
     "id": 25,
@@ -249,7 +309,10 @@
     "pages": 494,
     "publicationYear": 2017,
     "sourceURL": "https://www.forlagid.is/vara/brestir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "fredrik-backman"
+    ]
   },
   {
     "id": 27,
@@ -263,7 +326,10 @@
     "cover": "Resources/Images/forlagid-103183.webp",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/skjaldboekur-alla-leidina-nidur/"
+    "sourceURL": "https://www.forlagid.is/vara/skjaldboekur-alla-leidina-nidur/",
+    "authorIds": [
+      "john-green"
+    ]
   },
   {
     "id": 28,
@@ -279,7 +345,10 @@
     "pages": 272,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/englar-alheimsins-islensk-klassik/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "einar-mar-gudmundsson"
+    ]
   },
   {
     "id": 29,
@@ -293,7 +362,10 @@
     "cover": "Resources/Images/forlagid-99991.webp",
     "pages": 257,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/stormsker/"
+    "sourceURL": "https://www.forlagid.is/vara/stormsker/",
+    "authorIds": [
+      "birkir-blaer"
+    ]
   },
   {
     "id": 30,
@@ -312,7 +384,10 @@
     "pages": 325,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/alfareidin/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gunnar-theodor-eggertsson"
+    ]
   },
   {
     "id": 31,
@@ -328,7 +403,10 @@
     "pages": 384,
     "publicationYear": 2020,
     "sourceURL": "https://www.forlagid.is/vara/folk-i-angist/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "fredrik-backman"
+    ]
   },
   {
     "id": 32,
@@ -347,7 +425,10 @@
     "pages": 345,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/hobbitinn-2-utgafa/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "j-r-r-tolkien"
+    ]
   },
   {
     "id": 34,
@@ -360,7 +441,12 @@
     "cover": "Resources/Images/forlagid-5406.webp",
     "pages": 289,
     "publicationYear": 2015,
-    "sourceURL": "https://www.forlagid.is/vara/leitin-a%c3%b0-tilgangi-unglingsins/"
+    "sourceURL": "https://www.forlagid.is/vara/leitin-a%c3%b0-tilgangi-unglingsins/",
+    "authorIds": [
+      "arnor-bjornsson",
+      "bryndis-bjorgvinsdottir",
+      "oli-gunnar-gunnarsson"
+    ]
   },
   {
     "id": 35,
@@ -378,7 +464,16 @@
     "pages": 375,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/hungurleikarnir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "suzanne-collins"
+    ],
+    "series": {
+      "id": "hungurleikarnir",
+      "name": "Hungurleikarnir",
+      "total": 3,
+      "number": 1
+    }
   },
   {
     "id": 36,
@@ -396,7 +491,16 @@
     "pages": 395,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/eldar-kvikna-hungurleikar-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "suzanne-collins"
+    ],
+    "series": {
+      "id": "hungurleikarnir",
+      "name": "Hungurleikarnir",
+      "total": 3,
+      "number": 2
+    }
   },
   {
     "id": 37,
@@ -415,7 +519,15 @@
     "sourceURL": "https://www.forlagid.is/vara/eragon/",
     "translators": [
       "Guðni Kolbeinsson"
-    ]
+    ],
+    "authorIds": [
+      "christopher-paolini"
+    ],
+    "series": {
+      "id": "eragon",
+      "name": "Eragon",
+      "number": 1
+    }
   },
   {
     "id": 38,
@@ -434,7 +546,16 @@
     "pages": 414,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/hermiskadi-hungurleikar-3/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "suzanne-collins"
+    ],
+    "series": {
+      "id": "hungurleikarnir",
+      "name": "Hungurleikarnir",
+      "total": 3,
+      "number": 3
+    }
   },
   {
     "id": 39,
@@ -448,7 +569,16 @@
     "cover": "Resources/Images/forlagid-84821.webp",
     "pages": 686,
     "publicationYear": 2017,
-    "sourceURL": "https://www.forlagid.is/vara/hvisl-hrafnanna/"
+    "sourceURL": "https://www.forlagid.is/vara/hvisl-hrafnanna/",
+    "authorIds": [
+      "malene-solvsten"
+    ],
+    "series": {
+      "id": "hvisl-hrafnanna",
+      "name": "Hvísl hrafnanna",
+      "total": 3,
+      "number": 1
+    }
   },
   {
     "id": 1001100,
@@ -461,7 +591,10 @@
     "description": "Víkingagull er bók eftir Elías Snæland Jónsson. Skráð útgáfuár hjá Forlaginu er 2000.",
     "pages": null,
     "publicationYear": 2000,
-    "sourceURL": "https://www.forlagid.is/vara/vikingagull/"
+    "sourceURL": "https://www.forlagid.is/vara/vikingagull/",
+    "authorIds": [
+      "elias-snaeland-jonsson"
+    ]
   },
   {
     "id": 1001318,
@@ -474,7 +607,10 @@
     "description": "Draumar undir gaddavír er bók eftir Elías Snæland Jónsson. Skráð útgáfuár hjá Forlaginu er 1996. Skráður blaðsíðufjöldi er 168.",
     "pages": 168,
     "publicationYear": 1996,
-    "sourceURL": "https://www.forlagid.is/vara/draumar-undir-gaddavir/"
+    "sourceURL": "https://www.forlagid.is/vara/draumar-undir-gaddavir/",
+    "authorIds": [
+      "elias-snaeland-jonsson"
+    ]
   },
   {
     "id": 1001771,
@@ -488,7 +624,10 @@
     "description": "Borg er skáldverk eftir Ragna Sigurðardóttir. Skráð útgáfuár hjá Forlaginu er 1993. Skráður blaðsíðufjöldi er 193.",
     "pages": 193,
     "publicationYear": 1993,
-    "sourceURL": "https://www.forlagid.is/vara/borg/"
+    "sourceURL": "https://www.forlagid.is/vara/borg/",
+    "authorIds": [
+      "ragna-sigurdardottir"
+    ]
   },
   {
     "id": 1003909,
@@ -505,7 +644,10 @@
     "pages": 528,
     "publicationYear": 2010,
     "sourceURL": "https://www.forlagid.is/vara/myrkvun-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "stephenie-meyer"
+    ]
   },
   {
     "id": 1004290,
@@ -523,7 +665,10 @@
     "pages": 607,
     "publicationYear": 2011,
     "sourceURL": "https://www.forlagid.is/vara/dogun/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "stephenie-meyer"
+    ]
   },
   {
     "id": 1004307,
@@ -537,7 +682,10 @@
     "description": "Græni atlasinn er bók eftir John Stephens. Skráð útgáfuár hjá Forlaginu er 2011. Skráður blaðsíðufjöldi er 411.",
     "pages": 411,
     "publicationYear": 2011,
-    "sourceURL": "https://www.forlagid.is/vara/gr%c3%a6ni-atlasinn/"
+    "sourceURL": "https://www.forlagid.is/vara/gr%c3%a6ni-atlasinn/",
+    "authorIds": [
+      "john-stephens"
+    ]
   },
   {
     "id": 1004548,
@@ -551,7 +699,10 @@
     "description": "Spádómurinn er bók eftir Hildur Knútsdóttir. Skráð útgáfuár hjá Forlaginu er 2012. Skráður blaðsíðufjöldi er 210.",
     "pages": 210,
     "publicationYear": 2012,
-    "sourceURL": "https://www.forlagid.is/vara/spadomurinn/"
+    "sourceURL": "https://www.forlagid.is/vara/spadomurinn/",
+    "authorIds": [
+      "hildur-knutsdottir"
+    ]
   },
   {
     "id": 1004822,
@@ -564,7 +715,10 @@
     "description": "Annáll eldsins er bók eftir John Stephens. Skráð útgáfuár hjá Forlaginu er 2013. Skráður blaðsíðufjöldi er 429.",
     "pages": 429,
     "publicationYear": 2013,
-    "sourceURL": "https://www.forlagid.is/vara/annall-eldsins/"
+    "sourceURL": "https://www.forlagid.is/vara/annall-eldsins/",
+    "authorIds": [
+      "john-stephens"
+    ]
   },
   {
     "id": 1006346,
@@ -577,7 +731,11 @@
     "description": "Carpe Diem er bók eftir Kristjana María Kristjánsdóttir, Eyrún Ýr Tryggvadóttir. Skráð útgáfuár hjá Forlaginu er 2011. Skráður blaðsíðufjöldi er 126.",
     "pages": 126,
     "publicationYear": 2011,
-    "sourceURL": "https://www.forlagid.is/vara/carpe-diem/"
+    "sourceURL": "https://www.forlagid.is/vara/carpe-diem/",
+    "authorIds": [
+      "kristjana-maria-kristjansdottir",
+      "eyrun-yr-tryggvadottir"
+    ]
   },
   {
     "id": 1006540,
@@ -594,7 +752,10 @@
     "pages": null,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/heimili-froken-peregrine-fyrir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ransom-riggs"
+    ]
   },
   {
     "id": 1007083,
@@ -610,7 +771,10 @@
     "pages": 282,
     "publicationYear": 2011,
     "sourceURL": "https://www.forlagid.is/vara/fljott-fljott-sag%c3%b0i-fuglinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thor-vilhjalmsson"
+    ]
   },
   {
     "id": 1007622,
@@ -626,7 +790,10 @@
     "pages": 151,
     "publicationYear": 2001,
     "sourceURL": "https://www.forlagid.is/vara/79-af-sto%c3%b0inni/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "indridi-g-thorsteinsson"
+    ]
   },
   {
     "id": 1007725,
@@ -639,7 +806,10 @@
     "description": "Allt annað líf er bók eftir Gunnhildur Hrólfsdóttir. Skráð útgáfuár hjá Forlaginu er 2002. Skráður blaðsíðufjöldi er 176.",
     "pages": 176,
     "publicationYear": 2002,
-    "sourceURL": "https://www.forlagid.is/vara/allt-anna%c3%b0-lif/"
+    "sourceURL": "https://www.forlagid.is/vara/allt-anna%c3%b0-lif/",
+    "authorIds": [
+      "gunnhildur-hrolfsdottir"
+    ]
   },
   {
     "id": 1008310,
@@ -654,7 +824,16 @@
     "description": "Hrafnsauga: Þriggja heima saga #1 er bók eftir Kjartan Yngvi Björnsson, Snæbjörn Brynjarsson. Skráð útgáfuár hjá Forlaginu er 2012. Skráður blaðsíðufjöldi er 383.",
     "pages": 383,
     "publicationYear": 2012,
-    "sourceURL": "https://www.forlagid.is/vara/hrafnsauga/"
+    "sourceURL": "https://www.forlagid.is/vara/hrafnsauga/",
+    "authorIds": [
+      "kjartan-yngvi-bjornsson",
+      "snaebjorn-brynjarsson"
+    ],
+    "series": {
+      "id": "thriggja-heima-saga",
+      "name": "Þriggja heima saga",
+      "number": 1
+    }
   },
   {
     "id": 1008425,
@@ -668,7 +847,16 @@
     "description": "Draumsverð: Þriggja heima saga #2 er bók eftir Kjartan Yngvi Björnsson, Snæbjörn Brynjarsson. Skráð útgáfuár hjá Forlaginu er 2013. Skráður blaðsíðufjöldi er 555.",
     "pages": 555,
     "publicationYear": 2013,
-    "sourceURL": "https://www.forlagid.is/vara/draumsver%c3%b0/"
+    "sourceURL": "https://www.forlagid.is/vara/draumsver%c3%b0/",
+    "authorIds": [
+      "kjartan-yngvi-bjornsson",
+      "snaebjorn-brynjarsson"
+    ],
+    "series": {
+      "id": "thriggja-heima-saga",
+      "name": "Þriggja heima saga",
+      "number": 2
+    }
   },
   {
     "id": 1008534,
@@ -682,7 +870,10 @@
     "description": "Hafnfirðingabrandarinn er skáldverk eftir Bryndís Björgvinsdóttir. Skráð útgáfuár hjá Forlaginu er 2014. Skráður blaðsíðufjöldi er 432.",
     "pages": 432,
     "publicationYear": 2014,
-    "sourceURL": "https://www.forlagid.is/vara/hafnfir%c3%b0ingabrandarinn/"
+    "sourceURL": "https://www.forlagid.is/vara/hafnfir%c3%b0ingabrandarinn/",
+    "authorIds": [
+      "bryndis-bjorgvinsdottir"
+    ]
   },
   {
     "id": 1008606,
@@ -695,7 +886,16 @@
     "description": "Hvít sem mjöll er bók eftir Salla Simukka. Skráð útgáfuár hjá Forlaginu er 2015. Skráður blaðsíðufjöldi er 212.",
     "pages": 212,
     "publicationYear": 2015,
-    "sourceURL": "https://www.forlagid.is/vara/hvit-sem-mjoll/"
+    "sourceURL": "https://www.forlagid.is/vara/hvit-sem-mjoll/",
+    "authorIds": [
+      "salla-simukka"
+    ],
+    "series": {
+      "id": "mjallhvit",
+      "name": "Mjallhvít",
+      "total": 3,
+      "number": 2
+    }
   },
   {
     "id": 1008625,
@@ -708,7 +908,16 @@
     "description": "Ormstunga: Þriggja heima saga #3 er bók eftir Kjartan Yngvi Björnsson, Snæbjörn Brynjarsson. Skráð útgáfuár hjá Forlaginu er 2015. Skráður blaðsíðufjöldi er 583.",
     "pages": 583,
     "publicationYear": 2015,
-    "sourceURL": "https://www.forlagid.is/vara/ormstunga/"
+    "sourceURL": "https://www.forlagid.is/vara/ormstunga/",
+    "authorIds": [
+      "kjartan-yngvi-bjornsson",
+      "snaebjorn-brynjarsson"
+    ],
+    "series": {
+      "id": "thriggja-heima-saga",
+      "name": "Þriggja heima saga",
+      "number": 3
+    }
   },
   {
     "id": 1009222,
@@ -725,7 +934,10 @@
     "pages": 270,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/islenskur-adall-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorbergur-thordarson"
+    ]
   },
   {
     "id": 1010136,
@@ -738,7 +950,16 @@
     "description": "Vetrarvík er bók eftir Mats Wahl. Skráð útgáfuár hjá Forlaginu er 1995.",
     "pages": null,
     "publicationYear": 1995,
-    "sourceURL": "https://www.forlagid.is/vara/vetrarvik/"
+    "sourceURL": "https://www.forlagid.is/vara/vetrarvik/",
+    "authorIds": [
+      "mats-wahl"
+    ],
+    "series": {
+      "id": "john-john",
+      "name": "John-John",
+      "total": 3,
+      "number": 1
+    }
   },
   {
     "id": 1011143,
@@ -755,7 +976,10 @@
     "pages": null,
     "publicationYear": 2008,
     "sourceURL": "https://www.forlagid.is/vara/gl%c3%a6pur-og-refsing/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "fjodor-dostojevski"
+    ]
   },
   {
     "id": 1011193,
@@ -772,7 +996,10 @@
     "pages": 192,
     "publicationYear": 2013,
     "sourceURL": "https://www.forlagid.is/vara/inferno/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "august-strindberg"
+    ]
   },
   {
     "id": 1011201,
@@ -789,7 +1016,10 @@
     "pages": null,
     "publicationYear": 1998,
     "sourceURL": "https://www.forlagid.is/vara/gylting/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "marie-darrieussecq"
+    ]
   },
   {
     "id": 1011461,
@@ -802,7 +1032,10 @@
     "description": "Tilbúinn undir tréverk er bók eftir Þórður Helgason.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/tilbuinn-undir-treverk/"
+    "sourceURL": "https://www.forlagid.is/vara/tilbuinn-undir-treverk/",
+    "authorIds": [
+      "thordur-helgason"
+    ]
   },
   {
     "id": 1011887,
@@ -816,7 +1049,10 @@
     "description": "Dýrgripurinn í fjörunni er bók eftir Moshe Okon.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/dyrgripurinn-i-fjorunni/"
+    "sourceURL": "https://www.forlagid.is/vara/dyrgripurinn-i-fjorunni/",
+    "authorIds": [
+      "moshe-okon"
+    ]
   },
   {
     "id": 1012841,
@@ -829,7 +1065,16 @@
     "description": "John John er bók eftir Mats Wahl. Skráð útgáfuár hjá Forlaginu er 2001.",
     "pages": null,
     "publicationYear": 2001,
-    "sourceURL": "https://www.forlagid.is/vara/john-john/"
+    "sourceURL": "https://www.forlagid.is/vara/john-john/",
+    "authorIds": [
+      "mats-wahl"
+    ],
+    "series": {
+      "id": "john-john",
+      "name": "John-John",
+      "total": 3,
+      "number": 3
+    }
   },
   {
     "id": 1013605,
@@ -849,7 +1094,10 @@
     "translators": [
       "Kristján Árnason"
     ],
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ovidius-naso"
+    ]
   },
   {
     "id": 1013929,
@@ -863,7 +1111,10 @@
     "description": "Gauragangur er skáldverk eftir Ólafur Haukur Símonarson. Skráð útgáfuár hjá Forlaginu er 2010. Skráður blaðsíðufjöldi er 260.",
     "pages": 260,
     "publicationYear": 2010,
-    "sourceURL": "https://www.forlagid.is/vara/gauragangur/"
+    "sourceURL": "https://www.forlagid.is/vara/gauragangur/",
+    "authorIds": [
+      "olafur-haukur-simonarson"
+    ]
   },
   {
     "id": 1014044,
@@ -877,7 +1128,11 @@
     "description": "Elskar mig, elskar mig ekki er skáldverk eftir Eiríkur Örn Norðdahl, Jónína Leósdóttir. Skráð útgáfuár hjá Forlaginu er 2010. Skráður blaðsíðufjöldi er 205.",
     "pages": 205,
     "publicationYear": 2010,
-    "sourceURL": "https://www.forlagid.is/vara/elskar-mig-elskar-mig-ekki/"
+    "sourceURL": "https://www.forlagid.is/vara/elskar-mig-elskar-mig-ekki/",
+    "authorIds": [
+      "eirikur-orn-norddahl",
+      "jonina-leosdottir"
+    ]
   },
   {
     "id": 1014299,
@@ -893,7 +1148,10 @@
     "pages": 381,
     "publicationYear": 2011,
     "sourceURL": "https://www.forlagid.is/vara/reisubok-gullivers/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jonathan-swift"
+    ]
   },
   {
     "id": 1014326,
@@ -906,7 +1164,10 @@
     "description": "Ríólítreglan er bók eftir Kristín Helga Gunnarsdóttir. Skráð útgáfuár hjá Forlaginu er 2011. Skráður blaðsíðufjöldi er 230.",
     "pages": 230,
     "publicationYear": 2011,
-    "sourceURL": "https://www.forlagid.is/vara/riolitreglan/"
+    "sourceURL": "https://www.forlagid.is/vara/riolitreglan/",
+    "authorIds": [
+      "kristin-helga-gunnarsdottir"
+    ]
   },
   {
     "id": 1014491,
@@ -920,7 +1181,10 @@
     "description": "Bróðir minn ljónshjarta er skáldverk eftir Astrid Lindgren. Skráð útgáfuár hjá Forlaginu er 2012. Skráður blaðsíðufjöldi er 246.",
     "pages": 246,
     "publicationYear": 2012,
-    "sourceURL": "https://www.forlagid.is/vara/bro%c3%b0ir-minn-ljonshjarta-2/"
+    "sourceURL": "https://www.forlagid.is/vara/bro%c3%b0ir-minn-ljonshjarta-2/",
+    "authorIds": [
+      "astrid-lindgren"
+    ]
   },
   {
     "id": 1014834,
@@ -935,7 +1199,15 @@
     "description": "Freyju saga – Múrinn er bók eftir Sif Sigmarsdóttir. Skráð útgáfuár hjá Forlaginu er 2013. Skráður blaðsíðufjöldi er 365.",
     "pages": 365,
     "publicationYear": 2013,
-    "sourceURL": "https://www.forlagid.is/vara/freyju-saga-murinn/"
+    "sourceURL": "https://www.forlagid.is/vara/freyju-saga-murinn/",
+    "authorIds": [
+      "sif-sigmarsdottir"
+    ],
+    "series": {
+      "id": "freyju-saga",
+      "name": "Freyju saga",
+      "number": 1
+    }
   },
   {
     "id": 1014838,
@@ -949,7 +1221,10 @@
     "description": "Tímakistan er skáldverk eftir Andri Snær Magnason. Skráð útgáfuár hjá Forlaginu er 2013. Skráður blaðsíðufjöldi er 296.",
     "pages": 296,
     "publicationYear": 2013,
-    "sourceURL": "https://www.forlagid.is/vara/timakistan/"
+    "sourceURL": "https://www.forlagid.is/vara/timakistan/",
+    "authorIds": [
+      "andri-snaer-magnason"
+    ]
   },
   {
     "id": 1014869,
@@ -966,7 +1241,10 @@
     "pages": 647,
     "publicationYear": 2013,
     "sourceURL": "https://www.forlagid.is/vara/herodotus-fra-hallikarnassus/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "herodotus"
+    ]
   },
   {
     "id": 1015158,
@@ -979,7 +1257,10 @@
     "description": "Freyju saga 2 – Djásn er bók eftir Sif Sigmarsdóttir. Skráð útgáfuár hjá Forlaginu er 2014. Skráður blaðsíðufjöldi er 405.",
     "pages": 405,
     "publicationYear": 2014,
-    "sourceURL": "https://www.forlagid.is/vara/freyju-saga-2-djasn/"
+    "sourceURL": "https://www.forlagid.is/vara/freyju-saga-2-djasn/",
+    "authorIds": [
+      "sif-sigmarsdottir"
+    ]
   },
   {
     "id": 1015379,
@@ -995,7 +1276,10 @@
     "pages": 446,
     "publicationYear": 2015,
     "sourceURL": "https://www.forlagid.is/vara/grimms%c3%a6vintyri-fyrir-unga-og-gamla/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "philip-pullman"
+    ]
   },
   {
     "id": 1015417,
@@ -1009,7 +1293,10 @@
     "description": "Mómó: ævintýraskáldsaga er skáldverk eftir Michael Ende. Skráð útgáfuár hjá Forlaginu er 2015. Skráður blaðsíðufjöldi er 280.",
     "pages": 280,
     "publicationYear": 2015,
-    "sourceURL": "https://www.forlagid.is/vara/momo-2/"
+    "sourceURL": "https://www.forlagid.is/vara/momo-2/",
+    "authorIds": [
+      "michael-ende"
+    ]
   },
   {
     "id": 1015485,
@@ -1022,7 +1309,10 @@
     "description": "Ég elska máva er bók eftir Þorgrímur Þráinsson. Skráð útgáfuár hjá Forlaginu er 2015. Skráður blaðsíðufjöldi er 185.",
     "pages": 185,
     "publicationYear": 2015,
-    "sourceURL": "https://www.forlagid.is/vara/eg-elska-mava/"
+    "sourceURL": "https://www.forlagid.is/vara/eg-elska-mava/",
+    "authorIds": [
+      "thorgrimur-thrainsson"
+    ]
   },
   {
     "id": 1017052,
@@ -1039,7 +1329,11 @@
     "pages": 509,
     "publicationYear": 2013,
     "sourceURL": "https://www.forlagid.is/vara/hringurinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "mats-strandberg",
+      "sara-bergmark-elfgren"
+    ]
   },
   {
     "id": 1017328,
@@ -1056,7 +1350,10 @@
     "pages": 240,
     "publicationYear": 2013,
     "sourceURL": "https://www.forlagid.is/vara/skolaus-a-o%c3%b0rum-f%c3%a6ti/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ana-maria-matute"
+    ]
   },
   {
     "id": 1018220,
@@ -1070,7 +1367,10 @@
     "description": "Gegnum glervegginn er skáldverk eftir Ragnheiður Gestsdóttir. Skráð útgáfuár hjá Forlaginu er 2011. Skráður blaðsíðufjöldi er 270.",
     "pages": 270,
     "publicationYear": 2011,
-    "sourceURL": "https://www.forlagid.is/vara/gegnum-glervegginn/"
+    "sourceURL": "https://www.forlagid.is/vara/gegnum-glervegginn/",
+    "authorIds": [
+      "ragnheidur-gestsdottir"
+    ]
   },
   {
     "id": 1018536,
@@ -1086,7 +1386,10 @@
     "pages": 240,
     "publicationYear": 2013,
     "sourceURL": "https://www.forlagid.is/vara/vargsold-ib/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorsteinn-mar"
+    ]
   },
   {
     "id": 1018902,
@@ -1099,7 +1402,10 @@
     "description": "30 örlagastundir Hitlers er bók eftir Illugi Jökulsson. Skráð útgáfuár hjá Forlaginu er 2014. Skráður blaðsíðufjöldi er 62.",
     "pages": 62,
     "publicationYear": 2014,
-    "sourceURL": "https://www.forlagid.is/vara/30-orlagastundir-hitlers/"
+    "sourceURL": "https://www.forlagid.is/vara/30-orlagastundir-hitlers/",
+    "authorIds": [
+      "illugi-jokulsson"
+    ]
   },
   {
     "id": 1018909,
@@ -1112,7 +1418,10 @@
     "description": "30 Uppgötvanir – sem breyttu sögunni er bók eftir Kolbeinn Óttarsson Proppé. Skráð útgáfuár hjá Forlaginu er 2014. Skráður blaðsíðufjöldi er 62.",
     "pages": 62,
     "publicationYear": 2014,
-    "sourceURL": "https://www.forlagid.is/vara/30-uppgotvanir-sem-breyttu-sogunni/"
+    "sourceURL": "https://www.forlagid.is/vara/30-uppgotvanir-sem-breyttu-sogunni/",
+    "authorIds": [
+      "kolbeinn-ottarsson-proppe"
+    ]
   },
   {
     "id": 1018915,
@@ -1125,7 +1434,10 @@
     "description": "15 Landkönnuðir er bók eftir Kolbeinn Óttarsson Proppé. Skráð útgáfuár hjá Forlaginu er 2014. Skráður blaðsíðufjöldi er 62.",
     "pages": 62,
     "publicationYear": 2014,
-    "sourceURL": "https://www.forlagid.is/vara/15-landkonnu%c3%b0ir/"
+    "sourceURL": "https://www.forlagid.is/vara/15-landkonnu%c3%b0ir/",
+    "authorIds": [
+      "kolbeinn-ottarsson-proppe"
+    ]
   },
   {
     "id": 1018918,
@@ -1138,7 +1450,10 @@
     "description": "15 hörmuleg stórslys er bók eftir Helgi Hrafn Guðmundsson. Skráð útgáfuár hjá Forlaginu er 2014.",
     "pages": null,
     "publicationYear": 2014,
-    "sourceURL": "https://www.forlagid.is/vara/15-hormuleg-storslys/"
+    "sourceURL": "https://www.forlagid.is/vara/15-hormuleg-storslys/",
+    "authorIds": [
+      "helgi-hrafn-gudmundsson"
+    ]
   },
   {
     "id": 1018942,
@@ -1154,7 +1469,10 @@
     "pages": 215,
     "publicationYear": 2015,
     "sourceURL": "https://www.forlagid.is/vara/nottin-langa/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "stefan-mani"
+    ]
   },
   {
     "id": 1019064,
@@ -1167,7 +1485,10 @@
     "description": "Flöskuskeytið er bók eftir Sigríður Dúa Goldsworthy. Skráð útgáfuár hjá Forlaginu er 2013. Skráður blaðsíðufjöldi er 114.",
     "pages": 114,
     "publicationYear": 2013,
-    "sourceURL": "https://www.forlagid.is/vara/floskuskeyti%c3%b0/"
+    "sourceURL": "https://www.forlagid.is/vara/floskuskeyti%c3%b0/",
+    "authorIds": [
+      "sigridur-dua-goldsworthy"
+    ]
   },
   {
     "id": 1019180,
@@ -1183,6 +1504,9 @@
     "sourceURL": "https://www.forlagid.is/vara/snorra-edda-a-nutimaislensku/",
     "adapters": [
       "Bjarki Bjarnason"
+    ],
+    "authorIds": [
+      "snorri-sturluson"
     ]
   },
   {
@@ -1198,7 +1522,10 @@
     "description": "Koparborgin er bók eftir Ragnhildur Hólmgeirsdóttir. Skráð útgáfuár hjá Forlaginu er 2015. Skráður blaðsíðufjöldi er 314.",
     "pages": 314,
     "publicationYear": 2015,
-    "sourceURL": "https://www.forlagid.is/vara/koparborgin/"
+    "sourceURL": "https://www.forlagid.is/vara/koparborgin/",
+    "authorIds": [
+      "ragnhildur-holmgeirsdottir"
+    ]
   },
   {
     "id": 1021817,
@@ -1214,7 +1541,10 @@
     "pages": 231,
     "publicationYear": 2013,
     "sourceURL": "https://www.forlagid.is/vara/gunnla%c3%b0ar-saga/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "svava-jakobsdottir"
+    ]
   },
   {
     "id": 1022552,
@@ -1231,7 +1561,10 @@
     "pages": null,
     "publicationYear": 2009,
     "sourceURL": "https://www.forlagid.is/vara/meistarinn-og-margarita-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "mikhail-bulgakov"
+    ]
   },
   {
     "id": 1022557,
@@ -1247,7 +1580,10 @@
     "pages": 120,
     "publicationYear": 2009,
     "sourceURL": "https://www.forlagid.is/vara/snaran/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jakobina-sigurdardottir"
+    ]
   },
   {
     "id": 1022568,
@@ -1262,7 +1598,10 @@
     "pages": 400,
     "publicationYear": 2010,
     "sourceURL": "https://www.forlagid.is/vara/verold-sem-var/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "stefan-zweig"
+    ]
   },
   {
     "id": 1022580,
@@ -1277,7 +1616,12 @@
     "pages": 156,
     "publicationYear": 2010,
     "sourceURL": "https://www.forlagid.is/vara/or%c3%b0abok-um-slangur-slettur-bannor%c3%b0-og-anna%c3%b0-utangar%c3%b0smal/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "mordur-arnason",
+      "ornolfur-thorsson",
+      "svavar-sigmundsson"
+    ]
   },
   {
     "id": 1022585,
@@ -1294,7 +1638,10 @@
     "pages": 214,
     "publicationYear": 2010,
     "sourceURL": "https://www.forlagid.is/vara/sultur-kilja/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "knut-hamsun"
+    ]
   },
   {
     "id": 1022610,
@@ -1311,7 +1658,10 @@
     "pages": 190,
     "publicationYear": 2010,
     "sourceURL": "https://www.forlagid.is/vara/meistarar-og-l%c3%a6risveinar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorbergur-thordarson"
+    ]
   },
   {
     "id": 1022615,
@@ -1328,7 +1678,10 @@
     "pages": 416,
     "publicationYear": 2010,
     "sourceURL": "https://www.forlagid.is/vara/hundra%c3%b0-ara-einsemd-kilja-ny/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gabriel-garcia-marquez"
+    ]
   },
   {
     "id": 1022621,
@@ -1345,7 +1698,10 @@
     "pages": 378,
     "publicationYear": 2010,
     "sourceURL": "https://www.forlagid.is/vara/fat%c3%a6kt-folk/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "tryggvi-emilsson"
+    ]
   },
   {
     "id": 1022631,
@@ -1362,7 +1718,10 @@
     "pages": 510,
     "publicationYear": 2011,
     "sourceURL": "https://www.forlagid.is/vara/hus-andanna-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "isabel-allende"
+    ]
   },
   {
     "id": 1022648,
@@ -1379,7 +1738,10 @@
     "pages": 477,
     "publicationYear": 2011,
     "sourceURL": "https://www.forlagid.is/vara/aevintyri-goda-datans-svejks/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jaroslav-hasek"
+    ]
   },
   {
     "id": 1022660,
@@ -1394,7 +1756,10 @@
     "pages": 131,
     "publicationYear": 2011,
     "sourceURL": "https://www.forlagid.is/vara/svartar-fja%c3%b0rir-ny-kilja/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "david-stefansson"
+    ]
   },
   {
     "id": 1022680,
@@ -1412,7 +1777,10 @@
     "pages": 315,
     "publicationYear": 2011,
     "sourceURL": "https://www.forlagid.is/vara/hroki-og-hleypidomar-kilja-3/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jane-austen"
+    ]
   },
   {
     "id": 1022688,
@@ -1428,7 +1796,10 @@
     "pages": 870,
     "publicationYear": 2011,
     "sourceURL": "https://www.forlagid.is/vara/fjallkirkjan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gunnar-gunnarsson"
+    ]
   },
   {
     "id": 1022703,
@@ -1446,7 +1817,10 @@
     "pages": 360,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/obaerilegur-lettleiki-tilverunnar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "milan-kundera"
+    ]
   },
   {
     "id": 1022730,
@@ -1463,7 +1837,10 @@
     "pages": 464,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/undraborgin-kilja/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "eduardo-mendoza"
+    ]
   },
   {
     "id": 1022752,
@@ -1480,7 +1857,10 @@
     "pages": 246,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/veisla-i-farangrinum-kilja/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ernest-hemingway"
+    ]
   },
   {
     "id": 1022756,
@@ -1496,7 +1876,10 @@
     "pages": 470,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/tomas-jonsson-metsolubok/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gudbergur-bergsson"
+    ]
   },
   {
     "id": 1022786,
@@ -1513,7 +1896,10 @@
     "pages": 224,
     "publicationYear": 2013,
     "sourceURL": "https://www.forlagid.is/vara/demantstorgi%c3%b0/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "merce-rodoreda"
+    ]
   },
   {
     "id": 1022790,
@@ -1529,7 +1915,10 @@
     "pages": 365,
     "publicationYear": 2013,
     "sourceURL": "https://www.forlagid.is/vara/trollakirkja-kilja-ny/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "olafur-gunnarsson"
+    ]
   },
   {
     "id": 1022810,
@@ -1546,7 +1935,10 @@
     "pages": 299,
     "publicationYear": 2013,
     "sourceURL": "https://www.forlagid.is/vara/purpuraliturinn-kilja/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "alice-walker"
+    ]
   },
   {
     "id": 1022847,
@@ -1561,7 +1953,10 @@
     "pages": 444,
     "publicationYear": 2014,
     "sourceURL": "https://www.forlagid.is/vara/d%c3%a6gradvol/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "benedikt-grondal"
+    ]
   },
   {
     "id": 1022883,
@@ -1578,7 +1973,10 @@
     "pages": 352,
     "publicationYear": 2014,
     "sourceURL": "https://www.forlagid.is/vara/leikur-hl%c3%a6jandi-lans-ny/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "amy-tan"
+    ]
   },
   {
     "id": 1022903,
@@ -1595,7 +1993,10 @@
     "pages": 278,
     "publicationYear": 2015,
     "sourceURL": "https://www.forlagid.is/vara/grasi%c3%b0-syngur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "doris-lessing"
+    ]
   },
   {
     "id": 1022907,
@@ -1610,7 +2011,10 @@
     "pages": 383,
     "publicationYear": 2015,
     "sourceURL": "https://www.forlagid.is/vara/fyrir-sunnan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "tryggvi-emilsson"
+    ]
   },
   {
     "id": 1022931,
@@ -1627,7 +2031,10 @@
     "pages": 432,
     "publicationYear": 2015,
     "sourceURL": "https://www.forlagid.is/vara/hollin/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "franz-kafka"
+    ]
   },
   {
     "id": 1022947,
@@ -1643,7 +2050,10 @@
     "pages": 288,
     "publicationYear": 2015,
     "sourceURL": "https://www.forlagid.is/vara/sogur-handa-ollum/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "svava-jakobsdottir"
+    ]
   },
   {
     "id": 1022961,
@@ -1658,7 +2068,10 @@
     "pages": 468,
     "publicationYear": 2016,
     "sourceURL": "https://www.forlagid.is/vara/sverrir-kristjansson-orlaga%c3%be%c3%a6ttir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sverrir-kristjansson"
+    ]
   },
   {
     "id": 1025552,
@@ -1671,7 +2084,10 @@
     "description": "Stelpurokk er bók eftir Bryndís Jóna Magnúsdóttir. Skráð útgáfuár hjá Forlaginu er 2010. Skráður blaðsíðufjöldi er 175.",
     "pages": 175,
     "publicationYear": 2010,
-    "sourceURL": "https://www.forlagid.is/vara/stelpurokk/"
+    "sourceURL": "https://www.forlagid.is/vara/stelpurokk/",
+    "authorIds": [
+      "bryndis-jona-magnusdottir"
+    ]
   },
   {
     "id": 1025898,
@@ -1687,6 +2103,9 @@
     "sourceURL": "https://www.forlagid.is/vara/oskalistinn/",
     "translators": [
       "Guðni Kolbeinsson"
+    ],
+    "authorIds": [
+      "eoin-colfer"
     ]
   },
   {
@@ -1700,7 +2119,10 @@
     "description": "Engin venjuleg prinsessa er bók eftir Meg Cabot. Skráð útgáfuár hjá Forlaginu er 2008.",
     "pages": null,
     "publicationYear": 2008,
-    "sourceURL": "https://www.forlagid.is/vara/engin-venjuleg-prinsessa/"
+    "sourceURL": "https://www.forlagid.is/vara/engin-venjuleg-prinsessa/",
+    "authorIds": [
+      "meg-cabot"
+    ]
   },
   {
     "id": 1026621,
@@ -1713,7 +2135,10 @@
     "description": "Sóley er bók eftir Celia Rees. Skráð útgáfuár hjá Forlaginu er 2009. Skráður blaðsíðufjöldi er 340.",
     "pages": 340,
     "publicationYear": 2009,
-    "sourceURL": "https://www.forlagid.is/vara/soley/"
+    "sourceURL": "https://www.forlagid.is/vara/soley/",
+    "authorIds": [
+      "celia-rees"
+    ]
   },
   {
     "id": 1026750,
@@ -1727,7 +2152,10 @@
     "description": "Frumskógarbókin er skáldverk eftir Rudyard Kipling. Skráð útgáfuár hjá Forlaginu er 2010.",
     "pages": null,
     "publicationYear": 2010,
-    "sourceURL": "https://www.forlagid.is/vara/frumskogarbokin/"
+    "sourceURL": "https://www.forlagid.is/vara/frumskogarbokin/",
+    "authorIds": [
+      "rudyard-kipling"
+    ]
   },
   {
     "id": 1027520,
@@ -1743,7 +2171,10 @@
     "pages": 79,
     "publicationYear": 2008,
     "sourceURL": "https://www.forlagid.is/vara/allt-fer-urskeidis/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "bergvin-oddson"
+    ]
   },
   {
     "id": 1027972,
@@ -1759,7 +2190,11 @@
     "pages": 250,
     "publicationYear": 2014,
     "sourceURL": "https://www.forlagid.is/vara/songur-snaksins/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "helgi-sverrisson",
+      "eyrun-osk-jonsdottir"
+    ]
   },
   {
     "id": 1028393,
@@ -1773,7 +2208,15 @@
     "pages": null,
     "publicationYear": 2002,
     "sourceURL": "https://www.forlagid.is/vara/artemis-fowl-sams%c3%a6ri%c3%b0/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "eoin-colfer"
+    ],
+    "series": {
+      "id": "artemis-fowl",
+      "name": "Artemis Fowl",
+      "number": 2
+    }
   },
   {
     "id": 1029073,
@@ -1786,7 +2229,10 @@
     "description": "Stelpur í sárum er bók eftir Jacqueline Wilson. Skráð útgáfuár hjá Forlaginu er 2003.",
     "pages": null,
     "publicationYear": 2003,
-    "sourceURL": "https://www.forlagid.is/vara/stelpur-i-sarum/"
+    "sourceURL": "https://www.forlagid.is/vara/stelpur-i-sarum/",
+    "authorIds": [
+      "jacqueline-wilson"
+    ]
   },
   {
     "id": 1029146,
@@ -1799,7 +2245,10 @@
     "description": "Lóla Rós er bók eftir Jacqueline Wilson. Skráð útgáfuár hjá Forlaginu er 2004.",
     "pages": null,
     "publicationYear": 2004,
-    "sourceURL": "https://www.forlagid.is/vara/lola-ros/"
+    "sourceURL": "https://www.forlagid.is/vara/lola-ros/",
+    "authorIds": [
+      "jacqueline-wilson"
+    ]
   },
   {
     "id": 1029434,
@@ -1812,7 +2261,10 @@
     "description": "Barist við ókunn öfl er bók eftir Eoin Colfer. Skráð útgáfuár hjá Forlaginu er 2004.",
     "pages": null,
     "publicationYear": 2004,
-    "sourceURL": "https://www.forlagid.is/vara/barist-vi%c3%b0-okunn-ofl/"
+    "sourceURL": "https://www.forlagid.is/vara/barist-vi%c3%b0-okunn-ofl/",
+    "authorIds": [
+      "eoin-colfer"
+    ]
   },
   {
     "id": 1029554,
@@ -1829,7 +2281,10 @@
     "pages": 263,
     "publicationYear": 2006,
     "sourceURL": "https://www.forlagid.is/vara/frankenstein/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "mary-wollstonecraft-shelley"
+    ]
   },
   {
     "id": 1030026,
@@ -1842,7 +2297,16 @@
     "description": "Harry Potter og dauðadjásnin er bók eftir J. K. Rowling. Skráð útgáfuár hjá Forlaginu er 2007. Skráður blaðsíðufjöldi er 612.",
     "pages": 612,
     "publicationYear": 2007,
-    "sourceURL": "https://www.forlagid.is/vara/harry-potter-og-dau%c3%b0adjasnin/"
+    "sourceURL": "https://www.forlagid.is/vara/harry-potter-og-dau%c3%b0adjasnin/",
+    "authorIds": [
+      "j-k-rowling"
+    ],
+    "series": {
+      "id": "harry-potter",
+      "name": "Harry Potter",
+      "total": 7,
+      "number": 7
+    }
   },
   {
     "id": 1030299,
@@ -1855,7 +2319,15 @@
     "description": "Artemis Fowl – Blekkingin er bók eftir Eoin Colfer. Skráð útgáfuár hjá Forlaginu er 2005.",
     "pages": null,
     "publicationYear": 2005,
-    "sourceURL": "https://www.forlagid.is/vara/artemis-fowl-blekkingin/"
+    "sourceURL": "https://www.forlagid.is/vara/artemis-fowl-blekkingin/",
+    "authorIds": [
+      "eoin-colfer"
+    ],
+    "series": {
+      "id": "artemis-fowl",
+      "name": "Artemis Fowl",
+      "number": 4
+    }
   },
   {
     "id": 1030865,
@@ -1869,7 +2341,15 @@
     "description": "Eragon #2: Öldungurinn er bók eftir Christopher Paolini. Skráð útgáfuár hjá Forlaginu er 2006.",
     "pages": null,
     "publicationYear": 2006,
-    "sourceURL": "https://www.forlagid.is/vara/oldungurinn-eragon/"
+    "sourceURL": "https://www.forlagid.is/vara/oldungurinn-eragon/",
+    "authorIds": [
+      "christopher-paolini"
+    ],
+    "series": {
+      "id": "eragon",
+      "name": "Eragon",
+      "number": 2
+    }
   },
   {
     "id": 1032614,
@@ -1886,7 +2366,16 @@
     "pages": 319,
     "publicationYear": 2015,
     "sourceURL": "https://www.forlagid.is/vara/anna-i-asparbl%c3%a6/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "l-m-montgomery"
+    ],
+    "series": {
+      "id": "anna-i-graenuhlid",
+      "name": "Anna í Grænuhlíð",
+      "total": 8,
+      "number": 4
+    }
   },
   {
     "id": 1033834,
@@ -1899,7 +2388,10 @@
     "description": "Seiðkonan er bók eftir Celia Rees. Skráð útgáfuár hjá Forlaginu er 2007. Skráður blaðsíðufjöldi er 236.",
     "pages": 236,
     "publicationYear": 2007,
-    "sourceURL": "https://www.forlagid.is/vara/seidkonan/"
+    "sourceURL": "https://www.forlagid.is/vara/seidkonan/",
+    "authorIds": [
+      "celia-rees"
+    ]
   },
   {
     "id": 1034053,
@@ -1913,7 +2405,10 @@
     "description": "Svart og hvítt er skáldverk eftir Jónína Leósdóttir.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/svart-og-hvitt/"
+    "sourceURL": "https://www.forlagid.is/vara/svart-og-hvitt/",
+    "authorIds": [
+      "jonina-leosdottir"
+    ]
   },
   {
     "id": 1034386,
@@ -1926,7 +2421,16 @@
     "description": "Bert og kalda stríðið er bók eftir Anders Jacobsson, Sören Olsson. Skráð útgáfuár hjá Forlaginu er 2007.",
     "pages": null,
     "publicationYear": 2007,
-    "sourceURL": "https://www.forlagid.is/vara/bert-og-kalda-stri%c3%b0i%c3%b0/"
+    "sourceURL": "https://www.forlagid.is/vara/bert-og-kalda-stri%c3%b0i%c3%b0/",
+    "authorIds": [
+      "anders-jacobsson",
+      "soren-olsson"
+    ],
+    "series": {
+      "id": "bert",
+      "name": "Bert",
+      "number": 1
+    }
   },
   {
     "id": 1034463,
@@ -1943,7 +2447,15 @@
     "pages": 248,
     "publicationYear": 2007,
     "sourceURL": "https://www.forlagid.is/vara/heljar%c3%berom/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "anthony-horowitz"
+    ],
+    "series": {
+      "id": "alex-rider",
+      "name": "Alex Rider",
+      "number": 2
+    }
   },
   {
     "id": 1034946,
@@ -1959,7 +2471,10 @@
     "pages": 159,
     "publicationYear": 2008,
     "sourceURL": "https://www.forlagid.is/vara/bref-til-laru/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorbergur-thordarson"
+    ]
   },
   {
     "id": 1034963,
@@ -1976,7 +2491,10 @@
     "pages": 719,
     "publicationYear": 2008,
     "sourceURL": "https://www.forlagid.is/vara/bernskan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gudbergur-bergsson"
+    ]
   },
   {
     "id": 1034973,
@@ -1993,7 +2511,10 @@
     "pages": 302,
     "publicationYear": 2008,
     "sourceURL": "https://www.forlagid.is/vara/samastadur-i-tilverunni/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "malfridur-einarsdottir"
+    ]
   },
   {
     "id": 1034978,
@@ -2011,7 +2532,10 @@
     "pages": 304,
     "publicationYear": 2008,
     "sourceURL": "https://www.forlagid.is/vara/astin-a-timum-kolerunnar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gabriel-garcia-marquez"
+    ]
   },
   {
     "id": 1035001,
@@ -2029,7 +2553,10 @@
     "pages": 105,
     "publicationYear": 2008,
     "sourceURL": "https://www.forlagid.is/vara/bref-til-fodurins/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "franz-kafka"
+    ]
   },
   {
     "id": 1035011,
@@ -2045,7 +2572,10 @@
     "pages": 260,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/sogur-og-ljod/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "asta-sigurdardottir"
+    ]
   },
   {
     "id": 1035018,
@@ -2062,7 +2592,10 @@
     "pages": null,
     "publicationYear": 2009,
     "sourceURL": "https://www.forlagid.is/vara/moby-dick-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "herman-melville"
+    ]
   },
   {
     "id": 1035047,
@@ -2079,7 +2612,10 @@
     "pages": null,
     "publicationYear": 2009,
     "sourceURL": "https://www.forlagid.is/vara/undir-kalstjornu/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sigurdur-a-magnusson"
+    ]
   },
   {
     "id": 1036950,
@@ -2092,7 +2628,10 @@
     "description": "Abba hin segir frá sumri í Firðinum skömmu eftir síðari heimsstyrjöld. Þetta er þriðja sagan um systurnar Heiðu, Lóu-Lóu og Öbbu hina.",
     "pages": 122,
     "publicationYear": 1999,
-    "sourceURL": "https://www.forlagid.is/vara/saenginni-yfir-minni/"
+    "sourceURL": "https://www.forlagid.is/vara/saenginni-yfir-minni/",
+    "authorIds": [
+      "gudrun-helgadottir"
+    ]
   },
   {
     "id": 1037724,
@@ -2105,7 +2644,16 @@
     "description": "Auga Óðins er bók eftir Adda Steina Björnsdóttir, Aðalsteinn Ásberg Sigurðsson, Gunnhildur Hrólfsdóttir, Iðunn Steinsdóttir, Jón Hjartarson, Kristín Steinsdóttir, Kristín Thorlacius.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/auga-odins/"
+    "sourceURL": "https://www.forlagid.is/vara/auga-odins/",
+    "authorIds": [
+      "adda-steina-bjornsdottir",
+      "adalsteinn-asberg-sigurdsson",
+      "gunnhildur-hrolfsdottir",
+      "idunn-steinsdottir",
+      "jon-hjartarson",
+      "kristin-steinsdottir",
+      "kristin-thorlacius"
+    ]
   },
   {
     "id": 1037834,
@@ -2122,7 +2670,10 @@
     "pages": 459,
     "publicationYear": 2008,
     "sourceURL": "https://www.forlagid.is/vara/mi%c3%b0n%c3%a6turborn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "salman-rushdie"
+    ]
   },
   {
     "id": 1038477,
@@ -2135,7 +2686,10 @@
     "description": "Stjörnuborgin er bók eftir Mary Hoffman.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/stjornuborgin/"
+    "sourceURL": "https://www.forlagid.is/vara/stjornuborgin/",
+    "authorIds": [
+      "mary-hoffman"
+    ]
   },
   {
     "id": 1038852,
@@ -2148,7 +2702,10 @@
     "description": "Ríki gullna drekans er bók eftir Isabel Allende.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/riki-gullna-drekans/"
+    "sourceURL": "https://www.forlagid.is/vara/riki-gullna-drekans/",
+    "authorIds": [
+      "isabel-allende"
+    ]
   },
   {
     "id": 1039674,
@@ -2165,7 +2722,16 @@
     "pages": 299,
     "publicationYear": 2012,
     "sourceURL": "https://www.forlagid.is/vara/saga-eftirlifenda-ho%c3%b0ur-og-baldur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "emil-hjorvar-petersen"
+    ],
+    "series": {
+      "id": "saga-eftirlifenda",
+      "name": "Saga eftirlifenda",
+      "total": 3,
+      "number": 1
+    }
   },
   {
     "id": 1044268,
@@ -2183,7 +2749,10 @@
     "pages": 537,
     "publicationYear": 2010,
     "sourceURL": "https://www.forlagid.is/vara/nytt-tungl/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "stephenie-meyer"
+    ]
   },
   {
     "id": 1049566,
@@ -2199,7 +2768,10 @@
     "pages": 287,
     "publicationYear": 2016,
     "sourceURL": "https://www.forlagid.is/vara/fjarsjodseyjan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "robert-louis-stevenson"
+    ]
   },
   {
     "id": 1049649,
@@ -2212,7 +2784,10 @@
     "description": "Skóladraugurinn er bók eftir Inga Mekkin Beck. Skráð útgáfuár hjá Forlaginu er 2016. Skráður blaðsíðufjöldi er 173.",
     "pages": 173,
     "publicationYear": 2016,
-    "sourceURL": "https://www.forlagid.is/vara/skoladraugurinn/"
+    "sourceURL": "https://www.forlagid.is/vara/skoladraugurinn/",
+    "authorIds": [
+      "inga-mekkin-beck"
+    ]
   },
   {
     "id": 1050688,
@@ -2229,7 +2804,10 @@
     "pages": 434,
     "publicationYear": 2016,
     "sourceURL": "https://www.forlagid.is/vara/vigholar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "emil-hjorvar-petersen"
+    ]
   },
   {
     "id": 1055250,
@@ -2242,7 +2820,10 @@
     "description": "Henrí og hetjurnar er bók eftir Þorgrímur Þráinsson. Skráð útgáfuár hjá Forlaginu er 2016. Skráður blaðsíðufjöldi er 178.",
     "pages": 178,
     "publicationYear": 2016,
-    "sourceURL": "https://www.forlagid.is/vara/henri-og-hetjurnar/"
+    "sourceURL": "https://www.forlagid.is/vara/henri-og-hetjurnar/",
+    "authorIds": [
+      "thorgrimur-thrainsson"
+    ]
   },
   {
     "id": 1065586,
@@ -2256,7 +2837,10 @@
     "description": "Lífsbjörgin er skáldverk eftir Halldór Svavarsson.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/lifsbjoergin/"
+    "sourceURL": "https://www.forlagid.is/vara/lifsbjoergin/",
+    "authorIds": [
+      "halldor-svavarsson"
+    ]
   },
   {
     "id": 1065678,
@@ -2274,7 +2858,10 @@
     "pages": 252,
     "publicationYear": 2016,
     "sourceURL": "https://www.forlagid.is/vara/eyland/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sigridur-hagalin-bjornsdottir"
+    ]
   },
   {
     "id": 1069092,
@@ -2290,7 +2877,10 @@
     "pages": 229,
     "publicationYear": 2018,
     "sourceURL": "https://www.forlagid.is/vara/islenski-draumurinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gudmundur-andri-thorsson"
+    ]
   },
   {
     "id": 1071928,
@@ -2307,7 +2897,10 @@
     "pages": 189,
     "publicationYear": 2009,
     "sourceURL": "https://www.forlagid.is/vara/lesarinn-kilja-ny/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "bernhard-schlink"
+    ]
   },
   {
     "id": 1073687,
@@ -2321,7 +2914,16 @@
     "description": "Rökkurhæðir #1: Rústirnar er bók eftir Birgitta Elín Hassell, Marta Hlín Magnadóttir. Skráð útgáfuár hjá Forlaginu er 2017. Skráður blaðsíðufjöldi er 140.",
     "pages": 140,
     "publicationYear": 2017,
-    "sourceURL": "https://www.forlagid.is/vara/roekkurhaedir-1-rustirnar/"
+    "sourceURL": "https://www.forlagid.is/vara/roekkurhaedir-1-rustirnar/",
+    "authorIds": [
+      "birgitta-elin-hassell",
+      "marta-hlin-magnadottir"
+    ],
+    "series": {
+      "id": "rokkurhaedir",
+      "name": "Rökkurhæðir",
+      "number": 1
+    }
   },
   {
     "id": 1076577,
@@ -2337,7 +2939,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/stalnott/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sjon"
+    ]
   },
   {
     "id": 1081713,
@@ -2353,7 +2958,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/gledileikurinn-guddomlegi-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "dante-alighieri"
+    ]
   },
   {
     "id": 1083184,
@@ -2366,7 +2974,10 @@
     "description": "Er ekki allt í lagi með þig? er bók eftir Elísa Jóhannsdóttir. Skráð útgáfuár hjá Forlaginu er 2017. Skráður blaðsíðufjöldi er 315.",
     "pages": 315,
     "publicationYear": 2017,
-    "sourceURL": "https://www.forlagid.is/vara/er-ekki-allt-i-lagi-med-tig/"
+    "sourceURL": "https://www.forlagid.is/vara/er-ekki-allt-i-lagi-med-tig/",
+    "authorIds": [
+      "elisa-johannsdottir"
+    ]
   },
   {
     "id": 1083640,
@@ -2379,7 +2990,15 @@
     "description": "Úlfur og Edda – Drekaaugun er bók eftir Kristín Ragna Gunnarsdóttir. Skráð útgáfuár hjá Forlaginu er 2017. Skráður blaðsíðufjöldi er 217.",
     "pages": 217,
     "publicationYear": 2017,
-    "sourceURL": "https://www.forlagid.is/vara/ulfur-og-edda-drekaaugun/"
+    "sourceURL": "https://www.forlagid.is/vara/ulfur-og-edda-drekaaugun/",
+    "authorIds": [
+      "kristin-ragna-gunnarsdottir"
+    ],
+    "series": {
+      "id": "ulfur-og-edda",
+      "name": "Úlfur og Edda",
+      "number": null
+    }
   },
   {
     "id": 1083722,
@@ -2392,7 +3011,10 @@
     "description": "Dýragarðurinn er bók eftir Ólafur Haukur Símonarson. Skráð útgáfuár hjá Forlaginu er 2017. Skráður blaðsíðufjöldi er 128.",
     "pages": 128,
     "publicationYear": 2017,
-    "sourceURL": "https://www.forlagid.is/vara/dyragardurinn/"
+    "sourceURL": "https://www.forlagid.is/vara/dyragardurinn/",
+    "authorIds": [
+      "olafur-haukur-simonarson"
+    ]
   },
   {
     "id": 1084416,
@@ -2408,7 +3030,10 @@
     "pages": 234,
     "publicationYear": 2017,
     "sourceURL": "https://www.forlagid.is/vara/vertu-osynilegur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "kristin-helga-gunnarsdottir"
+    ]
   },
   {
     "id": 1084940,
@@ -2425,7 +3050,10 @@
     "description": "Sólhvörf er skáldverk eftir Emil Hjörvar Petersen. Skráð útgáfuár hjá Forlaginu er 2017. Skráður blaðsíðufjöldi er 354.",
     "pages": 354,
     "publicationYear": 2017,
-    "sourceURL": "https://www.forlagid.is/vara/solhvoerf/"
+    "sourceURL": "https://www.forlagid.is/vara/solhvoerf/",
+    "authorIds": [
+      "emil-hjorvar-petersen"
+    ]
   },
   {
     "id": 1085344,
@@ -2439,7 +3067,16 @@
     "description": "Kepler 62 – Önnur bók: Niðurtalningin er bók eftir Bjørn Sortland, Timo Parvela. Skráð útgáfuár hjá Forlaginu er 2017. Skráður blaðsíðufjöldi er 151.",
     "pages": 151,
     "publicationYear": 2017,
-    "sourceURL": "https://www.forlagid.is/vara/kepler-62-oennur-bok-nidurtalningin/"
+    "sourceURL": "https://www.forlagid.is/vara/kepler-62-oennur-bok-nidurtalningin/",
+    "authorIds": [
+      "bjorn-sortland",
+      "timo-parvela"
+    ],
+    "series": {
+      "id": "kepler-62",
+      "name": "Kepler 62",
+      "number": 2
+    }
   },
   {
     "id": 1085580,
@@ -2454,7 +3091,10 @@
     "pages": 192,
     "publicationYear": 2017,
     "sourceURL": "https://www.forlagid.is/vara/aevintyri-lisu-i-undralandi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lewis-carroll"
+    ]
   },
   {
     "id": 1087856,
@@ -2471,7 +3111,10 @@
     "pages": 153,
     "publicationYear": 2018,
     "sourceURL": "https://www.forlagid.is/vara/haust-i-skirisskogi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorsteinn-fra-hamri"
+    ]
   },
   {
     "id": 1090119,
@@ -2484,7 +3127,10 @@
     "description": "Bleikir fiskar er bók eftir Ólöf Vala Ingvarsdóttir. Skráð útgáfuár hjá Forlaginu er 2013. Skráður blaðsíðufjöldi er 157.",
     "pages": 157,
     "publicationYear": 2013,
-    "sourceURL": "https://www.forlagid.is/vara/bleikir-fiskar/"
+    "sourceURL": "https://www.forlagid.is/vara/bleikir-fiskar/",
+    "authorIds": [
+      "olof-vala-ingvarsdottir"
+    ]
   },
   {
     "id": 1093132,
@@ -2499,7 +3145,16 @@
     "description": "Draugsól: Þriggja heima saga #4 er skáldverk eftir Kjartan Yngvi Björnsson, Snæbjörn Brynjarsson. Skráð útgáfuár hjá Forlaginu er 2018. Skráður blaðsíðufjöldi er 612.",
     "pages": 612,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/draugsol-triggja-heima-saga-4/"
+    "sourceURL": "https://www.forlagid.is/vara/draugsol-triggja-heima-saga-4/",
+    "authorIds": [
+      "kjartan-yngvi-bjornsson",
+      "snaebjorn-brynjarsson"
+    ],
+    "series": {
+      "id": "thriggja-heima-saga",
+      "name": "Þriggja heima saga",
+      "number": 4
+    }
   },
   {
     "id": 1093163,
@@ -2517,7 +3172,10 @@
     "pages": 552,
     "publicationYear": 2018,
     "sourceURL": "https://www.forlagid.is/vara/kapitola/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "emma-d-e-n-southworth"
+    ]
   },
   {
     "id": 1093167,
@@ -2534,7 +3192,10 @@
     "pages": 555,
     "publicationYear": 2018,
     "sourceURL": "https://www.forlagid.is/vara/hinir-smanudu-og-svivirtu/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "fjodor-dostojevski"
+    ]
   },
   {
     "id": 1099762,
@@ -2547,7 +3208,16 @@
     "description": "Bækur duftsins: Villimærin fagra er bók eftir Philip Pullman. Skráð útgáfuár hjá Forlaginu er 2018. Skráður blaðsíðufjöldi er 505.",
     "pages": 505,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/baekur-duftsins-villimaerin-fagra/"
+    "sourceURL": "https://www.forlagid.is/vara/baekur-duftsins-villimaerin-fagra/",
+    "authorIds": [
+      "philip-pullman"
+    ],
+    "series": {
+      "id": "baekur-duftsins",
+      "name": "Bækur duftsins",
+      "total": 3,
+      "number": null
+    }
   },
   {
     "id": 1100275,
@@ -2561,7 +3231,10 @@
     "description": "Vítisvélar er bók eftir Philip Reeve. Skráð útgáfuár hjá Forlaginu er 2018. Skráður blaðsíðufjöldi er 333.",
     "pages": 333,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/vitisvelar/"
+    "sourceURL": "https://www.forlagid.is/vara/vitisvelar/",
+    "authorIds": [
+      "philip-reeve"
+    ]
   },
   {
     "id": 1100283,
@@ -2574,7 +3247,16 @@
     "description": "Ótrúleg ævintýri Brjálínu Hansen: Kóngsríkið mitt fallna er bók eftir Rán Flygenring. Skráð útgáfuár hjá Forlaginu er 2018. Skráður blaðsíðufjöldi er 176.",
     "pages": 176,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/otruleg-aevintyri-brjalinu-hansen/"
+    "sourceURL": "https://www.forlagid.is/vara/otruleg-aevintyri-brjalinu-hansen/",
+    "authorIds": [
+      "ran-flygenring"
+    ],
+    "series": {
+      "id": "brjalina-hansen",
+      "name": "Ótrúleg ævintýri Brjálínu Hansen",
+      "total": 3,
+      "number": 1
+    }
   },
   {
     "id": 1101046,
@@ -2587,7 +3269,15 @@
     "description": "Úlfur og Edda: Drottningin er bók eftir Kristín Ragna Gunnarsdóttir. Skráð útgáfuár hjá Forlaginu er 2018. Skráður blaðsíðufjöldi er 208.",
     "pages": 208,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/ulfur-og-edda-drottningin/"
+    "sourceURL": "https://www.forlagid.is/vara/ulfur-og-edda-drottningin/",
+    "authorIds": [
+      "kristin-ragna-gunnarsdottir"
+    ],
+    "series": {
+      "id": "ulfur-og-edda",
+      "name": "Úlfur og Edda",
+      "number": null
+    }
   },
   {
     "id": 1101175,
@@ -2605,7 +3295,16 @@
     "pages": 592,
     "publicationYear": 2018,
     "sourceURL": "https://www.forlagid.is/vara/hvisl-hrafnanna-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "malene-solvsten"
+    ],
+    "series": {
+      "id": "hvisl-hrafnanna",
+      "name": "Hvísl hrafnanna",
+      "total": 3,
+      "number": 2
+    }
   },
   {
     "id": 1101406,
@@ -2622,7 +3321,10 @@
     "pages": 208,
     "publicationYear": 2018,
     "sourceURL": "https://www.forlagid.is/vara/vaettir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "alexander-dan-vilhjalmsson"
+    ]
   },
   {
     "id": 1102007,
@@ -2635,7 +3337,10 @@
     "description": "Hefnd er bók eftir Kári Valtýsson. Skráð útgáfuár hjá Forlaginu er 2018. Skráður blaðsíðufjöldi er 276.",
     "pages": 276,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/hefnd/"
+    "sourceURL": "https://www.forlagid.is/vara/hefnd/",
+    "authorIds": [
+      "kari-valtysson"
+    ]
   },
   {
     "id": 1102069,
@@ -2651,7 +3356,17 @@
     "description": "Hyldýpið: Hafsfólkið #1 er bók eftir Viveca Sten, Camilla Sten. Skráð útgáfuár hjá Forlaginu er 2018. Skráður blaðsíðufjöldi er 364.",
     "pages": 364,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/hyldypid-hafsfolkid-1/"
+    "sourceURL": "https://www.forlagid.is/vara/hyldypid-hafsfolkid-1/",
+    "authorIds": [
+      "viveca-sten",
+      "camilla-sten"
+    ],
+    "series": {
+      "id": "hafsfolkid",
+      "name": "Hafsfólkið",
+      "total": 3,
+      "number": 1
+    }
   },
   {
     "id": 1102879,
@@ -2664,7 +3379,10 @@
     "description": "Föruneyti Signýjar er bók eftir Jón Axel Egilsson. Skráð útgáfuár hjá Forlaginu er 2018. Skráður blaðsíðufjöldi er 352.",
     "pages": 352,
     "publicationYear": 2018,
-    "sourceURL": "https://www.forlagid.is/vara/foeruneyti-signyjar/"
+    "sourceURL": "https://www.forlagid.is/vara/foeruneyti-signyjar/",
+    "authorIds": [
+      "jon-axel-egilsson"
+    ]
   },
   {
     "id": 1103698,
@@ -2682,7 +3400,10 @@
     "pages": 297,
     "publicationYear": 2018,
     "sourceURL": "https://www.forlagid.is/vara/huldufolkid-hrauney/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "karolina-petursdottir"
+    ]
   },
   {
     "id": 1108237,
@@ -2698,7 +3419,10 @@
     "pages": 333,
     "publicationYear": 2010,
     "sourceURL": "https://www.forlagid.is/vara/gerpla/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "halldor-laxness"
+    ]
   },
   {
     "id": 1110693,
@@ -2715,7 +3439,10 @@
     "pages": 224,
     "publicationYear": 2019,
     "sourceURL": "https://www.forlagid.is/vara/fahrenheit-451/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ray-bradbury"
+    ]
   },
   {
     "id": 1123000,
@@ -2728,7 +3455,10 @@
     "description": "Ungfrú fótbolti er bók eftir Brynhildur Þórarinsdóttir. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 293.",
     "pages": 293,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/ungfru-fotbolti/"
+    "sourceURL": "https://www.forlagid.is/vara/ungfru-fotbolti/",
+    "authorIds": [
+      "brynhildur-thorarinsdottir"
+    ]
   },
   {
     "id": 1124700,
@@ -2742,7 +3472,10 @@
     "description": "Arilda kannar eyjuna þar sem skólinn hennar stendur og villist í þoku. Eftir það þarf hún að leita svara um eyjuna, fólkið í kringum sig og eigin fjölskyldu.",
     "pages": 349,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/villueyjar/"
+    "sourceURL": "https://www.forlagid.is/vara/villueyjar/",
+    "authorIds": [
+      "ragnhildur-holmgeirsdottir"
+    ]
   },
   {
     "id": 1124707,
@@ -2755,7 +3488,10 @@
     "description": "Ys og þys út af … ÖLLU er bók eftir Hjalti Halldórsson. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 125.",
     "pages": 125,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/ys-og-tys-ut-af-oellu/"
+    "sourceURL": "https://www.forlagid.is/vara/ys-og-tys-ut-af-oellu/",
+    "authorIds": [
+      "hjalti-halldorsson"
+    ]
   },
   {
     "id": 1125013,
@@ -2768,7 +3504,10 @@
     "description": "Friðbergur forseti er bók eftir Árni Árnason. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 256.",
     "pages": 256,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/fridbergur-forseti/"
+    "sourceURL": "https://www.forlagid.is/vara/fridbergur-forseti/",
+    "authorIds": [
+      "arni-arnason"
+    ]
   },
   {
     "id": 1125371,
@@ -2783,7 +3522,10 @@
     "description": "Ég er svikari er bók eftir Sif Sigmarsdóttir. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 397.",
     "pages": 397,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/eg-er-svikari/"
+    "sourceURL": "https://www.forlagid.is/vara/eg-er-svikari/",
+    "authorIds": [
+      "sif-sigmarsdottir"
+    ]
   },
   {
     "id": 1126017,
@@ -2797,7 +3539,10 @@
     "description": "Vigdís: Bókin um fyrsta konuforsetann er bók eftir Rán Flygenring. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 40.",
     "pages": 40,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/vigdis-bokin-um-fyrsta-konuforsetann/"
+    "sourceURL": "https://www.forlagid.is/vara/vigdis-bokin-um-fyrsta-konuforsetann/",
+    "authorIds": [
+      "ran-flygenring"
+    ]
   },
   {
     "id": 1126019,
@@ -2811,7 +3556,15 @@
     "description": "Bölvun múmíunnar – Fyrri hluti er bók eftir Ármann Jakobsson. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 152.",
     "pages": 152,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/boelvun-mumiunnar-fyrri-hluti/"
+    "sourceURL": "https://www.forlagid.is/vara/boelvun-mumiunnar-fyrri-hluti/",
+    "authorIds": [
+      "armann-jakobsson"
+    ],
+    "series": {
+      "id": "bolvun-mumiunnar",
+      "name": "Bölvun múmíunnar",
+      "number": 1
+    }
   },
   {
     "id": 1126212,
@@ -2824,7 +3577,10 @@
     "description": "Fjallaverksmiðja Íslands er bók eftir Kristín Helga Gunnarsdóttir. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 278.",
     "pages": 278,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/fjallaverksmidja-islands/"
+    "sourceURL": "https://www.forlagid.is/vara/fjallaverksmidja-islands/",
+    "authorIds": [
+      "kristin-helga-gunnarsdottir"
+    ]
   },
   {
     "id": 1126526,
@@ -2837,7 +3593,16 @@
     "description": "Nornasaga #1 – Hrekkjavakan er bók eftir Kristín Ragna Gunnarsdóttir. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 208.",
     "pages": 208,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/nornasaga-hrekkjavakan/"
+    "sourceURL": "https://www.forlagid.is/vara/nornasaga-hrekkjavakan/",
+    "authorIds": [
+      "kristin-ragna-gunnarsdottir"
+    ],
+    "series": {
+      "id": "nornasaga",
+      "name": "Nornasaga",
+      "total": 3,
+      "number": 1
+    }
   },
   {
     "id": 1127152,
@@ -2851,7 +3616,16 @@
     "description": "Hvísl hrafnanna 3 er bók eftir Malene Sølvsten. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 572.",
     "pages": 572,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/hvisl-hrafnanna-3/"
+    "sourceURL": "https://www.forlagid.is/vara/hvisl-hrafnanna-3/",
+    "authorIds": [
+      "malene-solvsten"
+    ],
+    "series": {
+      "id": "hvisl-hrafnanna",
+      "name": "Hvísl hrafnanna",
+      "total": 3,
+      "number": 3
+    }
   },
   {
     "id": 1128301,
@@ -2864,7 +3638,10 @@
     "description": "Skam – 1. þáttaröð: Handrit er bók eftir Julie Andem. Skráð útgáfuár hjá Forlaginu er 2019. Skráður blaðsíðufjöldi er 216.",
     "pages": 216,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/skam-1-thattarod/"
+    "sourceURL": "https://www.forlagid.is/vara/skam-1-thattarod/",
+    "authorIds": [
+      "julie-andem"
+    ]
   },
   {
     "id": 1128809,
@@ -2877,7 +3654,10 @@
     "description": "Áróra vill komast burt frá afskekktri eyju þar sem hún á fáa vini. Dularfull kona leiðir hana að húsinu í september og eyjan virðist ekki vilja sleppa henni.",
     "pages": 308,
     "publicationYear": 2019,
-    "sourceURL": "https://www.forlagid.is/vara/husid-i-september/"
+    "sourceURL": "https://www.forlagid.is/vara/husid-i-september/",
+    "authorIds": [
+      "hilmar-orn-oskarsson"
+    ]
   },
   {
     "id": 1131798,
@@ -2894,7 +3674,10 @@
     "pages": null,
     "publicationYear": 2019,
     "sourceURL": "https://www.forlagid.is/vara/feigdarflotti/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "eli-freysson"
+    ]
   },
   {
     "id": 1132082,
@@ -2910,7 +3693,10 @@
     "pages": 216,
     "publicationYear": 2018,
     "sourceURL": "https://www.forlagid.is/vara/kynvera/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sigga-dogg"
+    ]
   },
   {
     "id": 1132084,
@@ -2923,7 +3709,10 @@
     "description": "Daði er bók eftir Sigga Dögg.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/dadi/"
+    "sourceURL": "https://www.forlagid.is/vara/dadi/",
+    "authorIds": [
+      "sigga-dogg"
+    ]
   },
   {
     "id": 1151506,
@@ -2937,7 +3726,15 @@
     "description": "Tólf ára Artemis Fowl rænir álfinum Holly Short til að komast yfir gull. Hún er þó lögregluforingi og álfaheimurinn hefur öflug vopn til að svara honum.",
     "pages": 280,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/artemis-fowl-ny/"
+    "sourceURL": "https://www.forlagid.is/vara/artemis-fowl-ny/",
+    "authorIds": [
+      "eoin-colfer"
+    ],
+    "series": {
+      "id": "artemis-fowl",
+      "name": "Artemis Fowl",
+      "number": 1
+    }
   },
   {
     "id": 1151996,
@@ -2951,7 +3748,10 @@
     "description": "Átján ára Kóríolanus Snow fær það hlutverk að leiðsegja keppanda úr tólfta umdæmi í tíundu Hungurleikunum. Metnaður hans og tengslin við stúlkuna kalla á erfiðar ákvarðanir.",
     "pages": null,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/danskvaedi-um-songfugla-og-slongur/"
+    "sourceURL": "https://www.forlagid.is/vara/danskvaedi-um-songfugla-og-slongur/",
+    "authorIds": [
+      "suzanne-collins"
+    ]
   },
   {
     "id": 1159595,
@@ -2964,7 +3764,15 @@
     "description": "Júlía, María og Charlie reyna að bjarga múmíunni Hóremheb úr ræningjahöndum. Ferð með skipinu Henriettu leiðir til nýrra átaka í seinni hluta sögunnar.",
     "pages": 155,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/boelvun-mumiunnar-seinni-hluti/"
+    "sourceURL": "https://www.forlagid.is/vara/boelvun-mumiunnar-seinni-hluti/",
+    "authorIds": [
+      "armann-jakobsson"
+    ],
+    "series": {
+      "id": "bolvun-mumiunnar",
+      "name": "Bölvun múmíunnar",
+      "number": 2
+    }
   },
   {
     "id": 1159597,
@@ -2977,7 +3785,16 @@
     "description": "Pálína reynir að hjálpa veikri móður sinni og fylgir föður sínum í fjársjóðsleit. Sorg, fjölskyldubreytingar og töfrar mætast í lokabók flokksins um Brjálínu Hansen.",
     "pages": 190,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/otruleg-aevintyri-brjalinu-3/"
+    "sourceURL": "https://www.forlagid.is/vara/otruleg-aevintyri-brjalinu-3/",
+    "authorIds": [
+      "ran-flygenring"
+    ],
+    "series": {
+      "id": "brjalina-hansen",
+      "name": "Ótrúleg ævintýri Brjálínu Hansen",
+      "total": 3,
+      "number": 3
+    }
   },
   {
     "id": 1160424,
@@ -2991,7 +3808,10 @@
     "description": "Sextán ára Elísa heyrir tónlist frá hafinu og fylgir henni niður í undirdjúpin. Þar kemst hún að því að hún tengist spádómi ævafornrar menningar.",
     "pages": 288,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/dulstafir-dottir-hafsins/"
+    "sourceURL": "https://www.forlagid.is/vara/dulstafir-dottir-hafsins/",
+    "authorIds": [
+      "kristin-bjorg-sigurvinsdottir"
+    ]
   },
   {
     "id": 1164660,
@@ -3004,7 +3824,10 @@
     "description": "Milla, Rakel og Lilja rannsaka undarleg veikindi í skólanum. Þær gruna að stærðfræðikennarinn sé vampíra en þurfa að sannreyna hvort yfirnáttúruleg öfl séu að verki.",
     "pages": 287,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/vampirur-vesen-og-annad-tilfallandi/"
+    "sourceURL": "https://www.forlagid.is/vara/vampirur-vesen-og-annad-tilfallandi/",
+    "authorIds": [
+      "rut-gudnadottir"
+    ]
   },
   {
     "id": 1165308,
@@ -3017,7 +3840,10 @@
     "description": "Sóley og Ari fara til Spánar með foreldrum sínum í langþráð frí. Skuggalegir menn og óvæntir kunningjar gera ferðina að hættulegri reynslu.",
     "pages": 226,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/haspenna-lifshaetta-a-spani/"
+    "sourceURL": "https://www.forlagid.is/vara/haspenna-lifshaetta-a-spani/",
+    "authorIds": [
+      "arni-arnason"
+    ]
   },
   {
     "id": 1166304,
@@ -3030,7 +3856,10 @@
     "description": "Kríu hefur lengi ásótt hvarf ömmu sinnar. Þegar dótturdóttir hennar stendur frammi fyrir sömu hættu fer hún sjálf inn fyrir dularfullan skáp til að leita svara.",
     "pages": 311,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/skogurinn/"
+    "sourceURL": "https://www.forlagid.is/vara/skogurinn/",
+    "authorIds": [
+      "hildur-knutsdottir"
+    ]
   },
   {
     "id": 1166622,
@@ -3046,6 +3875,9 @@
     "sourceURL": "https://www.forlagid.is/vara/islandsdaetur/",
     "illustrators": [
       "Auður Ýr Elísabetardóttir"
+    ],
+    "authorIds": [
+      "nina-bjork-jonsdottir"
     ]
   },
   {
@@ -3059,7 +3891,10 @@
     "description": "Fávitar er bók eftir Sólborg Guðbrandsdóttir.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/favitar/"
+    "sourceURL": "https://www.forlagid.is/vara/favitar/",
+    "authorIds": [
+      "solborg-gudbrandsdottir"
+    ]
   },
   {
     "id": 1168367,
@@ -3072,7 +3907,16 @@
     "description": "Katla reynir að opna galdragátt á nýársnótt en veldur sprengingu. Systkini hennar hverfa og furðuverur birtast í Reykjavík á meðan hún og Máni leita svara.",
     "pages": 230,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/nornasaga-2-nyarsnott/"
+    "sourceURL": "https://www.forlagid.is/vara/nornasaga-2-nyarsnott/",
+    "authorIds": [
+      "kristin-ragna-gunnarsdottir"
+    ],
+    "series": {
+      "id": "nornasaga",
+      "name": "Nornasaga",
+      "total": 3,
+      "number": 2
+    }
   },
   {
     "id": 1170322,
@@ -3085,7 +3929,10 @@
     "description": "Tvö einmana ungmenni eiga aðeins nokkrar vikur eftir áður en halastjarna rekst á jörðina. Þegar sameiginlegur kunningi finnst látinn leita þau svara fyrir endalokin.",
     "pages": 518,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/endalokin/"
+    "sourceURL": "https://www.forlagid.is/vara/endalokin/",
+    "authorIds": [
+      "mats-strandberg"
+    ]
   },
   {
     "id": 1172181,
@@ -3099,7 +3946,10 @@
     "description": "Sagan lýsir brennunni á Flugumýri árið 1253 frá sjónarhorni barna. Hún kynnir atburði Sturlungaaldar og spyr hvers vegna fólk var brennt inni.",
     "pages": 124,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/brennan-a-flugumyri/"
+    "sourceURL": "https://www.forlagid.is/vara/brennan-a-flugumyri/",
+    "authorIds": [
+      "anna-dora-antonsdottir"
+    ]
   },
   {
     "id": 1176588,
@@ -3112,7 +3962,10 @@
     "description": "Steinunn reynir að átta sig á skilnaði foreldra sinna og breytingunum sem hann gæti haft í för með sér. Sagan fjallar um fjölskyldu, óvissu og spurningar barns á tímamótum.",
     "pages": 142,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/ad-eilifu-eg-lofa/"
+    "sourceURL": "https://www.forlagid.is/vara/ad-eilifu-eg-lofa/",
+    "authorIds": [
+      "sigga-dogg"
+    ]
   },
   {
     "id": 1176607,
@@ -3126,7 +3979,10 @@
     "description": "Bókin segir frá Liverpool, liðinu sem Jürgen Klopp byggði upp og leið þess að meistaratitli eftir langa bið. Núverandi stjörnur og eldri hetjur félagsins koma við sögu.",
     "pages": 70,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/liverpool-flottasti-klubbur-i-heimi/"
+    "sourceURL": "https://www.forlagid.is/vara/liverpool-flottasti-klubbur-i-heimi/",
+    "authorIds": [
+      "illugi-jokulsson"
+    ]
   },
   {
     "id": 1177419,
@@ -3139,7 +3995,10 @@
     "description": "Skip strandar við Skotland árið 1906 og grunur vaknar um vísvitandi villuljós. Áratugum síðar hefst ný atburðarás í þessari spennusögu fyrir unga og eldri lesendur.",
     "pages": 182,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/odal-ottans/"
+    "sourceURL": "https://www.forlagid.is/vara/odal-ottans/",
+    "authorIds": [
+      "einar-thorgrimsson"
+    ]
   },
   {
     "id": 1181648,
@@ -3153,7 +4012,16 @@
     "pages": 347,
     "publicationYear": 2020,
     "sourceURL": "https://www.forlagid.is/vara/anna-a-arinhaed/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "l-m-montgomery"
+    ],
+    "series": {
+      "id": "anna-i-graenuhlid",
+      "name": "Anna í Grænuhlíð",
+      "total": 8,
+      "number": 6
+    }
   },
   {
     "id": 1185366,
@@ -3170,7 +4038,10 @@
     "pages": 1212,
     "publicationYear": 2021,
     "sourceURL": "https://www.forlagid.is/vara/karamazov-braedurnir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "fjodor-dostojevski"
+    ]
   },
   {
     "id": 1190979,
@@ -3186,7 +4057,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/tar-sem-djoeflaeyjan-ris-rafbok/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "einar-karason"
+    ]
   },
   {
     "id": 1190981,
@@ -3202,7 +4076,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/gulleyjan-rafbok/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "einar-karason"
+    ]
   },
   {
     "id": 1198822,
@@ -3215,7 +4092,10 @@
     "description": "Birta hefur flúið heimabæinn eftir erfið viðbrögð við því að hún sé trans. Þegar konur hverfa úr húsinu þar sem hún býr þarf hún að takast á við nýja óvissu og ráðgátu.",
     "pages": 280,
     "publicationYear": 2022,
-    "sourceURL": "https://www.forlagid.is/vara/sterk/"
+    "sourceURL": "https://www.forlagid.is/vara/sterk/",
+    "authorIds": [
+      "margret-tryggvadottir"
+    ]
   },
   {
     "id": 1199004,
@@ -3228,7 +4108,10 @@
     "description": "Quill og félagar hans eru skildir eftir á sjódranga til fuglaveiða, en enginn kemur að sækja þá. Þeir þurfa að reyna að lifa af án þess að vita hvað hefur gerst.",
     "pages": 310,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/a-hjara-veraldar/"
+    "sourceURL": "https://www.forlagid.is/vara/a-hjara-veraldar/",
+    "authorIds": [
+      "geraldine-mccaughrean"
+    ]
   },
   {
     "id": 1204755,
@@ -3241,7 +4124,10 @@
     "description": "Bergur vaknar í gráum heimi sem steinskrípi hafa lagt undir sig. Hann og dularfull stúlka halda í hættulega ferð með grip sem gæti hjálpað mannkyninu.",
     "pages": 283,
     "publicationYear": 2012,
-    "sourceURL": "https://www.forlagid.is/vara/steinskripin-2/"
+    "sourceURL": "https://www.forlagid.is/vara/steinskripin-2/",
+    "authorIds": [
+      "gunnar-theodor-eggertsson"
+    ]
   },
   {
     "id": 1204876,
@@ -3255,7 +4141,10 @@
     "description": "Vár og vinir hennar fara á furðusagnahátíð til að hitta höfundinn Björn Kráksson. Þegar hann hverfur virðist heimur bóka hans renna saman við raunveruleikann.",
     "pages": 306,
     "publicationYear": 2020,
-    "sourceURL": "https://www.forlagid.is/vara/drauma-disa-2/"
+    "sourceURL": "https://www.forlagid.is/vara/drauma-disa-2/",
+    "authorIds": [
+      "gunnar-theodor-eggertsson"
+    ]
   },
   {
     "id": 1205192,
@@ -3272,7 +4161,10 @@
     "pages": 368,
     "publicationYear": 2021,
     "sourceURL": "https://www.forlagid.is/vara/amerika/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "franz-kafka"
+    ]
   },
   {
     "id": 1205606,
@@ -3285,7 +4177,10 @@
     "description": "Fjögur ungmenni rannsaka dularfullan dauða lærimeistara síns. Ný þekking á eigin kröftum og tilverunni verður mikilvæg í baráttunni við djöfla sem ógna heiminum.",
     "pages": 290,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/ljosberi/"
+    "sourceURL": "https://www.forlagid.is/vara/ljosberi/",
+    "authorIds": [
+      "olafur-gunnar-gudlaugsson"
+    ]
   },
   {
     "id": 1205691,
@@ -3299,7 +4194,10 @@
     "description": "Milla, Rakel og Lilja finna vænglausan dreka í Smáralind. Þær þurfa að takast á við furðuveruna samhliða ástamálum og flækjum í fjölskyldulífinu.",
     "pages": 301,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/drekar-drama-og-meira-i-teim-dur/"
+    "sourceURL": "https://www.forlagid.is/vara/drekar-drama-og-meira-i-teim-dur/",
+    "authorIds": [
+      "rut-gudnadottir"
+    ]
   },
   {
     "id": 1205753,
@@ -3313,7 +4211,10 @@
     "description": "Smíðakennari í Fellaskóla mætir ekki til vinnu og svör eiginkonu hans vekja grun. Láki lögreglumaður rannsakar hvarfið í afskekktu héraði á Norðurlandi.",
     "pages": 207,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/lognthoka/"
+    "sourceURL": "https://www.forlagid.is/vara/lognthoka/",
+    "authorIds": [
+      "sigurdur-h-petursson"
+    ]
   },
   {
     "id": 1205895,
@@ -3326,7 +4227,10 @@
     "description": "Sammi fer með vinum sínum í afskekktan bústað fjölskyldunnar í vetrarfríi. Þegar eitt þeirra hverfur verða óleyst mál úr fortíð hans aftur að ógn.",
     "pages": 251,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/mister-einsam/"
+    "sourceURL": "https://www.forlagid.is/vara/mister-einsam/",
+    "authorIds": [
+      "ragnheidur-eyjolfsdottir"
+    ]
   },
   {
     "id": 1205943,
@@ -3342,7 +4246,10 @@
     "pages": 480,
     "publicationYear": 2021,
     "sourceURL": "https://www.forlagid.is/vara/glaestar-vonir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "charles-dickens"
+    ]
   },
   {
     "id": 1206077,
@@ -3356,7 +4263,16 @@
     "description": "Þrír bræður strjúka að heiman til að berjast gegn hættulegum vættum við Salajak. Fantasían blandar miðaldalífi í Svíþjóð saman við norræna goðafræði.",
     "pages": 362,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/orrustan-um-salajak/"
+    "sourceURL": "https://www.forlagid.is/vara/orrustan-um-salajak/",
+    "authorIds": [
+      "johan-theorin"
+    ],
+    "series": {
+      "id": "jarmalandskronikan",
+      "name": "Jarmalandskrónikan",
+      "total": 4,
+      "number": 1
+    }
   },
   {
     "id": 1206281,
@@ -3370,7 +4286,10 @@
     "description": "Ráð og hvatning fyrir ungt fólk um samskipti, kvíða, hreyfingu og markmið. Bókin leggur áherslu á að rækta eigin hæfileika og taka þátt í að móta framtíð sína.",
     "pages": 112,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/verum-astfangin-af-lifinu/"
+    "sourceURL": "https://www.forlagid.is/vara/verum-astfangin-af-lifinu/",
+    "authorIds": [
+      "thorgrimur-thrainsson"
+    ]
   },
   {
     "id": 1206311,
@@ -3383,7 +4302,10 @@
     "description": "Scarlett bjargar hinum hæfileikaríka Albert Browne í sundruðu Bretlandi framtíðarinnar. Þau ferðast saman á flótta undan skrímslum og hættulegum útsendurum.",
     "pages": 420,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/utlagarnir-scarlett-og-browne/"
+    "sourceURL": "https://www.forlagid.is/vara/utlagarnir-scarlett-og-browne/",
+    "authorIds": [
+      "jonathan-stroud"
+    ]
   },
   {
     "id": 1206572,
@@ -3396,7 +4318,10 @@
     "description": "Íris Aða fer í hjólaferð á ferðalagi með fjölskyldunni. Hvolpur sem birtist og hverfur og gamalt mannshvarf leiða hana að ráðgátu.",
     "pages": 95,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/eg-a-thig/"
+    "sourceURL": "https://www.forlagid.is/vara/eg-a-thig/",
+    "authorIds": [
+      "hronn-reynisdottir"
+    ]
   },
   {
     "id": 1206875,
@@ -3409,7 +4334,10 @@
     "description": "Bókin geymir handritið að þriðju þáttaröð SKAM ásamt athugasemdum Julie Andem. Einnig birtast samtöl og senur sem voru felld úr sjónvarpsútgáfunni.",
     "pages": 180,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/skam-3/"
+    "sourceURL": "https://www.forlagid.is/vara/skam-3/",
+    "authorIds": [
+      "julie-andem"
+    ]
   },
   {
     "id": 1208774,
@@ -3423,7 +4351,10 @@
     "description": "Saga flytur til Kaupmannahafnar og þarf að læra nýtt tungumál og eignast vini. Hún og Kristian leysa ráðgátu í borginni á meðan óhugnanlegur skuggi virðist elta þau.",
     "pages": 114,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/med-skuggann-a-haelunum/"
+    "sourceURL": "https://www.forlagid.is/vara/med-skuggann-a-haelunum/",
+    "authorIds": [
+      "gudrun-rannveig-stefansdottir"
+    ]
   },
   {
     "id": 1214933,
@@ -3440,7 +4371,10 @@
     "pages": 366,
     "publicationYear": 2022,
     "sourceURL": "https://www.forlagid.is/vara/oexinn-og-joerdin-klassik/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "olafur-gunnarsson"
+    ]
   },
   {
     "id": 1214997,
@@ -3453,7 +4387,16 @@
     "description": "Ellie og vinir hennar fela sig eftir innrás í landið og hópurinn hefur tvístrast. Þau kynnast öðrum uppreisnarflokki en vita ekki hvort honum er treystandi.",
     "pages": 340,
     "publicationYear": 2022,
-    "sourceURL": "https://www.forlagid.is/vara/i-skjoli-naetur/"
+    "sourceURL": "https://www.forlagid.is/vara/i-skjoli-naetur/",
+    "authorIds": [
+      "john-marsden"
+    ],
+    "series": {
+      "id": "a-morgun",
+      "name": "Á morgun",
+      "total": 7,
+      "number": 2
+    }
   },
   {
     "id": 1215370,
@@ -3470,7 +4413,10 @@
     "pages": 364,
     "publicationYear": 2022,
     "sourceURL": "https://www.forlagid.is/vara/umskiptin-og-fleiri-soegur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "franz-kafka"
+    ]
   },
   {
     "id": 1217052,
@@ -3484,7 +4430,15 @@
     "description": "Saga sér hluti sem aðrir taka ekki eftir og hefur lært að þegja yfir því. Þegar húshjálpin hverfur og óvættur birtist fær hún loks skýringu sem markar upphaf ævintýris.",
     "pages": 412,
     "publicationYear": 2015,
-    "sourceURL": "https://www.forlagid.is/vara/arftakinn-skuggasaga-1/"
+    "sourceURL": "https://www.forlagid.is/vara/arftakinn-skuggasaga-1/",
+    "authorIds": [
+      "ragnheidur-eyjolfsdottir"
+    ],
+    "series": {
+      "id": "skuggasaga",
+      "name": "Skuggasaga",
+      "number": 1
+    }
   },
   {
     "id": 1220638,
@@ -3501,7 +4455,10 @@
     "pages": 866,
     "publicationYear": 2022,
     "sourceURL": "https://www.forlagid.is/vara/favitinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "fjodor-dostojevski"
+    ]
   },
   {
     "id": 1221439,
@@ -3517,7 +4474,10 @@
     "pages": 211,
     "publicationYear": 2022,
     "sourceURL": "https://www.forlagid.is/vara/riddarar-hringstigans-klassisk/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "einar-mar-gudmundsson"
+    ]
   },
   {
     "id": 1222139,
@@ -3536,7 +4496,10 @@
     "translators": [
       "Jón Erlendsson"
     ],
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "john-milton"
+    ]
   },
   {
     "id": 1224416,
@@ -3552,7 +4515,10 @@
     "pages": 634,
     "publicationYear": 2022,
     "sourceURL": "https://www.forlagid.is/vara/jatningarnar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "petur-gunnarsson"
+    ]
   },
   {
     "id": 1224524,
@@ -3567,7 +4533,10 @@
     "description": "Bjarni, Hildur, Theódóra og Baldur eru tvístruð eftir bardaga. Opnar gáttir milli heima ógna lífi og hvert þeirra þarf að efla eigin krafta.",
     "pages": 355,
     "publicationYear": 2022,
-    "sourceURL": "https://www.forlagid.is/vara/ofurvaettir/"
+    "sourceURL": "https://www.forlagid.is/vara/ofurvaettir/",
+    "authorIds": [
+      "olafur-gunnar-gudlaugsson"
+    ]
   },
   {
     "id": 1225348,
@@ -3580,7 +4549,10 @@
     "description": "Rakel, Milla og Lilja þurfa að ákveða hvað tekur við eftir tíunda bekk. Á meðan flækjast framtíðaráform þeirra saman við átök við furðuverur.",
     "pages": 323,
     "publicationYear": 2022,
-    "sourceURL": "https://www.forlagid.is/vara/heimsendir-hormonar-og-svo-framvegis/"
+    "sourceURL": "https://www.forlagid.is/vara/heimsendir-hormonar-og-svo-framvegis/",
+    "authorIds": [
+      "rut-gudnadottir"
+    ]
   },
   {
     "id": 1225993,
@@ -3593,7 +4565,10 @@
     "description": "Bókin birtir handritið að fjórðu þáttaröð SKAM. Með fylgja senur og samtöl sem rötuðu ekki á skjáinn, auk athugasemda höfundarins Julie Andem.",
     "pages": 194,
     "publicationYear": 2022,
-    "sourceURL": "https://www.forlagid.is/vara/skam-4/"
+    "sourceURL": "https://www.forlagid.is/vara/skam-4/",
+    "authorIds": [
+      "julie-andem"
+    ]
   },
   {
     "id": 1227025,
@@ -3606,7 +4581,10 @@
     "description": "Patti hverfur á byggingarsvæði Smáralindar og ári síðar týnist Lotta í verslunarmiðstöðinni. Sögur um draugagang og dularfullar verur tengja atburðina saman.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/smaralindar-mori/"
+    "sourceURL": "https://www.forlagid.is/vara/smaralindar-mori/",
+    "authorIds": [
+      "brynhildur-thorarinsdottir"
+    ]
   },
   {
     "id": 1227365,
@@ -3619,7 +4597,10 @@
     "description": "Svandís kynnist heimi álfa, skuggafólks og kynjavera á sama tíma og nýr bekkjarfélagi flækir ástamálin. Hún og vinirnir þurfa að leysa vin úr haldi og stöðva yfirvofandi stríð.",
     "pages": 224,
     "publicationYear": 2022,
-    "sourceURL": "https://www.forlagid.is/vara/oroi-krunk-hrafnanna/"
+    "sourceURL": "https://www.forlagid.is/vara/oroi-krunk-hrafnanna/",
+    "authorIds": [
+      "hrund-hlodversdottir"
+    ]
   },
   {
     "id": 1227681,
@@ -3632,7 +4613,16 @@
     "description": "Harry er óvænt valinn í Þrígaldraleikana þótt hann sé of ungur til þátttöku. Á fjórða skólaárinu í Hogwarts bíða hans hættulegar þrautir og vaxandi ógn frá Voldemort.",
     "pages": 548,
     "publicationYear": 2022,
-    "sourceURL": "https://www.forlagid.is/vara/harry-potter-og-eldbikarinn-ny/"
+    "sourceURL": "https://www.forlagid.is/vara/harry-potter-og-eldbikarinn-ny/",
+    "authorIds": [
+      "j-k-rowling"
+    ],
+    "series": {
+      "id": "harry-potter",
+      "name": "Harry Potter",
+      "total": 7,
+      "number": 4
+    }
   },
   {
     "id": 1228061,
@@ -3649,7 +4639,16 @@
     "pages": 398,
     "publicationYear": 2022,
     "sourceURL": "https://www.forlagid.is/vara/skuggabruin/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ingi-markusson"
+    ],
+    "series": {
+      "id": "skuggabruin",
+      "name": "Skuggabrúin",
+      "total": 3,
+      "number": 1
+    }
   },
   {
     "id": 1229506,
@@ -3666,7 +4665,10 @@
     "pages": 388,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/rangur-stadur-rangur-timi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gillian-mcallister"
+    ]
   },
   {
     "id": 1233500,
@@ -3683,7 +4685,10 @@
     "pages": 308,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/rettarholdin/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "franz-kafka"
+    ]
   },
   {
     "id": 1234309,
@@ -3696,7 +4701,10 @@
     "description": "Unglingurinn Anna vinnur eitt sumar á hóteli í Brighton. Nýtt umhverfi, áhugavert fólk og óvæntar tilfinningar gera sumarið að lærdómsríku ævintýri.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/kossar-og-olifur-rafbok/"
+    "sourceURL": "https://www.forlagid.is/vara/kossar-og-olifur-rafbok/",
+    "authorIds": [
+      "jonina-leosdottir"
+    ]
   },
   {
     "id": 1235449,
@@ -3709,7 +4717,10 @@
     "description": "Blær vinnur á litlu sveitahóteli og verður hrifin af Felix. Hún leitar rétta tímans til að segja að hún sé trans, en orðrómur og mannshvarf vekja jafnframt grunsemdir.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/stolt/"
+    "sourceURL": "https://www.forlagid.is/vara/stolt/",
+    "authorIds": [
+      "margret-tryggvadottir"
+    ]
   },
   {
     "id": 1236740,
@@ -3722,7 +4733,16 @@
     "description": "Harry byrjar fimmta skólaárið í Hogwarts þegar Voldemort reynir að ná völdum. Fönixreglan veitir honum stuðning, en vinirnir þurfa líka að taka vörn sína í eigin hendur.",
     "pages": 750,
     "publicationYear": 2021,
-    "sourceURL": "https://www.forlagid.is/vara/harry-potter-og-fonixreglan-ny/"
+    "sourceURL": "https://www.forlagid.is/vara/harry-potter-og-fonixreglan-ny/",
+    "authorIds": [
+      "j-k-rowling"
+    ],
+    "series": {
+      "id": "harry-potter",
+      "name": "Harry Potter",
+      "total": 7,
+      "number": 5
+    }
   },
   {
     "id": 1237339,
@@ -3735,7 +4755,10 @@
     "description": "Bókin er sett fram sem saga til að lesa upphátt fyrir sjálfan sig. Lesandinn er hvattur til að leika persónurnar líkt og við flutning í útvarpi.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/sumarid-75/"
+    "sourceURL": "https://www.forlagid.is/vara/sumarid-75/",
+    "authorIds": [
+      "elin-gunnarsdottir"
+    ]
   },
   {
     "id": 1238288,
@@ -3751,7 +4774,10 @@
     "pages": 205,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/solskinshestur-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "steinunn-sigurdardottir"
+    ]
   },
   {
     "id": 1238863,
@@ -3765,7 +4791,15 @@
     "description": "Brosmildi maðurinn er skáldverk eftir Henning Mankell.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/brosmildi-madurinn/"
+    "sourceURL": "https://www.forlagid.is/vara/brosmildi-madurinn/",
+    "authorIds": [
+      "henning-mankell"
+    ],
+    "series": {
+      "id": "kurt-wallander",
+      "name": "Kurt Wallander",
+      "number": 5
+    }
   },
   {
     "id": 1238865,
@@ -3779,7 +4813,15 @@
     "description": "Fimmta konan-rafbók er skáldverk eftir Henning Mankell.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/fimmta-konan-rafbok/"
+    "sourceURL": "https://www.forlagid.is/vara/fimmta-konan-rafbok/",
+    "authorIds": [
+      "henning-mankell"
+    ],
+    "series": {
+      "id": "kurt-wallander",
+      "name": "Kurt Wallander",
+      "number": null
+    }
   },
   {
     "id": 1239369,
@@ -3796,7 +4838,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/utan-gards/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "unnur-lilja-aradottir"
+    ]
   },
   {
     "id": 1239993,
@@ -3812,7 +4857,10 @@
     "pages": 251,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/blodmeri/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "steindor-ivarsson"
+    ]
   },
   {
     "id": 1240387,
@@ -3830,7 +4878,10 @@
     "pages": 269,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/fulltrui-afbrydinnar-og-fleiri-sogur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jo-nesbo"
+    ]
   },
   {
     "id": 1243308,
@@ -3848,7 +4899,15 @@
     "pages": 576,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/konguloin/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lars-kepler"
+    ],
+    "series": {
+      "id": "joona-linna",
+      "name": "Joona Linna",
+      "number": 9
+    }
   },
   {
     "id": 1243846,
@@ -3864,7 +4923,10 @@
     "pages": 303,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/thvingun/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jonina-leosdottir"
+    ]
   },
   {
     "id": 1243848,
@@ -3877,7 +4939,10 @@
     "description": "Hildur, Theódóra og Baldur syrgja lærimeistara sinn eftir innrásina frá Túle. Bjarni er fastur í öðrum veruleika og þau þurfa að mæta ógninni frá Návaldinu.",
     "pages": 336,
     "publicationYear": 2023,
-    "sourceURL": "https://www.forlagid.is/vara/navaldid/"
+    "sourceURL": "https://www.forlagid.is/vara/navaldid/",
+    "authorIds": [
+      "olafur-gunnar-gudlaugsson"
+    ]
   },
   {
     "id": 1243853,
@@ -3890,7 +4955,10 @@
     "description": "Jófríður býr á annars konar Íslandi þar sem risadýr og harðar árstíðir móta lífið. Þegar heimur hennar breytist þarf hún að takast á við ástir og ábyrgð á eigin fólki.",
     "pages": 338,
     "publicationYear": 2023,
-    "sourceURL": "https://www.forlagid.is/vara/hrim/"
+    "sourceURL": "https://www.forlagid.is/vara/hrim/",
+    "authorIds": [
+      "hildur-knutsdottir"
+    ]
   },
   {
     "id": 1244676,
@@ -3907,7 +4975,15 @@
     "pages": 286,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/saelurikid/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "arnaldur-indridason"
+    ],
+    "series": {
+      "id": "konrad",
+      "name": "Konráð",
+      "number": 6
+    }
   },
   {
     "id": 1244877,
@@ -3924,7 +5000,10 @@
     "pages": 288,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/midillinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "solveig-palsdottir"
+    ]
   },
   {
     "id": 1245411,
@@ -3937,7 +5016,15 @@
     "description": "Elísa og verðirnir halda ferð sinni áfram eftir atburðina í marmaraborginni. Örlög Renóru ráðast þegar kemur að úrslitaorrustu í þriðju bók Dulstafa.",
     "pages": 346,
     "publicationYear": 2023,
-    "sourceURL": "https://www.forlagid.is/vara/dulstafir-3-orrustan-um-renoru/"
+    "sourceURL": "https://www.forlagid.is/vara/dulstafir-3-orrustan-um-renoru/",
+    "authorIds": [
+      "kristin-bjorg-sigurvinsdottir"
+    ],
+    "series": {
+      "id": "dulstafir",
+      "name": "Dulstafir",
+      "number": 3
+    }
   },
   {
     "id": 1245957,
@@ -3954,7 +5041,15 @@
     "pages": 231,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/eitur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jon-atli-jonasson"
+    ],
+    "series": {
+      "id": "dora-og-rado",
+      "name": "Dóra og Rado",
+      "number": 2
+    }
   },
   {
     "id": 1245962,
@@ -3972,7 +5067,16 @@
     "pages": 439,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/banvaenn-fundur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "anders-de-la-motte",
+      "mans-nilsson"
+    ],
+    "series": {
+      "id": "osterlen-mordin",
+      "name": "Österlen-morðin",
+      "number": 2
+    }
   },
   {
     "id": 1246088,
@@ -3985,7 +5089,10 @@
     "description": "Tinna byrjar í nýjum skóla og kynnist Karítas Sól. Eftir sprengingu á salerni rannsaka nemendur hvort atburðurinn tengist fordómum gegn hinsegin fólki.",
     "pages": 128,
     "publicationYear": 2023,
-    "sourceURL": "https://www.forlagid.is/vara/a-eftir-dimmum-skyjum/"
+    "sourceURL": "https://www.forlagid.is/vara/a-eftir-dimmum-skyjum/",
+    "authorIds": [
+      "elisabet-thoroddsen"
+    ]
   },
   {
     "id": 1251141,
@@ -4003,7 +5110,15 @@
     "pages": 403,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/kongurinn-af-osi-kongsrikid-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jo-nesbo"
+    ],
+    "series": {
+      "id": "kongsrikid",
+      "name": "Kóngsríkið",
+      "number": 2
+    }
   },
   {
     "id": 1251425,
@@ -4021,7 +5136,10 @@
     "pages": 256,
     "publicationYear": 2023,
     "sourceURL": "https://www.forlagid.is/vara/kalmann-og-fjallid-sem-svaf/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "joachim-b-schmidt"
+    ]
   },
   {
     "id": 1252733,
@@ -4038,7 +5156,10 @@
     "pages": 368,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/lifshaettulegt-loford/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "angela-marsons"
+    ]
   },
   {
     "id": 1253349,
@@ -4053,7 +5174,10 @@
     "pages": 228,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/hlaupavargur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "kerstin-ekman"
+    ]
   },
   {
     "id": 1253555,
@@ -4068,7 +5192,16 @@
     "description": "Eldhiti – Shetland 8 er skáldverk eftir Ann Cleeves. Skráð útgáfuár hjá Forlaginu er 2024. Skráður blaðsíðufjöldi er 408.",
     "pages": 408,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/eldhiti/"
+    "sourceURL": "https://www.forlagid.is/vara/eldhiti/",
+    "authorIds": [
+      "ann-cleeves"
+    ],
+    "series": {
+      "id": "shetland",
+      "name": "Shetland",
+      "total": 8,
+      "number": 8
+    }
   },
   {
     "id": 1253559,
@@ -4086,7 +5219,15 @@
     "pages": 472,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/svort-dogun/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "cilla-og-rolf-borjlind"
+    ],
+    "series": {
+      "id": "ronning-og-stilton",
+      "name": "Olivia Rönning og Tom Stilton",
+      "number": 3
+    }
   },
   {
     "id": 1253767,
@@ -4104,7 +5245,15 @@
     "pages": 458,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/yfirbot/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "viveca-sten"
+    ],
+    "series": {
+      "id": "mordin-i-are",
+      "name": "Morðin í Åre",
+      "number": 3
+    }
   },
   {
     "id": 1255066,
@@ -4120,7 +5269,10 @@
     "pages": 335,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/logarnir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lina-bengtsdotter"
+    ]
   },
   {
     "id": 1255545,
@@ -4137,7 +5289,15 @@
     "pages": 325,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/myrarstulkan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "elly-griffiths"
+    ],
+    "series": {
+      "id": "ruth-galloway",
+      "name": "Dr. Ruth Galloway",
+      "number": 1
+    }
   },
   {
     "id": 1255549,
@@ -4154,7 +5314,15 @@
     "pages": 510,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/sjo-fermetrar-med-las/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jussi-adler-olsen"
+    ],
+    "series": {
+      "id": "deild-q",
+      "name": "Deild Q",
+      "number": 10
+    }
   },
   {
     "id": 1255709,
@@ -4168,7 +5336,15 @@
     "description": "Algóritmi ástarinnar er skáldverk eftir Mons Kallentoft. Skráð útgáfuár hjá Forlaginu er 2024. Skráður blaðsíðufjöldi er 332.",
     "pages": 332,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/algoritmi-astarinnar/"
+    "sourceURL": "https://www.forlagid.is/vara/algoritmi-astarinnar/",
+    "authorIds": [
+      "mons-kallentoft"
+    ],
+    "series": {
+      "id": "litilmagnar",
+      "name": "Lítilmagnar",
+      "number": 1
+    }
   },
   {
     "id": 1255713,
@@ -4182,7 +5358,15 @@
     "description": "Með hjartað að veði er skáldverk eftir Simona Ahrnstedt. Skráð útgáfuár hjá Forlaginu er 2024. Skráður blaðsíðufjöldi er 395.",
     "pages": 395,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/med-hjartad-ad-vedi/"
+    "sourceURL": "https://www.forlagid.is/vara/med-hjartad-ad-vedi/",
+    "authorIds": [
+      "simona-ahrnstedt"
+    ],
+    "series": {
+      "id": "seidmagn-andstaednanna",
+      "name": "Seiðmagn andstæðnanna",
+      "number": 3
+    }
   },
   {
     "id": 1255791,
@@ -4195,7 +5379,10 @@
     "description": "Andspyrna og stríðsógn einkenna skuggaheim þar sem kynjaslangan gegnir mikilvægu hlutverki. Ólga er sjálfstætt framhald bókanna Ógn og Órói.",
     "pages": 149,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/olga-kynjaslangan/"
+    "sourceURL": "https://www.forlagid.is/vara/olga-kynjaslangan/",
+    "authorIds": [
+      "hrund-hlodversdottir"
+    ]
   },
   {
     "id": 1256157,
@@ -4210,7 +5397,10 @@
     "description": "Myrkramaðurinn er skáldverk eftir Unni Lindell. Skráð útgáfuár hjá Forlaginu er 2024. Skráður blaðsíðufjöldi er 400.",
     "pages": 400,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/myrkramadurinn/"
+    "sourceURL": "https://www.forlagid.is/vara/myrkramadurinn/",
+    "authorIds": [
+      "unni-lindell"
+    ]
   },
   {
     "id": 1256161,
@@ -4225,7 +5415,10 @@
     "description": "Fuglinn í fjörunni er skáldverk eftir Ann Cleeves. Skráð útgáfuár hjá Forlaginu er 2024. Skráður blaðsíðufjöldi er 419.",
     "pages": 419,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/fuglinn-i-fjorunni/"
+    "sourceURL": "https://www.forlagid.is/vara/fuglinn-i-fjorunni/",
+    "authorIds": [
+      "ann-cleeves"
+    ]
   },
   {
     "id": 1257096,
@@ -4239,7 +5432,15 @@
     "description": "Í klóm arnarins er skáldverk eftir Karin Smirnoff. Skráð útgáfuár hjá Forlaginu er 2024. Skráður blaðsíðufjöldi er 419.",
     "pages": 419,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/i-klom-arnarins-2/"
+    "sourceURL": "https://www.forlagid.is/vara/i-klom-arnarins-2/",
+    "authorIds": [
+      "karin-smirnoff"
+    ],
+    "series": {
+      "id": "millennium",
+      "name": "Millennium",
+      "number": null
+    }
   },
   {
     "id": 1257189,
@@ -4255,7 +5456,10 @@
     "pages": 314,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/daudathogn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "anna-run-frimannsdottir"
+    ]
   },
   {
     "id": 1257191,
@@ -4272,7 +5476,10 @@
     "pages": 411,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/midnaeturveislan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lucy-foley"
+    ]
   },
   {
     "id": 1257193,
@@ -4289,7 +5496,10 @@
     "pages": 340,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/fullkomna-fjolskyldan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "robyn-harding"
+    ]
   },
   {
     "id": 1257814,
@@ -4306,7 +5516,10 @@
     "pages": 122,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/brefbatarigningin-islensk-klassik/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gyrdir-eliasson"
+    ]
   },
   {
     "id": 1257858,
@@ -4323,7 +5536,10 @@
     "pages": 238,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/herbergi-giovanni/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "james-baldwin"
+    ]
   },
   {
     "id": 1261147,
@@ -4339,7 +5555,15 @@
     "pages": 172,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/sumarhrollur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "quentin-bates"
+    ],
+    "series": {
+      "id": "gunnhildur",
+      "name": "Gunnhildur",
+      "number": 5
+    }
   },
   {
     "id": 1261152,
@@ -4353,7 +5577,10 @@
     "description": "Lygin er skáldverk eftir Eyðun Klakstein. Skráð útgáfuár hjá Forlaginu er 2024. Skráður blaðsíðufjöldi er 259.",
     "pages": 259,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/lygin/"
+    "sourceURL": "https://www.forlagid.is/vara/lygin/",
+    "authorIds": [
+      "eydun-klakstein"
+    ]
   },
   {
     "id": 1261322,
@@ -4366,7 +5593,10 @@
     "description": "Magdalena situr í haldi lögreglu eftir að tveir hafa fundist látnir. Atburðirnir tengjast Kasíu og fortíð þeirra, og sagan spyr hvað gerðist í íbúðinni.",
     "pages": 191,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/kasia-og-magdalena/"
+    "sourceURL": "https://www.forlagid.is/vara/kasia-og-magdalena/",
+    "authorIds": [
+      "hildur-knutsdottir"
+    ]
   },
   {
     "id": 1262018,
@@ -4381,7 +5611,10 @@
     "description": "Dimma Drungi Mistur er skáldverk eftir Ragnar Jónasson. Skráð útgáfuár hjá Forlaginu er 2024. Skráður blaðsíðufjöldi er 524.",
     "pages": 524,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/dimma-drungi-mistur/"
+    "sourceURL": "https://www.forlagid.is/vara/dimma-drungi-mistur/",
+    "authorIds": [
+      "ragnar-jonasson"
+    ]
   },
   {
     "id": 1262109,
@@ -4396,7 +5629,10 @@
     "pages": 304,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/tokyo-montana-hradlestin/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "richard-brautigan"
+    ]
   },
   {
     "id": 1263531,
@@ -4411,7 +5647,10 @@
     "description": "Kvöldið sem hún hvarf er skáldverk eftir Eva Björg Ægisdóttir. Skráð útgáfuár hjá Forlaginu er 2024. Skráður blaðsíðufjöldi er 368.",
     "pages": 368,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/kvoldid-sem-hun-hvarf/"
+    "sourceURL": "https://www.forlagid.is/vara/kvoldid-sem-hun-hvarf/",
+    "authorIds": [
+      "eva-bjorg-aegisdottir"
+    ]
   },
   {
     "id": 1263536,
@@ -4424,7 +5663,10 @@
     "description": "Tinna fer í sína fyrstu skátaferð þar sem næturverkefni verða sífellt óhugnanlegri. Þegar snjóstormur skellur á og hópurinn tvístrast þarf hún að takast á við óttann.",
     "pages": 113,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/undir-sjounda-thili/"
+    "sourceURL": "https://www.forlagid.is/vara/undir-sjounda-thili/",
+    "authorIds": [
+      "elisabet-thoroddsen"
+    ]
   },
   {
     "id": 1263976,
@@ -4438,7 +5680,11 @@
     "description": "Dagur og Ylfa vakna í líkhúsi eftir að lögreglan hefur skotið þau. Ferð þeirra í sveitina leiðir til óhugnanlegra atburða í sögu sem blandar saman rómantík og hryllingi.",
     "pages": 109,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/nammidagur/"
+    "sourceURL": "https://www.forlagid.is/vara/nammidagur/",
+    "authorIds": [
+      "sigmundur-breidfjord-thorgeirsson",
+      "bergrun-iris-saevarsdottir"
+    ]
   },
   {
     "id": 1264091,
@@ -4452,7 +5698,10 @@
     "description": "Varnar hefur verið þjálfaður sem stríðsmaður en gengur til liðs við andspyrnuna til að vernda Önnu. Sagan varpar ljósi á persónur og atburði úr heimi Hvísl hrafnanna.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/ragnarok-2/"
+    "sourceURL": "https://www.forlagid.is/vara/ragnarok-2/",
+    "authorIds": [
+      "malene-solvsten"
+    ]
   },
   {
     "id": 1264096,
@@ -4468,7 +5717,15 @@
     "pages": 439,
     "publicationYear": 2024,
     "sourceURL": "https://www.forlagid.is/vara/myrku-frurnar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ann-cleeves"
+    ],
+    "series": {
+      "id": "vera",
+      "name": "Vera",
+      "number": null
+    }
   },
   {
     "id": 1264728,
@@ -4481,7 +5738,10 @@
     "description": "Tíu ára Ester kemur heim eftir sex daga hvarf, en enginn trúir frásögn hennar. Hún hefur hitt dreng í kirkjugarði og ferðast til undirheima.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/undirheimar/"
+    "sourceURL": "https://www.forlagid.is/vara/undirheimar/",
+    "authorIds": [
+      "helgi-jonsson"
+    ]
   },
   {
     "id": 1264949,
@@ -4494,7 +5754,10 @@
     "description": "Draugar hafa gert vart við sig á Englandi og aðeins börn og ungmenni geta séð þá. Ungir starfsmenn lítillar draugaleitarstofu takast á við hættulegt verkefni.",
     "pages": 456,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/lockwood-og-co-oskrin-fra-stiganum/"
+    "sourceURL": "https://www.forlagid.is/vara/lockwood-og-co-oskrin-fra-stiganum/",
+    "authorIds": [
+      "jonathan-stroud"
+    ]
   },
   {
     "id": 1267990,
@@ -4511,7 +5774,10 @@
     "pages": 244,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/byrgid-sogur-kjarnyrdi-brot/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "franz-kafka"
+    ]
   },
   {
     "id": 1267992,
@@ -4528,7 +5794,10 @@
     "pages": 219,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/skogarhogg-gedshraering/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thomas-bernhard"
+    ]
   },
   {
     "id": 1268942,
@@ -4545,7 +5814,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/daetur-kains/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "colin-dexter"
+    ]
   },
   {
     "id": 1270424,
@@ -4562,7 +5834,10 @@
     "pages": 398,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/baeldar-minningar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "angela-marsons"
+    ]
   },
   {
     "id": 1271075,
@@ -4578,7 +5853,15 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/mordid_i_stjornarradinu/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "stella-blomkvist"
+    ],
+    "series": {
+      "id": "stella-blomkvist",
+      "name": "Stella Blómkvist",
+      "number": 1
+    }
   },
   {
     "id": 1271337,
@@ -4592,7 +5875,15 @@
     "description": "Sögur á sveimi – Vera 2 er skáldverk eftir Ann Cleeves. Skráð útgáfuár hjá Forlaginu er 2025. Skráður blaðsíðufjöldi er 460.",
     "pages": 460,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/sogur-a-sveimi-vera-2/"
+    "sourceURL": "https://www.forlagid.is/vara/sogur-a-sveimi-vera-2/",
+    "authorIds": [
+      "ann-cleeves"
+    ],
+    "series": {
+      "id": "vera",
+      "name": "Vera",
+      "number": 2
+    }
   },
   {
     "id": 1271339,
@@ -4606,7 +5897,10 @@
     "description": "Rauðhetta er skáldverk eftir Unni Lindell. Skráð útgáfuár hjá Forlaginu er 2025. Skráður blaðsíðufjöldi er 358.",
     "pages": 358,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/raudhetta/"
+    "sourceURL": "https://www.forlagid.is/vara/raudhetta/",
+    "authorIds": [
+      "unni-lindell"
+    ]
   },
   {
     "id": 1271823,
@@ -4624,7 +5918,15 @@
     "pages": 443,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/myrarljos/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "viveca-sten"
+    ],
+    "series": {
+      "id": "mordin-i-are",
+      "name": "Morðin í Åre",
+      "number": 4
+    }
   },
   {
     "id": 1272204,
@@ -4637,7 +5939,16 @@
     "description": "Rilla, yngsta dóttir Önnu og Gilberts, er að verða fimmtán ára þegar heimsstyrjöld breytir lífi fjölskyldunnar. Bræður hennar fara í herinn og sjálf þarf hún að takast á við nýja ábyrgð.",
     "pages": 324,
     "publicationYear": 2024,
-    "sourceURL": "https://www.forlagid.is/vara/rilla-a-arinhaed-8/"
+    "sourceURL": "https://www.forlagid.is/vara/rilla-a-arinhaed-8/",
+    "authorIds": [
+      "l-m-montgomery"
+    ],
+    "series": {
+      "id": "anna-i-graenuhlid",
+      "name": "Anna í Grænuhlíð",
+      "total": 8,
+      "number": 8
+    }
   },
   {
     "id": 1273725,
@@ -4651,7 +5962,16 @@
     "description": "Útvörðurinn er skáldverk eftir Lee Child, Andrew Child. Skráð útgáfuár hjá Forlaginu er 2025. Skráður blaðsíðufjöldi er 368.",
     "pages": 368,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/utvordurinn/"
+    "sourceURL": "https://www.forlagid.is/vara/utvordurinn/",
+    "authorIds": [
+      "lee-child",
+      "andrew-child"
+    ],
+    "series": {
+      "id": "jack-reacher",
+      "name": "Jack Reacher",
+      "number": 25
+    }
   },
   {
     "id": 1274674,
@@ -4665,7 +5985,15 @@
     "description": "Villuljós er skáldverk eftir Mons Kallentoft. Skráð útgáfuár hjá Forlaginu er 2025. Skráður blaðsíðufjöldi er 372.",
     "pages": 372,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/villuljos/"
+    "sourceURL": "https://www.forlagid.is/vara/villuljos/",
+    "authorIds": [
+      "mons-kallentoft"
+    ],
+    "series": {
+      "id": "malin-fors",
+      "name": "Malin Fors",
+      "number": 14
+    }
   },
   {
     "id": 1275283,
@@ -4679,7 +6007,10 @@
     "description": "Rauði fuglinn er skáldverk eftir Elisabeth Egholm. Skráð útgáfuár hjá Forlaginu er 2025. Skráður blaðsíðufjöldi er 421.",
     "pages": 421,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/raudi-fuglinn/"
+    "sourceURL": "https://www.forlagid.is/vara/raudi-fuglinn/",
+    "authorIds": [
+      "elisabeth-egholm"
+    ]
   },
   {
     "id": 1275285,
@@ -4693,7 +6024,10 @@
     "description": "Næturdrottningin er skáldverk eftir Simona Ahrnstedt. Skráð útgáfuár hjá Forlaginu er 2025. Skráður blaðsíðufjöldi er 398.",
     "pages": 398,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/naeturdrottningin/"
+    "sourceURL": "https://www.forlagid.is/vara/naeturdrottningin/",
+    "authorIds": [
+      "simona-ahrnstedt"
+    ]
   },
   {
     "id": 1275923,
@@ -4711,7 +6045,15 @@
     "pages": 373,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/rosa-og-bjork/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "satu-ramo"
+    ],
+    "series": {
+      "id": "hildur",
+      "name": "Hildur",
+      "number": 2
+    }
   },
   {
     "id": 1278011,
@@ -4725,7 +6067,15 @@
     "description": "Lettinn Pietr er skáldverk eftir Georges Simeon. Skráð útgáfuár hjá Forlaginu er 2025. Skráður blaðsíðufjöldi er 184.",
     "pages": 184,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/lettinn-pietr/"
+    "sourceURL": "https://www.forlagid.is/vara/lettinn-pietr/",
+    "authorIds": [
+      "georges-simeon"
+    ],
+    "series": {
+      "id": "maigret",
+      "name": "Maigret",
+      "number": 1
+    }
   },
   {
     "id": 1278030,
@@ -4743,7 +6093,15 @@
     "pages": 495,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/sofdu-vaert/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "cilla-og-rolf-borjlind"
+    ],
+    "series": {
+      "id": "ronning-og-stilton",
+      "name": "Olivia Rönning og Tom Stilton",
+      "number": 4
+    }
   },
   {
     "id": 1278055,
@@ -4760,7 +6118,10 @@
     "pages": 880,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/djoflarnir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "fjodor-dostojevski"
+    ]
   },
   {
     "id": 1278057,
@@ -4776,7 +6137,10 @@
     "pages": 96,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/astin-fiskanna-klassisk-kilja/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "steinunn-sigurdardottir"
+    ]
   },
   {
     "id": 1279075,
@@ -4790,7 +6154,10 @@
     "description": "Klær gaupunnar er skáldverk eftir Karin Smirnoff. Skráð útgáfuár hjá Forlaginu er 2025. Skráður blaðsíðufjöldi er 382.",
     "pages": 382,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/klaer-gaupunnar/"
+    "sourceURL": "https://www.forlagid.is/vara/klaer-gaupunnar/",
+    "authorIds": [
+      "karin-smirnoff"
+    ]
   },
   {
     "id": 1282295,
@@ -4808,7 +6175,10 @@
     "pages": 459,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/sol-ris-a-slattudegi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "suzanne-collins"
+    ]
   },
   {
     "id": 1283191,
@@ -4823,7 +6193,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/jotunsteinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "andri-snaer-magnason"
+    ]
   },
   {
     "id": 1283784,
@@ -4836,7 +6209,10 @@
     "description": "Safn norrænna smásagna fyrir börn og ungmenni. Vinátta, samskipti og tilfinningar sem fylgja uppvextinum tengja sögurnar saman.",
     "pages": 32,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/sogurnar-okkar-11-norraenar-smasogur/"
+    "sourceURL": "https://www.forlagid.is/vara/sogurnar-okkar-11-norraenar-smasogur/",
+    "authorIds": [
+      "ymsir"
+    ]
   },
   {
     "id": 1284769,
@@ -4849,7 +6225,10 @@
     "description": "Sirrýlei ætlar að halda afmælisveislu en gömul næla frá ömmu fær aðra hluti til að skipta máli. Saga fyrri eigenda nælunnar flækir samband hennar við vinkonurnar.",
     "pages": 262,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/silfurgengid/"
+    "sourceURL": "https://www.forlagid.is/vara/silfurgengid/",
+    "authorIds": [
+      "brynhildur-thorarinsdottir"
+    ]
   },
   {
     "id": 1284776,
@@ -4865,7 +6244,15 @@
     "pages": 275,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/tal-konrad-7/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "arnaldur-indridason"
+    ],
+    "series": {
+      "id": "konrad",
+      "name": "Konráð",
+      "number": 7
+    }
   },
   {
     "id": 1284809,
@@ -4882,7 +6269,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/sumarid-vid-bruna/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "viktor-arnar-ingolfsson"
+    ]
   },
   {
     "id": 1285250,
@@ -4897,7 +6287,10 @@
     "pages": 211,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/allt-fra-hatti-oni-sko/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "einar-mar-gudmundsson"
+    ]
   },
   {
     "id": 1285252,
@@ -4913,7 +6306,10 @@
     "pages": 261,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/stjornurnar-yfir-eyjafirdi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "asa-marin"
+    ]
   },
   {
     "id": 1285384,
@@ -4928,7 +6324,10 @@
     "pages": 407,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/stulka-med-falka-fullordinsminningar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorunn-valdimarsdottir"
+    ]
   },
   {
     "id": 1285501,
@@ -4943,7 +6342,10 @@
     "pages": 278,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/salnasafnarinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thor-tulinius"
+    ]
   },
   {
     "id": 1285526,
@@ -4958,7 +6360,10 @@
     "pages": 255,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/aftenging/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "arni-helgason"
+    ]
   },
   {
     "id": 1285603,
@@ -4973,7 +6378,15 @@
     "pages": 254,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/hin-helga-kvol/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "stefan-mani"
+    ],
+    "series": {
+      "id": "hordur-grimsson",
+      "name": "Hörður Grímsson",
+      "number": 13
+    }
   },
   {
     "id": 1285626,
@@ -4988,7 +6401,10 @@
     "pages": 143,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/synda-selir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "steinn-karason"
+    ]
   },
   {
     "id": 1285640,
@@ -5001,7 +6417,16 @@
     "description": "Harry snýr aftur í Hogwarts þar sem ótti og tortryggni færast í aukana. Dumbledore hjálpar honum að rannsaka fortíð Voldemorts og búa sig undir það sem fram undan er.",
     "pages": 490,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/6-harry-potter-og-blendingsprinsinn-ny/"
+    "sourceURL": "https://www.forlagid.is/vara/6-harry-potter-og-blendingsprinsinn-ny/",
+    "authorIds": [
+      "j-k-rowling"
+    ],
+    "series": {
+      "id": "harry-potter",
+      "name": "Harry Potter",
+      "total": 7,
+      "number": 6
+    }
   },
   {
     "id": 1285676,
@@ -5018,7 +6443,16 @@
     "pages": 412,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/heidmyrkur-skuggabruin-3/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ingi-markusson"
+    ],
+    "series": {
+      "id": "skuggabruin",
+      "name": "Skuggabrúin",
+      "total": 3,
+      "number": 3
+    }
   },
   {
     "id": 1285678,
@@ -5033,7 +6467,10 @@
     "pages": 306,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/allt-sem-vid-hefdum-getad-ordid/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sif-sigmarsdottir"
+    ]
   },
   {
     "id": 1285680,
@@ -5048,7 +6485,10 @@
     "pages": 160,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/frumbyrjur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "dagur-hjartarson"
+    ]
   },
   {
     "id": 1285684,
@@ -5064,7 +6504,10 @@
     "pages": 278,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/lif-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "reynir-finndal"
+    ]
   },
   {
     "id": 1285688,
@@ -5080,7 +6523,10 @@
     "pages": 368,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/froken-dulla-aevisaga/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "kristin-svava-tomasdottir"
+    ]
   },
   {
     "id": 1285850,
@@ -5096,7 +6542,10 @@
     "pages": 272,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/isbirnir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "solveig-palsdottir"
+    ]
   },
   {
     "id": 1285882,
@@ -5110,7 +6559,10 @@
     "description": "Dagur og Ylfa takast á við hungur og dularfull samtök lækna og vísindamanna. Framhald sagnanna Veikindadagur og Nammidagur er ætlað unglingum og eldri lesendum.",
     "pages": 133,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/skuldadagur/"
+    "sourceURL": "https://www.forlagid.is/vara/skuldadagur/",
+    "authorIds": [
+      "bergrun-iris-saevarsdottir"
+    ]
   },
   {
     "id": 1286030,
@@ -5126,7 +6578,11 @@
     "pages": 316,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/franski-spitalinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "katrin-jakobsdottir",
+      "ragnar-jonasson"
+    ]
   },
   {
     "id": 1286051,
@@ -5142,7 +6598,10 @@
     "pages": 398,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/herranott/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "steindor-ivarsson"
+    ]
   },
   {
     "id": 1286189,
@@ -5157,7 +6616,10 @@
     "pages": 314,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/kvoldsonatan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "olafur-johann-olafsson"
+    ]
   },
   {
     "id": 1286224,
@@ -5172,7 +6634,10 @@
     "pages": 293,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/huldukonan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "frida-isberg"
+    ]
   },
   {
     "id": 1286303,
@@ -5187,7 +6652,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/feluleikir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lilja-magnusdottir"
+    ]
   },
   {
     "id": 1286329,
@@ -5202,7 +6670,10 @@
     "pages": 463,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/vegur-allrar-veraldar-skalkasaga/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sigridur-hagalin-bjornsdottir"
+    ]
   },
   {
     "id": 1286337,
@@ -5216,7 +6687,10 @@
     "description": "Fall Draupnis hefur aukið myrkrið í Dreim. Dreimfarar úr Fósturdal þurfa að bregðast við spádómi og ógn sem nær yfir mörk heimanna.",
     "pages": 384,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/dreim-dyr-modurinnar/"
+    "sourceURL": "https://www.forlagid.is/vara/dreim-dyr-modurinnar/",
+    "authorIds": [
+      "fanney-hrund-hilmarsdottir"
+    ]
   },
   {
     "id": 1286451,
@@ -5231,7 +6705,10 @@
     "pages": 102,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/faeinar-sogur-smaar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "pjetur-hafstein-larusson"
+    ]
   },
   {
     "id": 1286467,
@@ -5246,7 +6723,10 @@
     "pages": 164,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/sorgarmarsinn-ge-ritsafn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gyrdir-eliasson"
+    ]
   },
   {
     "id": 1286576,
@@ -5261,7 +6741,10 @@
     "pages": 214,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/sidustu-dagar-skeljaskrimslisins/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "steinunn-g-helgadottir"
+    ]
   },
   {
     "id": 1286598,
@@ -5274,7 +6757,10 @@
     "description": "Saga sem hvetur lesendur til að sinna námi og persónulegum draumum. Félagsþroski og jákvæð viðhorf eru meðal viðfangsefna hennar.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/draumar-2/"
+    "sourceURL": "https://www.forlagid.is/vara/draumar-2/",
+    "authorIds": [
+      "bergthor-olafsson"
+    ]
   },
   {
     "id": 1286674,
@@ -5289,7 +6775,10 @@
     "pages": 107,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/vinsamlega-rettid-ur-saetisbokunum/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "oskar-magnusson"
+    ]
   },
   {
     "id": 1286676,
@@ -5305,7 +6794,10 @@
     "pages": 135,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/aevintyri-josafats/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "kristjan-einarsson"
+    ]
   },
   {
     "id": 1286697,
@@ -5320,7 +6812,15 @@
     "pages": 446,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/ragnarok-undir-jokli/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "skuli-sigurdsson"
+    ],
+    "series": {
+      "id": "kronikuserian",
+      "name": "Kroníkuserían",
+      "number": 2
+    }
   },
   {
     "id": 1286713,
@@ -5335,7 +6835,10 @@
     "pages": 120,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/lux-sogukorn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "agust-gudmundsson"
+    ]
   },
   {
     "id": 1286715,
@@ -5349,7 +6852,10 @@
     "description": "Gráglettni örlaganna er skáldverk eftir Simona Ahrnstedt. Skráð útgáfuár hjá Forlaginu er 2025. Skráður blaðsíðufjöldi er 589.",
     "pages": 589,
     "publicationYear": 2025,
-    "sourceURL": "https://www.forlagid.is/vara/graglettni-orlaganna/"
+    "sourceURL": "https://www.forlagid.is/vara/graglettni-orlaganna/",
+    "authorIds": [
+      "simona-ahrnstedt"
+    ]
   },
   {
     "id": 1286794,
@@ -5365,7 +6871,10 @@
     "pages": 344,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/allar-litlu-lygarnar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "eva-bjorg-aegisdottir"
+    ]
   },
   {
     "id": 1286802,
@@ -5381,7 +6890,10 @@
     "pages": 286,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/thegar-hun-hlo/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "katrin-juliusdottir"
+    ]
   },
   {
     "id": 1286822,
@@ -5397,7 +6909,10 @@
     "pages": 256,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/sleggjudomur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ragnheidur-jonsdottir"
+    ]
   },
   {
     "id": 1286895,
@@ -5412,7 +6927,11 @@
     "pages": 352,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/mzungu/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorunn-rakel-gylfadottir",
+      "simon-okoth-aora"
+    ]
   },
   {
     "id": 1287105,
@@ -5427,7 +6946,10 @@
     "pages": 277,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/syndafall/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "yrsa-sigurdardottir"
+    ]
   },
   {
     "id": 1287154,
@@ -5442,7 +6964,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/kona-verdur-ordlaus/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "birna-g-konradsdottir"
+    ]
   },
   {
     "id": 1287385,
@@ -5457,7 +6982,10 @@
     "pages": 165,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/fardi-rassgat-aristoteles/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "benony-aegisson"
+    ]
   },
   {
     "id": 1287387,
@@ -5472,7 +7000,10 @@
     "pages": 199,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/glaedur-galdrabals/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "olina-kjerulf-thorvardardottir"
+    ]
   },
   {
     "id": 1290566,
@@ -5487,7 +7018,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/a-leid-til-nastranda/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "einar-mar-jonsson"
+    ]
   },
   {
     "id": 1290738,
@@ -5504,7 +7038,10 @@
     "pages": 446,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/rottukongurinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "pascal-engman"
+    ]
   },
   {
     "id": 1290740,
@@ -5522,7 +7059,17 @@
     "pages": 494,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/daudar-salir-syngja-ekki/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "line-holm",
+      "stine-bolther",
+      "jussi-adler-olsen"
+    ],
+    "series": {
+      "id": "deild-q",
+      "name": "Deild Q",
+      "number": 11
+    }
   },
   {
     "id": 1291922,
@@ -5538,7 +7085,10 @@
     "pages": 318,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/girnd/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thora-sveinsdottir"
+    ]
   },
   {
     "id": 1292346,
@@ -5555,7 +7105,15 @@
     "pages": 416,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/lygarinn-sofie-sarenbrant/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sofie-sarenbrant"
+    ],
+    "series": {
+      "id": "emma-skold",
+      "name": "Emma Sköld",
+      "number": null
+    }
   },
   {
     "id": 1292347,
@@ -5572,7 +7130,15 @@
     "pages": 395,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/verndarengillinn-sofie-sarenbrant/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sofie-sarenbrant"
+    ],
+    "series": {
+      "id": "emma-skold",
+      "name": "Emma Sköld",
+      "number": null
+    }
   },
   {
     "id": 1292503,
@@ -5588,7 +7154,10 @@
     "pages": 297,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/ad-alidnum-degi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "tessa-hadley"
+    ]
   },
   {
     "id": 1292510,
@@ -5605,7 +7174,10 @@
     "pages": 543,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/svefngengillinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lars-kepler"
+    ]
   },
   {
     "id": 1292512,
@@ -5623,7 +7195,10 @@
     "pages": 377,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/stund-ulfsins/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jo-nesbo"
+    ]
   },
   {
     "id": 1292520,
@@ -5640,7 +7215,10 @@
     "pages": 219,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/irpa/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "hildur-knutsdottir"
+    ]
   },
   {
     "id": 1292562,
@@ -5656,7 +7234,10 @@
     "pages": 408,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/brudkaupsfolkid/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "alison-espach"
+    ]
   },
   {
     "id": 1292573,
@@ -5673,7 +7254,10 @@
     "pages": 352,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/sidasti-leikurinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "angela-marsons"
+    ]
   },
   {
     "id": 1292868,
@@ -5690,7 +7274,10 @@
     "pages": 296,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/leyndardomur-blau-lestarinnar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "agatha-christie"
+    ]
   },
   {
     "id": 1292872,
@@ -5706,7 +7293,10 @@
     "pages": 184,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/fimmta-barnid-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "doris-lessing"
+    ]
   },
   {
     "id": 1292878,
@@ -5722,7 +7312,10 @@
     "pages": 365,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/ferdasaga-kurekans/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "andy-adams"
+    ]
   },
   {
     "id": 1292880,
@@ -5738,7 +7331,15 @@
     "pages": 637,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/sanna-sagan-um-nefid-a-gosa/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "leif-gw-persson"
+    ],
+    "series": {
+      "id": "evert-backstrom",
+      "name": "Evert Bäckström",
+      "number": 3
+    }
   },
   {
     "id": 1292882,
@@ -5755,7 +7356,10 @@
     "pages": 431,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/landamaeralaus/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jorn-lier-horst"
+    ]
   },
   {
     "id": 1292923,
@@ -5774,7 +7378,10 @@
     "translators": [
       "Ásdís Rósa Magnúsdóttir"
     ],
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "albert-camus"
+    ]
   },
   {
     "id": 1293145,
@@ -5789,7 +7396,10 @@
     "description": "Paedyn leynir því að hún hafi engan töframátt í ríki sem er stjórnað af töfrum gæddri elítu. Hún verður að komast lifandi í gegnum hættulega keppni án þess að leyndarmálið komist upp.",
     "pages": 529,
     "publicationYear": 2026,
-    "sourceURL": "https://www.forlagid.is/vara/vanmattug/"
+    "sourceURL": "https://www.forlagid.is/vara/vanmattug/",
+    "authorIds": [
+      "lauren-roberts"
+    ]
   },
   {
     "id": 1293207,
@@ -5804,7 +7414,10 @@
     "description": "Örlagasteinarnir er skáldverk eftir Ann Cleeves. Skráð útgáfuár hjá Forlaginu er 2026. Skráður blaðsíðufjöldi er 410.",
     "pages": 410,
     "publicationYear": 2026,
-    "sourceURL": "https://www.forlagid.is/vara/orlagasteinarnir/"
+    "sourceURL": "https://www.forlagid.is/vara/orlagasteinarnir/",
+    "authorIds": [
+      "ann-cleeves"
+    ]
   },
   {
     "id": 1293209,
@@ -5822,7 +7435,15 @@
     "pages": 428,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/liknarinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "viveca-sten"
+    ],
+    "series": {
+      "id": "mordin-i-are",
+      "name": "Morðin í Åre",
+      "number": 5
+    }
   },
   {
     "id": 1293211,
@@ -5838,7 +7459,10 @@
     "pages": 320,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/eftirmali/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "cecilia-ahern"
+    ]
   },
   {
     "id": 1293583,
@@ -5854,7 +7478,10 @@
     "pages": null,
     "publicationYear": 2008,
     "sourceURL": "https://www.forlagid.is/vara/punktur-punktur-komma-strik-islensk-klassik/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "petur-gunnarsson"
+    ]
   },
   {
     "id": 1293587,
@@ -5871,7 +7498,10 @@
     "pages": 617,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/hinn-aedsti-leyndardomur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "dan-brown"
+    ]
   },
   {
     "id": 1293589,
@@ -5888,7 +7518,11 @@
     "pages": 144,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/myrkravald/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "eva-bjorg-aegisdottir",
+      "jerome-loubry"
+    ]
   },
   {
     "id": 1293925,
@@ -5904,7 +7538,10 @@
     "pages": 332,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/vorflodid-i-fjollunum/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "karin-harjegard"
+    ]
   },
   {
     "id": 1293929,
@@ -5919,7 +7556,10 @@
     "pages": 256,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/thegar-heimurinn-forst/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "stefan-mani"
+    ]
   },
   {
     "id": 1294415,
@@ -5935,7 +7575,10 @@
     "pages": 333,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/thau-sem-gleymast-a-sunnudogum/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "valerie-perrin"
+    ]
   },
   {
     "id": 1294417,
@@ -5951,7 +7594,10 @@
     "pages": 317,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/algjor-perla/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jonina-leosdottir"
+    ]
   },
   {
     "id": 1294502,
@@ -5967,7 +7613,10 @@
     "pages": 391,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/allt-minnir-a-thig/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "colleen-hoover"
+    ]
   },
   {
     "id": 1294540,
@@ -5984,7 +7633,10 @@
     "pages": 452,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/hleyptu-honum-ekki-inn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lisa-jewell"
+    ]
   },
   {
     "id": 1294704,
@@ -6001,7 +7653,15 @@
     "pages": 302,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/trunadartraust/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lone-theils"
+    ],
+    "series": {
+      "id": "nora-sand",
+      "name": "Nora Sand",
+      "number": 6
+    }
   },
   {
     "id": 1294706,
@@ -6017,7 +7677,10 @@
     "pages": 347,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/litla-tehusid-i-tokyo/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "julie-caplin"
+    ]
   },
   {
     "id": 1294710,
@@ -6033,7 +7696,10 @@
     "pages": 217,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/framtidin-a-ferdinni/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorhildur-olafsdottir"
+    ]
   },
   {
     "id": 1294712,
@@ -6049,7 +7715,10 @@
     "pages": 164,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/guli-hundurinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "georges-simenon"
+    ]
   },
   {
     "id": 1294715,
@@ -6065,7 +7734,10 @@
     "pages": 183,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/sudurrikjaherforingi-fra-big-sur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "richard-brautigan"
+    ]
   },
   {
     "id": 1294746,
@@ -6081,7 +7753,10 @@
     "pages": 235,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/mordingi-vona-eg/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "antti-tuomainen"
+    ]
   },
   {
     "id": 1294811,
@@ -6097,7 +7772,10 @@
     "pages": 253,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/kona-ad-halfu/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "perumal-murugan"
+    ]
   },
   {
     "id": 1295195,
@@ -6113,7 +7791,10 @@
     "pages": 471,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/urval-smasagna/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorarinn-eldjarn"
+    ]
   },
   {
     "id": 1295203,
@@ -6130,7 +7811,10 @@
     "pages": 176,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/jekyll-konan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "emmu-glass"
+    ]
   },
   {
     "id": 1295328,
@@ -6146,7 +7830,16 @@
     "pages": 284,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/nytt-nafn-sjoleikurinn-vi-vii/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jon-fosse"
+    ],
+    "series": {
+      "id": "sjoleikurinn",
+      "name": "Sjöleikurinn",
+      "total": 3,
+      "number": 3
+    }
   },
   {
     "id": 1295350,
@@ -6162,7 +7855,10 @@
     "pages": 545,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/leyndarmal-helenu/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lucinda-riley"
+    ]
   },
   {
     "id": 1295554,
@@ -6176,7 +7872,16 @@
     "description": "Dauðakippir er skáldverk eftir Lee Child, Andrew Child. Skráð útgáfuár hjá Forlaginu er 2026. Skráður blaðsíðufjöldi er 311.",
     "pages": 311,
     "publicationYear": 2026,
-    "sourceURL": "https://www.forlagid.is/vara/daudakippir/"
+    "sourceURL": "https://www.forlagid.is/vara/daudakippir/",
+    "authorIds": [
+      "lee-child",
+      "andrew-child"
+    ],
+    "series": {
+      "id": "jack-reacher",
+      "name": "Jack Reacher",
+      "number": 26
+    }
   },
   {
     "id": 1295690,
@@ -6191,7 +7896,10 @@
     "pages": 227,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/leidin-heim/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "karitas-sigurdardottir"
+    ]
   },
   {
     "id": 1295691,
@@ -6208,7 +7916,10 @@
     "pages": 365,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/fullkomid-hjonaband/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jeneva-rose"
+    ]
   },
   {
     "id": 1295878,
@@ -6225,7 +7936,15 @@
     "pages": 384,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/husid-a-bjargbruninni-dr-ruth-galloway-3/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "elly-griffiths"
+    ],
+    "series": {
+      "id": "ruth-galloway",
+      "name": "Dr. Ruth Galloway",
+      "number": 3
+    }
   },
   {
     "id": 1295882,
@@ -6240,7 +7959,10 @@
     "pages": 110,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/hardindi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "vilhjalmur-petursson"
+    ]
   },
   {
     "id": 1295897,
@@ -6256,7 +7978,10 @@
     "pages": 275,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/thegar-vid-vorum-romverjar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "matthew-kneale"
+    ]
   },
   {
     "id": 1295899,
@@ -6274,7 +7999,10 @@
     "pages": 356,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/varhugavert-vor/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "agatha-christie"
+    ]
   },
   {
     "id": 1295901,
@@ -6290,7 +8018,10 @@
     "pages": 468,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/julia/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sandra-newman"
+    ]
   },
   {
     "id": 1295919,
@@ -6305,7 +8036,10 @@
     "pages": 136,
     "publicationYear": 2025,
     "sourceURL": "https://www.forlagid.is/vara/krimmasmasogur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ragnhildur-bragadottir"
+    ]
   },
   {
     "id": 1295921,
@@ -6321,7 +8055,10 @@
     "pages": 486,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/bilud-ast-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sigurjon-magnusson"
+    ]
   },
   {
     "id": 1295976,
@@ -6336,7 +8073,10 @@
     "pages": 173,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/samfelag-heilagra/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ritlistanemar-hi"
+    ]
   },
   {
     "id": 1296212,
@@ -6353,7 +8093,10 @@
     "pages": 312,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/draumurinn-um-italiu/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jo-thomas"
+    ]
   },
   {
     "id": 1296337,
@@ -6368,7 +8111,10 @@
     "pages": 562,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/salka-valka/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "halldor-laxness"
+    ]
   },
   {
     "id": 1296338,
@@ -6383,7 +8129,10 @@
     "pages": 657,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/sjalfstaett-folk/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "halldor-laxness"
+    ]
   },
   {
     "id": 1296766,
@@ -6399,7 +8148,15 @@
     "pages": 368,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/heimilishjalpin-ser-allt/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "freida-mcfadden"
+    ],
+    "series": {
+      "id": "heimilishjalpin",
+      "name": "Heimilishjálpin",
+      "number": 3
+    }
   },
   {
     "id": 1296768,
@@ -6415,7 +8172,15 @@
     "pages": 336,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/ein-a-haettuslod-agentarnir-1/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "christina-larsson"
+    ],
+    "series": {
+      "id": "agentarnir",
+      "name": "Agentarnir",
+      "number": 1
+    }
   },
   {
     "id": 1296770,
@@ -6430,7 +8195,10 @@
     "pages": 224,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/umrot-2/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "arelia-eydis-gudmundsdottir"
+    ]
   },
   {
     "id": 1297867,
@@ -6445,7 +8213,10 @@
     "pages": 272,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/fremst-i-flokki/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "helgi-jonsson"
+    ]
   },
   {
     "id": 1297878,
@@ -6460,7 +8231,10 @@
     "pages": 276,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/salarangist/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "steindor-ivarsson"
+    ]
   },
   {
     "id": 1297885,
@@ -6479,7 +8253,10 @@
     "pages": 428,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/bustadirnir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "johan-theorin"
+    ]
   },
   {
     "id": 1297891,
@@ -6495,7 +8272,10 @@
     "pages": 520,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/systkinaerjurnar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "moa-herngren"
+    ]
   },
   {
     "id": 1297968,
@@ -6512,7 +8292,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/hefnd-thordisar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "adda-sigurjons"
+    ]
   },
   {
     "id": 1297974,
@@ -6528,7 +8311,15 @@
     "pages": 336,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/heimilishjalpin/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "freida-mcfadden"
+    ],
+    "series": {
+      "id": "heimilishjalpin",
+      "name": "Heimilishjálpin",
+      "number": 1
+    }
   },
   {
     "id": 1297976,
@@ -6544,7 +8335,15 @@
     "pages": 320,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/heimilishjalpin-leyndarmalid/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "freida-mcfadden"
+    ],
+    "series": {
+      "id": "heimilishjalpin",
+      "name": "Heimilishjálpin",
+      "number": null
+    }
   },
   {
     "id": 1298055,
@@ -6559,7 +8358,10 @@
     "pages": 199,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/fuglamal/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "marta-maria-jonsdottir"
+    ]
   },
   {
     "id": 1298173,
@@ -6574,7 +8376,10 @@
     "pages": 154,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/sogu-rikari/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "karitas-hrundar-palsdottir"
+    ]
   },
   {
     "id": 1298174,
@@ -6591,7 +8396,10 @@
     "pages": 489,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/kvenskorungar-a-grand-hotel/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ruth-kvarnstrom-jones"
+    ]
   },
   {
     "id": 1298193,
@@ -6608,7 +8416,10 @@
     "pages": 308,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/sagan-hefst-her/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "kevin-wignall"
+    ]
   },
   {
     "id": 1298213,
@@ -6624,7 +8435,10 @@
     "pages": 312,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/hvildin/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ragnheidur-gestsdottir"
+    ]
   },
   {
     "id": 1298215,
@@ -6640,7 +8454,10 @@
     "pages": 360,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/lifid-er-of-stutt/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "abby-jimenez"
+    ]
   },
   {
     "id": 1298225,
@@ -6656,7 +8473,10 @@
     "pages": 284,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/jakaranda/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gael-faye"
+    ]
   },
   {
     "id": 1298227,
@@ -6672,7 +8492,10 @@
     "pages": 384,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/ast-a-prjonunum/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jenny-colgan"
+    ]
   },
   {
     "id": 1298301,
@@ -6687,7 +8510,10 @@
     "pages": 159,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/aumingi-mella-syndari-og-heilagur-andi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lilja-osk-snorradottir"
+    ]
   },
   {
     "id": 1298323,
@@ -6705,7 +8531,10 @@
     "pages": 404,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/ferdalag-helenu/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "viveca-sten"
+    ]
   },
   {
     "id": 1298384,
@@ -6721,7 +8550,10 @@
     "pages": 302,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/hartman-storverslunin-loford-i-ljosaskiptunum/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "helene-holmstrom"
+    ]
   },
   {
     "id": 1298386,
@@ -6737,7 +8569,10 @@
     "pages": 343,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/milli-himins-og-her/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "cassandra-brunstedt"
+    ]
   },
   {
     "id": 1298434,
@@ -6753,7 +8588,15 @@
     "pages": 392,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/jakob/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "satu-ramo"
+    ],
+    "series": {
+      "id": "hildur",
+      "name": "Hildur",
+      "number": 3
+    }
   },
   {
     "id": 1298461,
@@ -6769,7 +8612,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/mamma-mjoll-og-minningar-hennar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "teresa-de-la-parra"
+    ]
   },
   {
     "id": 1298467,
@@ -6786,7 +8632,10 @@
     "pages": 464,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/skipreka/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "beth-o-leary"
+    ]
   },
   {
     "id": 1298471,
@@ -6802,7 +8651,10 @@
     "pages": 279,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/dagur-i-juni/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "alex-schulman"
+    ]
   },
   {
     "id": 1298547,
@@ -6817,7 +8669,10 @@
     "pages": 408,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/vesen/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lara-oskarsdottir"
+    ]
   },
   {
     "id": 1298552,
@@ -6831,7 +8686,10 @@
     "description": "Paedyn flýr eftir dauða konungsins. Kai fær það hlutverk að finna hana og koma henni fyrir dóm á meðan uppreisn breiðist út.",
     "pages": 352,
     "publicationYear": 2026,
-    "sourceURL": "https://www.forlagid.is/vara/glaefraleg/"
+    "sourceURL": "https://www.forlagid.is/vara/glaefraleg/",
+    "authorIds": [
+      "lauren-roberts"
+    ]
   },
   {
     "id": 1298563,
@@ -6848,7 +8706,10 @@
     "pages": 396,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/alter-ego/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "emelie-schepp"
+    ]
   },
   {
     "id": 1298573,
@@ -6866,7 +8727,10 @@
     "pages": 420,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/eyjan-helga/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lj-ross"
+    ]
   },
   {
     "id": 1298914,
@@ -6882,7 +8746,10 @@
     "pages": 381,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/fyrsta-lygin-sigrar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ashley-elston"
+    ]
   },
   {
     "id": 1299141,
@@ -6897,7 +8764,10 @@
     "pages": 248,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/hvalamord/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "oskar-magnusson"
+    ]
   },
   {
     "id": 1299147,
@@ -6913,7 +8783,10 @@
     "pages": 345,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/thad-sem-eftir-er/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "virginie-grimaldi"
+    ]
   },
   {
     "id": 1299153,
@@ -6927,7 +8800,10 @@
     "description": "Paedyn snýr aftur úr útlegð og fær óvænt bónorð frá syni konungsins sem hún drap. Framtíð Ilyu og samviska hennar hanga saman í lokabindi sögunnar.",
     "pages": 542,
     "publicationYear": 2026,
-    "sourceURL": "https://www.forlagid.is/vara/ottalaus/"
+    "sourceURL": "https://www.forlagid.is/vara/ottalaus/",
+    "authorIds": [
+      "lauren-roberts"
+    ]
   },
   {
     "id": 1299155,
@@ -6945,7 +8821,10 @@
     "pages": 658,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/a-blathraedi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lucy-score"
+    ]
   },
   {
     "id": 1299305,
@@ -6961,7 +8840,10 @@
     "pages": 464,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/dauds-manns-kona/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "katarina-wennstam"
+    ]
   },
   {
     "id": 1299321,
@@ -6977,7 +8859,10 @@
     "pages": 350,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/tronurnar-fljuga-sudur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "lisa-ridzen"
+    ]
   },
   {
     "id": 1299383,
@@ -6993,7 +8878,10 @@
     "pages": 270,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/leidarvisir-hotelstjora-ad-mordi/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "erlendur-arason"
+    ]
   },
   {
     "id": 1299692,
@@ -7006,7 +8894,10 @@
     "description": "Leðurblökurnar Skuggi og Marína leita föður Skugga um hávetur. Þau finna skjólgóðan skóg inni í dularfullri byggingu, en þar hverfa leðurblökur sporlaust.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/solvaengur/"
+    "sourceURL": "https://www.forlagid.is/vara/solvaengur/",
+    "authorIds": [
+      "kenneth-oppel"
+    ]
   },
   {
     "id": 1299693,
@@ -7019,7 +8910,10 @@
     "description": "Unga leðurblakan Skuggi verður viðskila við nýlenduna í óveðri. Hann leggur af stað í hættulega ferð til að finna fjölskyldu sína og félaga aftur.",
     "pages": null,
     "publicationYear": null,
-    "sourceURL": "https://www.forlagid.is/vara/silfurvaengur/"
+    "sourceURL": "https://www.forlagid.is/vara/silfurvaengur/",
+    "authorIds": [
+      "kenneth-oppel"
+    ]
   },
   {
     "id": 1300246,
@@ -7034,7 +8928,10 @@
     "pages": 166,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/bokasafn-gagnslausra-hugsana/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "reynir-finndal-gretarsson"
+    ]
   },
   {
     "id": 1300349,
@@ -7050,7 +8947,15 @@
     "pages": 381,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/barnid-i-skoginum/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "hans-rosenfeldt"
+    ],
+    "series": {
+      "id": "haparanda",
+      "name": "Haparanda",
+      "number": 2
+    }
   },
   {
     "id": 1300355,
@@ -7066,7 +8971,10 @@
     "pages": 137,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/dottir-myndhoggvarans/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "tove-jansson"
+    ]
   },
   {
     "id": 1300357,
@@ -7084,7 +8992,11 @@
     "pages": 448,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/dypstu-myrkur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "bjarni-haukur-thorsson",
+      "michael-hjorth"
+    ]
   },
   {
     "id": 1300387,
@@ -7100,7 +9012,10 @@
     "pages": 233,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/dagar-longunar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "nirmal-verma"
+    ]
   },
   {
     "id": 1300389,
@@ -7118,7 +9033,15 @@
     "pages": 398,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/drengurinn-sem-haetti-ad-grata/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ninni-schulman"
+    ],
+    "series": {
+      "id": "hagfors",
+      "name": "Hagfors",
+      "number": null
+    }
   },
   {
     "id": 1300391,
@@ -7135,7 +9058,10 @@
     "pages": 344,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/dottir-dyjakongs/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "birgitta-trotzig"
+    ]
   },
   {
     "id": 1300393,
@@ -7151,7 +9077,10 @@
     "pages": 106,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/sidasta-sumar-klingsors/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "hermann-hesse"
+    ]
   },
   {
     "id": 1300395,
@@ -7168,7 +9097,10 @@
     "pages": 346,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/hefnd-charlie/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "simona-ahrnstedt"
+    ]
   },
   {
     "id": 1300446,
@@ -7183,7 +9115,10 @@
     "pages": 272,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/mariuklefinn/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "eirikur-gudmundsson"
+    ]
   },
   {
     "id": 1300448,
@@ -7198,7 +9133,10 @@
     "pages": 723,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/keflavikursogur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jon-kalman-stefansson"
+    ]
   },
   {
     "id": 1300568,
@@ -7214,7 +9152,10 @@
     "pages": 386,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/thar-sem-vindurinn-dansar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "louise-stromberg"
+    ]
   },
   {
     "id": 1300964,
@@ -7229,7 +9170,10 @@
     "pages": 174,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/varkar/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "margret-bjarnadottir"
+    ]
   },
   {
     "id": 1300966,
@@ -7242,7 +9186,10 @@
     "description": "Sigrún vill breyta sér til að falla í kramið hjá nýrri vinkonu. Vinátta, fjölskyldan og óöryggi unglingsáranna reynast flóknari en hún bjóst við.",
     "pages": 185,
     "publicationYear": 2026,
-    "sourceURL": "https://www.forlagid.is/vara/allt-i-rugli/"
+    "sourceURL": "https://www.forlagid.is/vara/allt-i-rugli/",
+    "authorIds": [
+      "yrsa-tholl-gylfadottir"
+    ]
   },
   {
     "id": 1301097,
@@ -7257,7 +9204,10 @@
     "pages": 314,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/traustabrestir/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "sigurros-jona-oddsdottir"
+    ]
   },
   {
     "id": 1301107,
@@ -7270,7 +9220,10 @@
     "description": "Óþekktur drengur finnst yfirgefinn á jólanótt og fær heimili hjá Maríu og Jósep. Óvenjulegir eiginleikar hans vekja spurningar hjá þeim sem kynnast honum.",
     "pages": 112,
     "publicationYear": 2026,
-    "sourceURL": "https://www.forlagid.is/vara/litli-kristur/"
+    "sourceURL": "https://www.forlagid.is/vara/litli-kristur/",
+    "authorIds": [
+      "thorgrimur-thrainsson"
+    ]
   },
   {
     "id": 1301109,
@@ -7285,7 +9238,10 @@
     "pages": 233,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/eg-kom-til-ad-grata/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "thorgrimur-thrainsson"
+    ]
   },
   {
     "id": 1301120,
@@ -7300,7 +9256,10 @@
     "pages": 272,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/okunnugt-folk/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "bjorn-halldorsson"
+    ]
   },
   {
     "id": 1301123,
@@ -7315,7 +9274,10 @@
     "pages": 190,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/birkilundur-ibudir-fyrir-60/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "margret-sigridur-solvadottir"
+    ]
   },
   {
     "id": 1301129,
@@ -7330,7 +9292,10 @@
     "pages": 203,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/uti-hvislar-golan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "larus-jon-gudmundsson"
+    ]
   },
   {
     "id": 1301248,
@@ -7346,7 +9311,10 @@
     "pages": 370,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/skuggarikid/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "faber-og-pedersen"
+    ]
   },
   {
     "id": 1301257,
@@ -7362,7 +9330,10 @@
     "pages": 436,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/hallo-min-fagra/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "ann-napolitano"
+    ]
   },
   {
     "id": 1301336,
@@ -7378,7 +9349,10 @@
     "pages": 227,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/veisla-thrju/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "steinunn-sigurdardottir"
+    ]
   },
   {
     "id": 1301360,
@@ -7394,7 +9368,16 @@
     "pages": 256,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/eitur-i-augum/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "nanna-rognvaldardottir"
+    ],
+    "series": {
+      "id": "bergthora-i-hvommum",
+      "name": "Bergþóra í Hvömmum",
+      "total": 3,
+      "number": 3
+    }
   },
   {
     "id": 1301590,
@@ -7409,7 +9392,10 @@
     "pages": 258,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/daudinn-er-bara-myrkur/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "jon-atli-jonasson"
+    ]
   },
   {
     "id": 1301654,
@@ -7425,7 +9411,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/kapphlaup-vid-lifid/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gudjon-hafsteinn-bernhardsson"
+    ]
   },
   {
     "id": 1301800,
@@ -7440,7 +9429,10 @@
     "pages": 200,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/husid-hlyskeid/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "hjalmar-sveinsson"
+    ]
   },
   {
     "id": 1301802,
@@ -7455,7 +9447,10 @@
     "pages": 174,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/mikado/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "gerdur-kristny"
+    ]
   },
   {
     "id": 1301999,
@@ -7471,7 +9466,10 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/yesteryear-thar-sem-fortidin-maetir-raunveruleikanum/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "caro-claire-burke"
+    ]
   },
   {
     "id": 1302399,
@@ -7484,7 +9482,10 @@
     "description": "Allý er send í sveit eftir fyrsta menntaskólaárið. Erfið samskipti heima og nýjar tilfinningar til Dags gera sumarið ólíkt því sem hún hafði ætlað.",
     "pages": 228,
     "publicationYear": 2026,
-    "sourceURL": "https://www.forlagid.is/vara/sumarstormur/"
+    "sourceURL": "https://www.forlagid.is/vara/sumarstormur/",
+    "authorIds": [
+      "steinunn-silja-elvarsdottir"
+    ]
   },
   {
     "id": 1302640,
@@ -7497,7 +9498,10 @@
     "description": "Bergdís kynnist Hrafni á nýársnótt og ástin leiðir hana að leyndarmálum á mörkum mannheima og álfheima.",
     "pages": 256,
     "publicationYear": 2026,
-    "sourceURL": "https://www.forlagid.is/vara/glottir-tungl/"
+    "sourceURL": "https://www.forlagid.is/vara/glottir-tungl/",
+    "authorIds": [
+      "sigridur-dua-goldsworthy"
+    ]
   },
   {
     "id": 1302641,
@@ -7516,7 +9520,10 @@
     "pages": 466,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/haskalegt-haust/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "agatha-christie"
+    ]
   },
   {
     "id": 1302717,
@@ -7532,7 +9539,10 @@
     "pages": 210,
     "publicationYear": 2026,
     "sourceURL": "https://www.forlagid.is/vara/daudinn-og-eyjan/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "guillaume-musso"
+    ]
   },
   {
     "id": 1302812,
@@ -7548,6 +9558,9 @@
     "pages": null,
     "publicationYear": null,
     "sourceURL": "https://www.forlagid.is/vara/velstjorinn-fra-aberdeen/",
-    "language": "is"
+    "language": "is",
+    "authorIds": [
+      "asgeir-hvitaskald"
+    ]
   }
 ]

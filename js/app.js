@@ -153,6 +153,8 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                     cover: String(book.cover || '').trim(),
                     pages: Number.isFinite(Number(book.pages)) && Number(book.pages) > 0 ? Number(book.pages) : '',
                     publicationYear: Number.isInteger(book.publicationYear) ? book.publicationYear : null,
+                    series: book.series || null,
+                    authorIds: Array.isArray(book.authorIds) ? book.authorIds : [],
                     sourceURL: typeof book.sourceURL === 'string' ? book.sourceURL : '',
                     searchText: (String(book.title || '') + '\n' + String(book.author || '')).normalize('NFC').toLocaleLowerCase('is')
                 })).filter(book => book.title);
@@ -238,7 +240,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             if (signature !== bookFilterSignature) renderedBookLimit = BOOK_BATCH_SIZE;
             bookFilterSignature = signature;
             filteredBooks = allBooks.filter(b => {
-                const search = (b.searchText || (b.title + '\n' + b.author).normalize('NFC').toLocaleLowerCase('is')).includes(searchQuery);
+                const search = typeof catalogMatchesSearch === 'function' ? catalogMatchesSearch(b, searchQuery) : (b.searchText || (b.title + '\n' + b.author).normalize('NFC').toLocaleLowerCase('is')).includes(searchQuery);
                 
                 if (activeCategories.length === 0) {
                     return search;
@@ -945,40 +947,26 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
 
         // Fínstillt og vélbúnaðar-hröðuð síðuskipti (Perfect Crossfade)
         function showPage(p) {
-            const libPage = document.getElementById('library-page');
-            const statsPage = document.getElementById('stats-page');
-            const targetPage = p === 'library' ? libPage : statsPage;
-            const currentActivePage = p === 'library' ? statsPage : libPage;
-
-            if (!targetPage || !currentActivePage) return;
-            if (targetPage.classList.contains('active') && !targetPage.classList.contains('hidden')) return;
-
-            // Dofna virku síðuna mjúklega út
-            currentActivePage.classList.remove('active');
-            
-            setTimeout(() => {
-                currentActivePage.classList.add('hidden');
-                targetPage.classList.remove('hidden');
-                
-                // Endurkalla flæði á skjánum (Force reflow)
-                targetPage.offsetHeight;
-                
-                // Birta nýju síðuna mjúklega inn með risi
-                targetPage.classList.add('active');
-            }, 180); // Skilar fullkomlega smurðum og liprum hreyfingum
-
-            const libBtn = document.getElementById('nav-library'); 
-            const statBtn = document.getElementById('nav-stats');
-            
-            if (libBtn) {
-                libBtn.className = p === 'library' 
-                    ? "px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap" 
-                    : "px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap";
+            const pages = ['library', 'stats', 'browse'];
+            if (!pages.includes(p)) return;
+            if (p !== 'browse' && typeof location !== 'undefined' && typeof routeChange !== 'undefined' && !routeChange) {
+                const url = new URL(location.href);
+                if (['series','author','browse'].some(key => url.searchParams.has(key))) {
+                    for (const key of ['series','author','browse']) url.searchParams.delete(key);
+                    history.pushState(null, '', url);
+                }
             }
-            if (statBtn) {
-                statBtn.className = p === 'stats' 
-                    ? "px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap" 
-                    : "px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap";
+            for (const name of pages) {
+                const page = document.getElementById(name + '-page');
+                page?.classList.toggle('hidden', name !== p);
+                page?.classList.toggle('active', name === p);
+            }
+            for (const name of ['library','stats','series','authors']) {
+                const button = document.getElementById('nav-' + name);
+                if (!button) continue;
+                const selected = p === name || p === 'browse' && typeof browseState !== 'undefined' && (name === 'series' && browseState.kind === 'series' || name === 'authors' && browseState.kind === 'author');
+                button.setAttribute('aria-current', selected ? 'page' : 'false');
+                if (name === 'library' || name === 'stats') button.className = selected ? 'px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap' : 'px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap';
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -997,6 +985,10 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 return; 
             }
             
+            if (typeof renderBrowseSuggestions === 'function' && window.browseReady) {
+                renderBrowseSuggestions(sBox, searchQuery);
+                return;
+            }
             let matchT = allBooks.filter(b => (b.searchText || (b.title + '\n' + b.author).normalize('NFC').toLocaleLowerCase('is')).includes(searchQuery)).slice(0,5);
             if (matchT.length) {
                 sBox.innerHTML = matchT.map(b => `<li role="button" tabindex="0" onclick="selectSug(${b.id})" class="px-6 py-4 hover:bg-indigo-50 cursor-pointer text-sm font-bold border-b border-slate-50 flex items-center gap-4"><i aria-hidden="true" class="fas fa-book text-indigo-400"></i> ${escapeHTML(b.title)}</li>`).join('');

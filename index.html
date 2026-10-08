@@ -52,6 +52,7 @@
 
 
 <link rel="stylesheet" href="css/features.css">
+<link rel="stylesheet" href="css/browse.css?v=series-20261008">
 </head>
 <body class="pb-24 relative">
 
@@ -75,14 +76,16 @@
                 <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none z-10">
                     <i aria-hidden="true" class="fas fa-search text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
                 </div>
-                <input type="text" id="book-search" aria-label="Leita eftir bókartitli eða höfundi" aria-controls="search-suggestions" oninput="handleSearch()" onfocus="handleSearch()"
+                <input type="text" id="book-search" aria-label="Leita eftir bókartitli, höfundi eða bókaflokki" aria-controls="search-suggestions" oninput="handleSearch()" onfocus="handleSearch()"
                     placeholder="Leita..." 
                     class="w-full pl-12 pr-6 py-4 bg-slate-100/80 border-2 border-transparent rounded-[2rem] focus:ring-0 focus:bg-white focus:border-indigo-400 transition-all outline-none text-sm font-semibold shadow-inner">
                 <ul id="search-suggestions" class="absolute left-0 right-0 top-full mt-3 bg-white/90 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-slate-100 hidden max-h-64 overflow-y-auto overflow-hidden z-50"></ul>
             </div>
 
-            <div class="flex gap-1 md:gap-2 items-center bg-slate-200/50 p-1.5 rounded-[1.8rem]">
+            <div class="browse-nav flex gap-1 md:gap-2 items-center bg-slate-200/50 p-1.5 rounded-[1.8rem]">
                 <button onclick="showPage('library')" id="nav-library" class="px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap">Bækur</button>
+                <button type="button" id="nav-series" class="px-4 py-2 rounded-xl font-bold" onclick="openBrowse('series')">Bókaflokkar</button>
+                <button type="button" id="nav-authors" class="px-4 py-2 rounded-xl font-bold" onclick="openBrowse('author')">Höfundar</button>
                 <button onclick="showPage('stats')" id="nav-stats" class="px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap">Lesturinn minn</button>
 
 <button
@@ -394,12 +397,14 @@
     <script src="js/persistence.js?v=audit-20261008"></script>
     <script src="js/accessibility.js"></script>
     <script src="js/insights.js?v=audit-20261008"></script>
-    <script src="js/app.js?v=audit-20261008"></script>
+    <script src="js/browse-metadata.js?v=series-20261008"></script>
+    <script src="js/app.js?v=series-20261008"></script>
 
 <script src="js/themes.js"></script>
 <script src="js/sorting.js?v=audit-20261008"></script>
 <script src="js/backups.js?v=audit-20261008"></script>
-<script src="js/features.js?v=audit-20261008"></script>
+<script src="js/features.js?v=series-20261008"></script>
+<script src="js/browse.js?v=series-20261008"></script>
 
 
 <div id="appearance-panel" class="hidden">

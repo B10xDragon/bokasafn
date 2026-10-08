@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-08",
+  "branch": "Beta",
+  "baseCommit": "5772a46e6cbdedf2349d52364495d7ecaaed9932",
+  "counts": {
+    "books": 493,
+    "series": 59,
+    "assignedBooks": 94,
+    "uniqueAuthors": 348,
+    "multiBookSeries": 25,
+    "uncertainBooks": 59
+  },
+  "uncertainty": {
+    "unassigned": 49,
+    "verifiedMembershipUnknownOrdinal": 10
+  },
+  "preservation": {
+    "all493OriginalBookRecordsAndIDsUnchangedExceptAdditiveMetadata": true,
+    "storageVersion": 15,
+    "JSONAndBOKASAFNBackupsCompatible": true
+  },
+  "catalogValidation": {
+    "errors": [],
+    "warnings": []
+  },
+  "browsingValidation": {
+    "books": 493,
+    "series": 59,
+    "assignedBooks": 94,
+    "uniqueAuthors": 348,
+    "multiBookSeries": 25,
+    "uncertainBooks": 59,
+    "errors": [],
+    "warnings": [
+      "1083640: verified membership; ordering remains unknown",
+      "1099762: verified membership; ordering remains unknown",
+      "1101046: verified membership; ordering remains unknown",
+      "1238865: verified membership; ordering remains unknown",
+      "1257096: verified membership; ordering remains unknown",
+      "1264096: verified membership; ordering remains unknown",
+      "1292346: verified membership; ordering remains unknown",
+      "1292347: verified membership; ordering remains unknown",
+      "1297976: verified membership; ordering remains unknown",
+      "1300389: verified membership; ordering remains unknown"
+    ]
+  },
+  "tests": {
+    "regression": {
+      "checks": 51,
+      "timezones": [
+        "UTC",
+        "Atlantic/Reykjavik",
+        "America/New_York"
+      ],
+      "result": "passed"
+    },
+    "catalogTools": {
+      "checks": 20,
+      "result": "passed"
+    },
+    "browsingUnit": {
+      "checks": 10,
+      "result": "passed"
+    },
+    "browsingValidator": {
+      "checks": 7,
+      "result": "passed"
+    },
+    "browserSuites": {
+      "browser.py": {
+        "groups": 9,
+        "result": "passed"
+      },
+      "live_browser.py": {
+        "groups": 11,
+        "result": "passed"
+      },
+      "features_browser.py": {
+        "groups": 8,
+        "result": "passed"
+      },
+      "backups_browser.py": {
+        "groups": 9,
+        "result": "passed"
+      },
+      "clipboard_browser.py": {
+        "groups": 11,
+        "result": "passed"
+      },
+      "catalog_browser.py": {
+        "groups": 6,
+        "result": "passed"
+      },
+      "cleanup_browser.py": {
+        "groups": 3,
+        "result": "passed"
+      },
+      "browse_browser.py": {
+        "groups": 7,
+        "result": "passed"
+      }
+    },
+    "browserGroupsPassed": 64,
+    "uncaughtBrowserErrors": []
+  },
+  "performance": {
+    "indexAndSearchMs": 62.09999999962747,
+    "tiles": 36,
+    "indexSearchIterations": 20,
+    "catalogBytes": 310688,
+    "runtimeIncludesNoAuditJSON": true
+  },
+  "browser": "Chromium 151.0.7922.173",
+  "viewportWidths": [
+    320,
+    390,
+    768,
+    1440,
+    1920
+  ],
+  "themes": [
+    "light",
+    "dark",
+    "green",
+    "purple",
+    "orange"
+  ],
+  "limits": [
+    "Publisher metadata does not establish series names or order for all books; see series-audit.json.",
+    "Series totals do not imply library completeness; progress counts available books only."
+  ]
+}
