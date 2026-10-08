@@ -1,0 +1,60 @@
+{
+  "format": "bokasafn-backup",
+  "backupVersion": 2,
+  "exportedAt": "2026-10-06T12:00:00.000Z",
+  "timezone": "Atlantic/Reykjavik",
+  "data": {
+    "version": 15,
+    "liked": [
+      2,
+      32
+    ],
+    "read": [
+      1,
+      21,
+      39
+    ],
+    "reviews": {
+      "21": {
+        "rating": 5,
+        "comment": "Gömul umsögn – Þ æ ö 😀",
+        "date": "6.10.2026"
+      }
+    },
+    "totalSeconds": 900,
+    "dailyProgress": {},
+    "minutesGoal": 0,
+    "goalType": "daily",
+    "personalGoals": [
+      {
+        "id": 1,
+        "text": "Lesa íslenskar bækur „2026“",
+        "completed": false
+      }
+    ],
+    "unresolved": {
+      "liked": [],
+      "read": [],
+      "reviews": {}
+    },
+    "session": null,
+    "completedDates": {},
+    "sessions": [],
+    "achievements": {
+      "first": "2026-10-07",
+      "100-pages": "2026-10-07",
+      "five-genres": "2026-10-07"
+    },
+    "challenges": []
+  },
+  "preferences": {
+    "theme": "system"
+  },
+  "storage": {
+    "local": {
+      "library_v14": "{\"read\":[\"Mýrin\"],\"liked\":[\"Hobbitinn\"],\"reviews\":{\"Mýrin\":{\"rating\":5,\"comment\":\"Gömul umsögn – Þ æ ö 😀\",\"date\":\"6.10.2026\"}}}",
+      "library_v15": "{\"version\":15,\"liked\":[2,32],\"read\":[1,21,39],\"reviews\":{\"21\":{\"rating\":5,\"comment\":\"Gömul umsögn – Þ æ ö 😀\",\"date\":\"6.10.2026\"}},\"totalSeconds\":900,\"dailyProgress\":{},\"minutesGoal\":0,\"goalType\":\"daily\",\"personalGoals\":[{\"id\":1,\"text\":\"Lesa íslenskar bækur „2026“\",\"completed\":false}],\"unresolved\":{\"liked\":[],\"read\":[],\"reviews\":{}},\"session\":null,\"completedDates\":{},\"sessions\":[],\"achievements\":{\"first\":\"2026-10-07\",\"100-pages\":\"2026-10-07\",\"five-genres\":\"2026-10-07\"},\"challenges\":[]}"
+    },
+    "session": {}
+  }
+}

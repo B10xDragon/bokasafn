@@ -1,0 +1,3 @@
+# Collection/conversion only; the deployed website has no Python dependencies.
+beautifulsoup4>=4.12,<5
+Pillow>=10,<13
