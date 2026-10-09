@@ -206,7 +206,7 @@ function confirmDeleteAllData() {
     .forEach((node) => (node.value = ""));
   document.getElementById("challenge-target").value = "3";
   document
-    .querySelectorAll("#reading-insights details, #advanced-filters")
+    .querySelectorAll("#reading-insights details, #advanced-filters, #recommendations-panel")
     .forEach((node) => (node.open = false));
   resetAdvancedFilters();
   document.getElementById("book-sort").value = "default";

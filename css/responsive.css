@@ -1,0 +1,135 @@
+/* Shared layouts depend on available space, never device/user-agent detection. */
+body { overflow-x: visible; }
+#site-main { width:100%; max-width:100rem; padding:clamp(.75rem,2vw,1.5rem); }
+.site-nav .nav-shell { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); max-width:100rem; padding:.6rem .75rem; gap:.5rem; align-items:center; }
+.site-nav .nav-brand { min-width:0; gap:.5rem; }
+.nav-brand h1 { font-size:1rem; overflow-wrap:anywhere; }
+.nav-brand p { display:none; }
+.nav-brand .nav-logo { width:28px; height:32px; border-radius:.6rem; flex:none; box-shadow:none; }
+.nav-logo i { font-size:1rem; }
+#search-container { min-width:0; max-width:none; }
+#book-search { min-height:44px; padding:.65rem .5rem .65rem 2rem; font-size:1rem; border-radius:1rem; }
+#search-container > div { padding-left:.65rem; }
+#search-suggestions { border-radius:1rem; max-height:min(20rem,50dvh); overflow-wrap:anywhere; }
+.site-nav .browse-nav { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); width:100%; min-width:0; padding:.2rem; gap:.15rem; border-radius:1rem; }
+.site-nav .browse-nav button { min-width:0; min-height:44px; padding:.35rem .15rem; font-size:.8rem; line-height:1.25; white-space:normal; overflow-wrap:anywhere; border-radius:.75rem; }
+#nav-appearance i { display:none; }
+#nav-stats { grid-column:span 2; }
+@media(min-width:430px) { .site-nav .browse-nav { grid-template-columns:repeat(5,minmax(0,1fr)); } #nav-stats { grid-column:auto; } }
+.library-tools { margin-bottom:1rem; }
+.library-tools > * + * { margin-top:1rem !important; }
+#timer-widget { flex-direction:row; gap:1rem; padding:.8rem 1rem; border-radius:1.5rem; max-width:26rem; }
+#timer-widget > div:first-child { min-width:0; }
+#timer-widget > div:last-child { gap:.5rem; }
+#main-timer-display { font-size:clamp(1.6rem,5vw,2.5rem); }
+#timer-status-label { font-size:.6rem; letter-spacing:.1em; }
+#timer-widget button { width:44px; height:44px; border-radius:1rem; flex:none; }
+#category-filters { gap:.4rem; }
+#category-filters button { min-height:36px; padding:.4rem .65rem; font-size:.72rem; }
+#book-grid { grid-template-columns:repeat(auto-fill,minmax(min(100%,140px),1fr)); gap:clamp(.75rem,1.4vw,1.25rem); align-items:start; }
+.book-card { min-width:0; overflow-wrap:anywhere; }
+.book-card h3 { font-size:.84rem; line-height:1.4; text-transform:none; letter-spacing:normal; display:block; -webkit-line-clamp:unset; }
+.book-card p { font-size:.72rem; line-height:1.4; letter-spacing:normal; text-transform:none; }
+.book-card .book-img-container { border-radius:.9rem; aspect-ratio:2/3; }
+.book-card img { object-fit:contain; }
+.book-card [data-action="read"],.book-card [data-action="like"] { width:44px; height:44px; }
+.book-card > div:first-child { right:.35rem; top:.35rem; gap:.35rem; }
+.feature-panel { padding:clamp(.85rem,2vw,1.5rem); margin:1rem 0; border-radius:1.2rem; }
+.compact-disclosure { padding:0; }
+.compact-disclosure > summary { padding:.7rem 1rem; min-height:48px; font-size:.9rem; }
+.compact-disclosure > :not(summary) { margin-left:1rem; margin-right:1rem; }
+#recommendations-panel > summary { display:flex; align-items:center; gap:.5rem; list-style:none; }
+#recommendations-panel > summary::-webkit-details-marker { display:none; }
+#recommendations-panel > summary > span:first-child { min-width:0; flex:1; overflow-wrap:anywhere; }
+#recommendations-panel summary i { color:var(--theme-accent) !important; margin-right:.35rem; }
+#recommendations-count { color:var(--theme-muted); white-space:nowrap; font-size:.72rem; }
+.disclosure-indicator { width:.55rem; height:.55rem; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); margin:.2rem; flex:none; }
+[open] > summary .disclosure-indicator { transform:rotate(225deg); }
+#recommendations-content { padding-bottom:.35rem; }
+#recommendations-content .feature-heading { gap:.5rem; }
+#recommendations-content .feature-note { flex:1 1 20rem; }
+#personal-recommendations { grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:.65rem; }
+body[data-theme] #personal-recommendations .feature-recommendation { display:flex; align-items:flex-start; gap:.75rem; padding:.75rem; min-height:0; background:var(--theme-surface-soft,var(--theme-bg)) !important; color:var(--theme-text) !important; border:1px solid var(--theme-border); border-color:var(--theme-border) !important; border-radius:.85rem; box-shadow:none !important; text-align:left; }
+.feature-recommendation img { width:48px; height:72px; flex:none; object-fit:contain; border-radius:.25rem; }
+.feature-recommendation .recommendation-copy { min-width:0; }
+.feature-recommendation strong { font-size:.9rem; line-height:1.4; }
+.feature-recommendation span,.feature-recommendation small { font-size:.8rem; line-height:1.45; }
+body[data-theme] #personal-recommendations .feature-recommendation:hover { border-color:var(--theme-accent) !important; }
+.feature-recommendation:focus-visible { outline:3px solid var(--theme-accent); outline-offset:3px; }
+.browse-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); }
+.browse-book .feature-button { min-height:44px; padding:.6rem; }
+.browse-book { gap:.75rem; }
+.feature-fields select,.feature-fields input,.feature-fields textarea { font-size:1rem; }
+.feature-panel :is(h2,h3,p),#stats-page :is(h2,h3,p) { overflow-wrap:anywhere; }
+#stats-page > div { gap:1.5rem; }
+#stats-page > div > * + * { margin-top:1.5rem !important; }
+.stats-metrics { gap:.75rem; }
+.stats-metrics > div { padding:1rem; border-radius:1.25rem; }
+.stats-metrics h3 { font-size:clamp(1.6rem,3vw,2.5rem); }
+#stats-page .glass-card { padding:clamp(1rem,3vw,2rem); border-radius:1.5rem; }
+#stats-page .grid { min-width:0; }
+#stats-page .grid > * { min-width:0; }
+#streak-banner { padding:1.25rem; gap:1rem; flex-wrap:wrap; border-radius:1.5rem; }
+#streak-banner > div:first-of-type { pointer-events:none; }
+.feature-bar { grid-template-columns:minmax(3.8rem,auto) minmax(0,1fr) minmax(3.5rem,auto); }
+/* Fixed overlays use dynamic/visual viewport bounds, with scrolling inside. */
+#desc-modal,#recommend-modal,#stop-confirm-modal,#feature-modal { padding:.75rem; height:100vh; height:var(--dialog-viewport-height,100dvh); top:var(--dialog-viewport-top,0); bottom:auto; overflow:hidden; }
+#desc-modal-content,#recommend-modal-content,#stop-confirm-modal-content,#feature-modal-content { min-width:0; width:100%; max-height:calc(100vh - 1.5rem); max-height:calc(var(--dialog-viewport-height,100dvh) - 1.5rem); overflow:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; padding:clamp(1rem,3vw,2rem); border-radius:1.5rem; overflow-wrap:anywhere; scroll-padding-block:1rem; }
+#desc-modal-content { max-width:52rem; padding-top:3.5rem; }
+#modal-inner-content .book-detail-cover { width:112px; max-width:40%; }
+#modal-stars { flex-wrap:wrap; gap:.25rem; }
+#modal-stars button { width:44px; height:44px; }
+#modal-inner-content .p-6 { padding:1rem; }
+#modal-inner-content textarea { font-size:1rem; }
+#modal-inner-content > div { gap:1rem; }
+#stop-confirm-modal-content { max-width:28rem; }
+#recommend-modal-content { max-width:34rem; }
+#feature-modal-content { max-width:42rem; margin:0; }
+#feature-dialog-body :is(input,textarea,select),#rec-ideas,#rec-names { font-size:1rem; }
+#feature-dialog-body textarea { overflow-wrap:anywhere; word-break:break-all; }
+#feature-modal-content .feature-heading { align-items:flex-start; }
+#feature-modal-content .feature-heading h2 { flex:1; min-width:0; }
+body[data-theme] #appearance-panel { max-width:calc(100vw - 1.5rem) !important; max-height:calc(var(--dialog-viewport-height,100dvh) - 1.5rem); overflow:auto; }
+#appearance-panel .theme-option { min-height:44px; }
+@media(min-width:600px) {
+ .nav-brand h1 { font-size:1.3rem; }
+ .nav-brand .nav-logo { width:36px; height:36px; }
+ .nav-brand p { display:block; font-size:.55rem; }
+ .site-nav .nav-shell { padding:.75rem 1.25rem; gap:.65rem 1rem; }
+ .site-nav .browse-nav { display:flex; justify-content:center; flex-wrap:nowrap; }
+ .site-nav .browse-nav button { padding:.5rem .9rem; font-size:.85rem; }
+ #nav-appearance i { display:inline; }
+ #modal-inner-content .book-detail-cover { width:160px; }
+}
+@media(min-width:1180px) {
+ .site-nav .nav-shell { grid-template-columns:auto minmax(220px,1fr) auto; }
+ .site-nav .browse-nav { grid-column:auto; width:auto; }
+}
+@media(max-height:500px) and (orientation:landscape) { .site-nav { position:relative; } }
+@media(hover:none),(pointer:coarse),(any-pointer:coarse) { .book-card > div:first-child { opacity:1; transform:none; } .book-card:hover { transform:none; } }
+@media(prefers-reduced-motion:reduce) {
+ html { scroll-behavior:auto !important; }
+ *,*::before,*::after { animation:none !important; transition:none !important; }
+}
+#desc-modal-content > button,#recommend-modal-content > button { min-width:44px; min-height:44px; }
+#personal-goals-list button { min-width:44px; min-height:44px; }
+@media(max-width:767px) {
+ #modal-inner-content .book-detail-cover { width:100%; max-width:none; display:flex; align-items:flex-start; gap:1rem; }
+ #modal-inner-content .book-detail-cover > div:first-child { width:88px; flex:0 0 88px; }
+ #modal-inner-content .book-detail-cover > div:last-child { margin-top:0; justify-content:flex-start; min-width:0; flex:1; }
+}
+/* Small author labels need a readable foreground in every theme. */
+body[data-theme] #book-grid .book-card p { color:var(--theme-muted) !important; }
+/* Keep theme hues, with darker control surfaces for readable white labels. */
+body { --theme-control-bg:#4f46e5; }
+body[data-theme="purple"] { --theme-control-bg:#9333ea; }
+body[data-theme="green"] { --theme-control-bg:#15803d; }
+body[data-theme="orange"] { --theme-control-bg:#c2410c; }
+body[data-theme] .feature-button:not(.secondary):not(.destructive),
+body[data-theme] #category-filters button[aria-pressed="true"],
+body[data-theme] #timer-primary-btn,body[data-theme] #save-review-btn,
+body[data-theme] button[onclick="addPersonalGoal()"],
+body[data-theme] button[onclick="openRecommendModal()"] {
+ background:var(--theme-control-bg) !important; color:#fff !important;
+}
+body[data-theme] .browse-nav button[aria-current="page"] { color:var(--theme-text) !important; }

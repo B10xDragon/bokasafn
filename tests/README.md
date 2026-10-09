@@ -164,3 +164,24 @@ held unsuitable additions, cover evidence, cleaned book dialogs, historical
 edition aliases, conflict preservation, old-title imports and mobile notes.
 See [SERIES_COMPLETION.md](../SERIES_COMPLETION.md) and its machine-readable test
 report for the latest full-run results.
+
+Responsive UI checks:
+
+```sh
+python tests/responsive_browser.py
+python -m playwright install firefox webkit
+python -m playwright install-deps firefox webkit
+python tests/cross_engine_browser.py
+```
+
+The six responsive groups render all 17 requested widths and 12 intermediate
+widths, all five themes, touch/keyboard disclosures, dialogs, simulated keyboard
+viewport geometry, long titles/backups, contrast and 200% text scaling. They
+write actual screenshots and measurements to the temporary verification artifact
+folder. Cross-engine tests add four groups using Firefox and Linux WebKit;
+`--engines firefox` or `--engines webkit` runs one installed engine explicitly.
+Missing engines/dependencies fail rather than silently claiming coverage.
+Run both alongside all nine existing browser suites and the existing Node/tool
+checks. Keep the catalog performance benchmark isolated from parallel browsers.
+See [RESPONSIVE_DESIGN.md](../RESPONSIVE_DESIGN.md) for implementation details,
+verified coverage, screenshots and physical-device limitations.

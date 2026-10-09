@@ -337,13 +337,7 @@ function renderInsights() {
           `<article class="feature-achievement"><h3>${escapeHTML(c.title)}</h3><p>${c.completed ? "Lokið " + c.completed : c.end && c.end < today ? "Tímabili lokið" : "Í gangi"} · ${Math.min(challengeProgress(c), c.target)} / ${c.target}</p><p>Frá ${c.start}${c.end ? " til " + c.end : ""}</p><progress aria-label="${escapeHTML(c.title)}" max="${c.target}" value="${Math.min(challengeProgress(c), c.target)}"></progress><button type="button" class="feature-button secondary" data-id="${escapeHTML(c.id)}" onclick="removeChallenge(this.dataset.id)" aria-label="Eyða áskorun: ${escapeHTML(c.title)}">Eyða</button></article>`,
       )
       .join("") || "<p>Veldu áskorun til að byrja.</p>";
-  document.getElementById("personal-recommendations").innerHTML =
-    recommendations()
-      .map(
-        ({ book: b, reason }) =>
-          `<button type="button" class="feature-recommendation" onclick="openBookInfo(${b.id})"><strong>${escapeHTML(b.title)}</strong><span>${escapeHTML(b.author)}</span><small>${reason}</small></button>`,
-      )
-      .join("") || "<p>Þú hefur lokið við allar bækur safnsins.</p>";
+  renderPersonalRecommendations();
   const monthly = {},
     weekly = {};
   for (const [d, s] of Object.entries(userData.dailyProgress)) {
@@ -424,19 +418,35 @@ function applyBookRoute() {
   }
   routeChange = false;
 }
+// Native disclosure retains its state across ordinary page/route navigation.
+// No reading-data or backup preference schema is changed.
+function renderPersonalRecommendations() {
+  const disclosure = document.getElementById("recommendations-panel");
+  if (!disclosure) return;
+  const items = recommendations();
+  document.getElementById("recommendations-count").textContent = `${items.length} tillögur`;
+  disclosure.querySelector("summary").setAttribute("aria-expanded", String(disclosure.open));
+  const grid = document.getElementById("personal-recommendations");
+  if (!disclosure.open) { grid.replaceChildren(); return; }
+  grid.innerHTML = items.map(({book: b, reason}) =>
+    `<button type="button" class="feature-recommendation" onclick="openBookInfo(${b.id})" aria-label="Upplýsingar um ${escapeHTML(b.title)}"><img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="" width="48" height="72" loading="lazy" decoding="async" onerror="handleCoverError(this)"><span class="recommendation-copy"><strong>${escapeHTML(b.title)}</strong><span>${escapeHTML(b.author)}</span><small>${escapeHTML(reason)}</small></span></button>`
+  ).join("") || "<p>Þú hefur lokið við allar bækur safnsins.</p>";
+}
 function installFeatures() {
   if (!appReady) {
     setTimeout(installFeatures, 50);
     return;
   }
   const library = document.getElementById("library-page");
-  const block = document.createElement("section");
-  block.className = "feature-panel";
-  block.innerHTML = `<div class="feature-heading"><h2>Mælt með fyrir þig</h2>${featureButton("Hvað á ég að lesa?", "openRandomPicker()")}</div><p class="feature-note">Tillögur byggja á þínum einkunnum, höfundum, flokkum og óskalista. Bækur með 1–2 stjörnur eru útilokaðar.</p><div id="personal-recommendations" class="feature-grid"></div>`;
+  const block = document.createElement("details");
+  block.id = "recommendations-panel";
+  block.className = "feature-panel compact-disclosure";
+  block.innerHTML = `<summary aria-expanded="false" aria-controls="recommendations-content"><span><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> Mælt með fyrir þig</span><small id="recommendations-count"></small><span class="disclosure-indicator" aria-hidden="true"></span></summary><div id="recommendations-content"><div class="feature-heading"><p class="feature-note">Tillögur byggja á þínum einkunnum, höfundum, flokkum og óskalista. Bækur með 1–2 stjörnur eru útilokaðar.</p>${featureButton("Hvað á ég að lesa?", "openRandomPicker()")}</div><div id="personal-recommendations" class="feature-grid"></div></div>`;
+  block.addEventListener("toggle", renderPersonalRecommendations);
   library.insertBefore(block, document.getElementById("book-grid"));
   const filters = document.createElement("details");
   filters.id = "advanced-filters";
-  filters.className = "feature-panel";
+  filters.className = "feature-panel compact-disclosure";
   filters.innerHTML = `<summary>Ítarlegar síur</summary>${filterFields("filter")}${featureButton("Hreinsa ítarlegar síur", "resetAdvancedFilters()")}`;
   block.before(filters);
   const stats = document.createElement("section");

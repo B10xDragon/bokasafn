@@ -1,0 +1,1179 @@
+{
+  "version": 1,
+  "verifiedAt": "2026-10-09T13:33:11.222009+00:00",
+  "branch": "Beta",
+  "baselineCommit": "ececeda0117d324b1a455c6e4382d8ba3f25d6f0",
+  "summary": {
+    "commandsPassed": 22,
+    "commandsFailed": 0,
+    "distinctUnitToolCasesPassed": 104,
+    "unitCaseExecutionsIncludingThreeTimezones": 214,
+    "existingBrowserGroupsPassed": 68,
+    "newResponsiveBrowserGroupsPassed": 6,
+    "newCrossEngineGroupsPassed": 4,
+    "totalBrowserGroupsPassed": 78,
+    "catalogValidatorsWithZeroErrors": 3,
+    "catalogUnchanged": true,
+    "bookIdsUnchanged": true,
+    "readingStorageSchemaVersion": 15,
+    "backupSchemaVersion": 2
+  },
+  "commands": [
+    {
+      "name": "regression-UTC",
+      "command": "node tests/regression.test.cjs",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 8.92,
+      "testCases": 55
+    },
+    {
+      "name": "regression-America-New_York",
+      "command": "node tests/regression.test.cjs",
+      "timezone": "America/New_York",
+      "exitCode": 0,
+      "seconds": 9.24,
+      "testCases": 55
+    },
+    {
+      "name": "regression-Atlantic-Reykjavik",
+      "command": "node tests/regression.test.cjs",
+      "timezone": "Atlantic/Reykjavik",
+      "exitCode": 0,
+      "seconds": 9.29,
+      "testCases": 55
+    },
+    {
+      "name": "browse-unit",
+      "command": "node tests/browse.test.cjs",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.17,
+      "testCases": 13
+    },
+    {
+      "name": "catalog-tools",
+      "command": "python tests/catalog_tools.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.12,
+      "testCases": 20
+    },
+    {
+      "name": "browsing-tools",
+      "command": "python tests/browsing_tools.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.07,
+      "testCases": 8
+    },
+    {
+      "name": "completion-tools",
+      "command": "python tests/completion_tools.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.56,
+      "testCases": 8
+    },
+    {
+      "name": "validate-catalog",
+      "command": "python scripts/validate_catalog.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.77
+    },
+    {
+      "name": "validate-browsing",
+      "command": "python scripts/validate_browsing.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.07
+    },
+    {
+      "name": "validate-completion",
+      "command": "python scripts/validate_completion.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.1
+    },
+    {
+      "name": "browser",
+      "command": "python tests/browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 20.53,
+      "testGroups": 9
+    },
+    {
+      "name": "live_browser",
+      "command": "python tests/live_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 277.03,
+      "testGroups": 11
+    },
+    {
+      "name": "features_browser",
+      "command": "python tests/features_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 110.75,
+      "testGroups": 8
+    },
+    {
+      "name": "backups_browser",
+      "command": "python tests/backups_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 121.83,
+      "testGroups": 9
+    },
+    {
+      "name": "clipboard_browser",
+      "command": "python tests/clipboard_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 90.01,
+      "testGroups": 11
+    },
+    {
+      "name": "cleanup_browser",
+      "command": "python tests/cleanup_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 18.09,
+      "testGroups": 3
+    },
+    {
+      "name": "browse_browser",
+      "command": "python tests/browse_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 26.31,
+      "testGroups": 7
+    },
+    {
+      "name": "completion_browser",
+      "command": "python tests/completion_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 25.1,
+      "testGroups": 4
+    },
+    {
+      "name": "catalog_browser",
+      "command": "python tests/catalog_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 27.85,
+      "testGroups": 6
+    },
+    {
+      "name": "responsive_browser",
+      "command": "python tests/responsive_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 100.37,
+      "testGroups": 6
+    },
+    {
+      "name": "cross_engine_browser",
+      "command": "python tests/cross_engine_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 70.48,
+      "testGroups": 4
+    },
+    {
+      "name": "source-cache",
+      "command": "python scripts/verify_source_cache.py --cache /tmp/bokasafn-completion/cache --allow-prior-cover-evidence",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 78.97
+    }
+  ],
+  "responsive": {
+    "requestedWidths": [
+      320,
+      360,
+      375,
+      390,
+      430,
+      480,
+      600,
+      720,
+      768,
+      820,
+      1024,
+      1180,
+      1280,
+      1366,
+      1440,
+      1920,
+      2560
+    ],
+    "intermediateWidths": [
+      340,
+      412,
+      540,
+      640,
+      744,
+      900,
+      1100,
+      1179,
+      1181,
+      1250,
+      1500,
+      2048
+    ],
+    "themes": [
+      "light",
+      "dark",
+      "green",
+      "purple",
+      "orange"
+    ],
+    "layoutChecks": [
+      {
+        "width": 320,
+        "theme": "light",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 320,
+        "theme": "dark",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 320,
+        "theme": "green",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 320,
+        "theme": "purple",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 320,
+        "theme": "orange",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 340,
+        "theme": "light",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 340,
+        "theme": "dark",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 340,
+        "theme": "green",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 340,
+        "theme": "purple",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 340,
+        "theme": "orange",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 360,
+        "theme": "light",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 360,
+        "theme": "dark",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 360,
+        "theme": "green",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 360,
+        "theme": "purple",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 360,
+        "theme": "orange",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 375,
+        "theme": "light",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 375,
+        "theme": "dark",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 375,
+        "theme": "green",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 375,
+        "theme": "purple",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 375,
+        "theme": "orange",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 390,
+        "theme": "light",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 390,
+        "theme": "green",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 390,
+        "theme": "purple",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 390,
+        "theme": "orange",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 412,
+        "theme": "light",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 412,
+        "theme": "dark",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 412,
+        "theme": "green",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 412,
+        "theme": "purple",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 412,
+        "theme": "orange",
+        "headerHeight": 173.7
+      },
+      {
+        "width": 430,
+        "theme": "light",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 430,
+        "theme": "dark",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 430,
+        "theme": "green",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 430,
+        "theme": "purple",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 430,
+        "theme": "orange",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 480,
+        "theme": "light",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 480,
+        "theme": "dark",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 480,
+        "theme": "green",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 480,
+        "theme": "purple",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 480,
+        "theme": "orange",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 540,
+        "theme": "light",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 540,
+        "theme": "dark",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 540,
+        "theme": "green",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 540,
+        "theme": "purple",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 540,
+        "theme": "orange",
+        "headerHeight": 127.3
+      },
+      {
+        "width": 600,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 600,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 600,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 600,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 600,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 640,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 640,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 640,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 640,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 640,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 720,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 720,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 720,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 720,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 720,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 744,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 744,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 744,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 744,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 744,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 768,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 768,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 768,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 768,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 768,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 820,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 820,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 820,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 820,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 820,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 900,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 900,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 900,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 900,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 900,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1024,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1024,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1024,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1024,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1024,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1100,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1100,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1100,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1100,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1100,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1179,
+        "theme": "light",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1179,
+        "theme": "dark",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1179,
+        "theme": "green",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1179,
+        "theme": "purple",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1179,
+        "theme": "orange",
+        "headerHeight": 134.5
+      },
+      {
+        "width": 1180,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1180,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1180,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1180,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1180,
+        "theme": "orange",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1181,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1181,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1181,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1181,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1181,
+        "theme": "orange",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1250,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1250,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1250,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1250,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1250,
+        "theme": "orange",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1280,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1280,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1280,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1280,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1280,
+        "theme": "orange",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1366,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1366,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1366,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1366,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1366,
+        "theme": "orange",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1440,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1440,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1440,
+        "theme": "orange",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1500,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1500,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1500,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1500,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1500,
+        "theme": "orange",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1920,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1920,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1920,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1920,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 1920,
+        "theme": "orange",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2048,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2048,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2048,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2048,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2048,
+        "theme": "orange",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2560,
+        "theme": "light",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2560,
+        "theme": "dark",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2560,
+        "theme": "green",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2560,
+        "theme": "purple",
+        "headerHeight": 79.4
+      },
+      {
+        "width": 2560,
+        "theme": "orange",
+        "headerHeight": 79.4
+      }
+    ],
+    "groupsPassed": 6,
+    "uncaughtErrors": [],
+    "limitations": [
+      "This suite uses Chromium; separate cross-engine smoke checks cover Firefox and Linux WebKit. Native Safari and physical iOS/Android are not tested.",
+      "Keyboard checks simulate viewport geometry; no physical software keyboard was exercised.",
+      "Pinch zoom uses Chromium CDP and text scaling changes the root font size; browser chrome zoom is not automated."
+    ]
+  },
+  "crossEngine": {
+    "versions": {
+      "firefox": "153.0",
+      "webkit": "26.5"
+    },
+    "groupsPassed": 4,
+    "uncaughtErrors": [],
+    "limitations": [
+      "Headless Firefox and Linux WebKit engine; no native Safari, physical iOS, iPadOS, Android or Samsung Internet test."
+    ]
+  },
+  "chromium": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)",
+  "layoutComparison": {
+    "baselineCommit": "ececeda0117d324b1a455c6e4382d8ba3f25d6f0",
+    "before": [
+      {
+        "width": 320,
+        "headerHeight": 321,
+        "gridTop": 2158.3125,
+        "recommendationsHeight": 946.3125
+      },
+      {
+        "width": 768,
+        "headerHeight": 229,
+        "gridTop": 1438.375,
+        "recommendationsHeight": 452.8125
+      },
+      {
+        "width": 1440,
+        "headerHeight": 93,
+        "gridTop": 1125.46875,
+        "recommendationsHeight": 307.96875
+      }
+    ],
+    "after": [
+      {
+        "width": 320,
+        "headerHeight": 173.734375,
+        "gridTop": 872.671875,
+        "columns": 2,
+        "overflow": 0,
+        "recommendationsHeight": 50
+      },
+      {
+        "width": 768,
+        "headerHeight": 134.546875,
+        "gridTop": 693.078125,
+        "columns": 4,
+        "overflow": 0,
+        "recommendationsHeight": 50
+      },
+      {
+        "width": 1440,
+        "headerHeight": 79.375,
+        "gridTop": 605.75,
+        "columns": 8,
+        "overflow": 0,
+        "recommendationsHeight": 50
+      }
+    ]
+  },
+  "performance": {
+    "catalog": {
+      "initialReadyMs": 1185.9,
+      "initialGridElements": 783,
+      "original39": {
+        "medianFilterToLayoutMs": 72.8,
+        "maxFilterToLayoutMs": 89
+      },
+      "expanded": {
+        "medianFilterToLayoutMs": 91.5,
+        "maxFilterToLayoutMs": 196.4
+      },
+      "catalogBooks": 663,
+      "catalogBytes": 565254,
+      "coverBytes": 22241346,
+      "allBooksReadWishlistReviewedRenderMs": 1084
+    },
+    "browsing": {
+      "indexAndSearchMs": 185.40000000037253,
+      "tiles": 36
+    },
+    "note": "Catalog benchmark runs in isolation with unchanged limits, after all other browser processes complete."
+  },
+  "validators": {
+    "validate-catalog": {
+      "books": 663,
+      "errors": [],
+      "warnings": [],
+      "categories": {
+        "Fantasía": 64,
+        "Fræðibækur": 9,
+        "Glæpir": 121,
+        "Hrollvekja": 12,
+        "Klassík": 76,
+        "Ljóð": 4,
+        "Ráðgáta": 15,
+        "Rómantík": 20,
+        "Skáldsögur": 395,
+        "Skáldverk": 474,
+        "Spenna": 185,
+        "Ungmenni": 202,
+        "Vísindaskáldsaga": 19,
+        "Ævintýri": 8,
+        "Ævisögur": 12,
+        "Þýddar bækur": 235
+      }
+    },
+    "validate-browsing": {
+      "books": 663,
+      "series": 62,
+      "assignedBooks": 276,
+      "uniqueAuthors": 351,
+      "multiBookSeries": 56,
+      "uncertainBooks": 85,
+      "errors": [],
+      "warnings": [
+        "1004024: verified membership; ordering remains unknown",
+        "1004225: verified membership; ordering remains unknown",
+        "1004503: verified membership; ordering remains unknown",
+        "1014276: verified membership; ordering remains unknown",
+        "1014811: verified membership; ordering remains unknown",
+        "1019603: verified membership; ordering remains unknown",
+        "1030520: verified membership; ordering remains unknown",
+        "1065749: verified membership; ordering remains unknown",
+        "1080793: verified membership; ordering remains unknown",
+        "1084940: verified membership; ordering remains unknown",
+        "1091639: verified membership; ordering remains unknown",
+        "1098482: verified membership; ordering remains unknown",
+        "1099762: verified membership; ordering remains unknown",
+        "1101950: verified membership; ordering remains unknown",
+        "1102104: verified membership; ordering remains unknown",
+        "1119145: verified membership; ordering remains unknown",
+        "1185117: verified membership; ordering remains unknown",
+        "1190665: verified membership; ordering remains unknown",
+        "1205960: verified membership; ordering remains unknown",
+        "1226006: verified membership; ordering remains unknown",
+        "1238865: verified membership; ordering remains unknown",
+        "1238907: verified membership; ordering remains unknown",
+        "1240568: verified membership; ordering remains unknown",
+        "1241384: verified membership; ordering remains unknown",
+        "1241395: verified membership; ordering remains unknown",
+        "1245406: verified membership; ordering remains unknown",
+        "1251765: verified membership; ordering remains unknown",
+        "1256203: verified membership; ordering remains unknown",
+        "1257096: verified membership; ordering remains unknown",
+        "1269194: verified membership; ordering remains unknown",
+        "1269934: verified membership; ordering remains unknown",
+        "1292346: verified membership; ordering remains unknown",
+        "1292347: verified membership; ordering remains unknown",
+        "1292510: verified membership; ordering remains unknown",
+        "1294712: verified membership; ordering remains unknown",
+        "1300389: verified membership; ordering remains unknown"
+      ]
+    },
+    "validate-completion": {
+      "books": 663,
+      "titleReviews": 663,
+      "additions": 170,
+      "completeSeries": 12,
+      "incompleteOrUnresolvedSeries": 50,
+      "errors": [],
+      "warnings": [
+        "artemis-fowl: 2 ordering decisions remain unresolved",
+        "joona-linna: 1 ordering decisions remain unresolved",
+        "jack-reacher: 1 ordering decisions remain unresolved",
+        "maigret: 1 ordering decisions remain unresolved",
+        "emma-skold: 3 ordering decisions remain unresolved",
+        "millennium: 5 ordering decisions remain unresolved",
+        "hagfors: 5 ordering decisions remain unresolved",
+        "baekur-duftsins: 1 ordering decisions remain unresolved",
+        "kurt-wallander: 7 ordering decisions remain unresolved",
+        "hordur-grimsson: 7 ordering decisions remain unresolved",
+        "handan-hulunnar: 3 ordering decisions remain unresolved"
+      ]
+    }
+  },
+  "offlinePublisherEvidenceVerification": {
+    "productPages": 663,
+    "cachedSourceCovers": 170,
+    "coversUsingPriorEvidence": 493,
+    "networkRequests": 0,
+    "errors": []
+  },
+  "screenshots": [
+    "docs/responsive/book-dialog-390.png",
+    "docs/responsive/library-1440.png",
+    "docs/responsive/library-320.png",
+    "docs/responsive/recommendations-390.png",
+    "docs/responsive/series-720.png",
+    "docs/responsive/statistics-820.png"
+  ],
+  "runtimeFileSHA256": {
+    "index.html": "3539710352d71c96c3dc249ec55f4bafac59605f2eb34ca2bd2b0cdf8ba27809",
+    "css/responsive.css": "de3df88b0316108dedf73fd717b09cd212f80842f908ba95fc96c974adfeea69",
+    "js/app.js": "3df08563583a789460cdc23db8c4fbdc15e351ee33419b5dd02b3cf920467e0f",
+    "js/features.js": "2dcea3d48abd87370e8f290b20dd0d2985a5d4f3b19d8c6ac257ab93f9e9ba22",
+    "js/accessibility.js": "7d28b3af5adeb034520fbe3474be5f45876d2cf0d08ea26667d3be965a8ca4da",
+    "js/backups.js": "19a5c42d9379ac5835d83772327a94f3af8bb908febab70b783871c4ac179f36"
+  },
+  "catalogSHA256": "a368e7d5d34db4d1480301727b8c92b00222303afe4e5155c2f026d20cdf34ac",
+  "limitations": [
+    "Headless Chromium, Firefox and Linux WebKit are tested; native Safari and physical iPhone/iPad/Android/Samsung Internet/touchscreen laptops are not.",
+    "Software-keyboard geometry is simulated; no actual OS keyboard is exercised.",
+    "200% text scaling adjusts the root font size and pinch zoom uses Chromium CDP; browser chrome zoom is not automated.",
+    "Contrast checks cover catalog author metadata and filled feature-control labels in all themes, not a complete WCAG certification.",
+    "Recommendation disclosure state is preserved within normal navigation; reload deliberately starts collapsed and introduces no stored preference."
+  ]
+}

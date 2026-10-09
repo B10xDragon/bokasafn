@@ -311,7 +311,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                                 ` : ''}
                             </div>
                             <div class="px-1 text-center">
-                                <h3 class="font-bold text-slate-900 text-[10px] md:text-[11px] leading-tight mb-0.5 uppercase tracking-tighter line-clamp-2">${escapeHTML(b.title)}</h3>
+                                <h3 class="font-bold text-slate-900 text-[10px] md:text-[11px] leading-tight mb-0.5 uppercase tracking-tighter">${escapeHTML(b.title)}</h3>
                                 <p class="text-indigo-400 text-[8px] font-black uppercase tracking-widest">${escapeHTML(b.author)}</p>
                             </div>
                         </div>
@@ -360,10 +360,10 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             }
             // Beðið eftir að hreyfingu ljúki áður en frumefni er falið með hidden
             setTimeout(() => {
-                if (modal.classList.contains('opacity-0')) {
+                if (activeDialog?.modal !== modal && modal.classList.contains('opacity-0')) {
                     modal.classList.add('hidden');
                 }
-            }, 300); // 300ms passar við duration-300 á transition
+            }, window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 0 : 300);
         }
 
         // Opnar bókaupplýsingar í öruggum fixed glugga með mjúkri hreyfingu
@@ -375,7 +375,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             
             setInnerHTML('modal-inner-content', `
                 <div class="flex flex-col md:flex-row gap-6 md:gap-10 items-start">
-                    <div class="w-full md:w-[180px] shrink-0 mx-auto">
+                    <div class="book-detail-cover w-full md:w-[180px] shrink-0 mx-auto">
                         <div class="shimmer-placeholder aspect-[3/4.5] rounded-2xl shadow-xl overflow-hidden">
                             <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                         </div>
@@ -969,7 +969,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 button.setAttribute('aria-current', selected ? 'page' : 'false');
                 if (name === 'library' || name === 'stats') button.className = selected ? 'px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap' : 'px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap';
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
         }
 
         function handleSearch() {

@@ -45,6 +45,7 @@ function prepareDialog(modal, content) {
     const previousInert = background.map(element => element.inert);
     background.forEach(element => { element.inert = true; });
     activeDialog = { modal, content, trigger, background, previousInert };
+    syncDialogViewport();
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 }
@@ -125,3 +126,23 @@ function restoreBookFocus(focus) {
     const target = card?.querySelector(`[data-action="${focus.action}"]`) || document.getElementById('book-search');
     target?.focus();
 }
+
+// Mobile software keyboards can resize only the visual viewport (not CSS vh).
+// Coalesce its resize/scroll events; CSS remains the fallback on older browsers.
+let dialogViewportFrame = null;
+function syncDialogViewport() {
+    if (!activeDialog) return;
+    const viewport = window.visualViewport;
+    activeDialog.modal.style.setProperty('--dialog-viewport-height', `${viewport?.height || window.innerHeight}px`);
+    activeDialog.modal.style.setProperty('--dialog-viewport-top', `${viewport?.offsetTop || 0}px`);
+}
+function scheduleDialogViewport() {
+    if (!activeDialog || dialogViewportFrame !== null) return;
+    dialogViewportFrame = requestAnimationFrame(() => {
+        dialogViewportFrame = null;
+        syncDialogViewport();
+    });
+}
+window.visualViewport?.addEventListener('resize', scheduleDialogViewport, {passive:true});
+window.visualViewport?.addEventListener('scroll', scheduleDialogViewport, {passive:true});
+window.addEventListener('resize', scheduleDialogViewport, {passive:true});

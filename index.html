@@ -53,6 +53,7 @@
 
 <link rel="stylesheet" href="css/features.css">
 <link rel="stylesheet" href="css/browse.css?v=series-20261008">
+<link rel="stylesheet" href="css/responsive.css?v=responsive-20261009">
 </head>
 <body class="pb-24 relative">
 
@@ -60,10 +61,10 @@
 
 
     <!-- Leiðsögustika (isoleruð á eigin vélbúnaðarlagi fyrir mýkra skrun) -->
-    <nav class="bg-white/70 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200/50 transform translate-z-0">
-        <div class="-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-4 cursor-pointer group shrink-0" role="button" tabindex="0" aria-label="Opna bókasafnið" onclick="showPage('library')">
-                <div class="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200 group-hover:rotate-12 transition-all duration-300">
+    <nav aria-label="Aðalleiðsögn" class="site-nav bg-white/70 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200/50 transform translate-z-0">
+        <div class="nav-shell mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="nav-brand flex items-center gap-4 cursor-pointer group shrink-0" role="button" tabindex="0" aria-label="Opna bókasafnið" onclick="showPage('library')">
+                <div class="nav-logo w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200 group-hover:rotate-12 transition-all duration-300">
                     <i aria-hidden="true" class="fas fa-book-open text-xl"></i>
                 </div>
                 <div>
@@ -100,11 +101,11 @@
         </div>
     </nav>
 
-    <main class="max-w-[100rem] mx-auto p-4 md:p-10">
+    <main id="site-main" class="max-w-[100rem] mx-auto p-4 md:p-10">
         
         <!-- Bókasafnið -->
         <div id="library-page" class="page-container active">
-            <div class="mb-12 space-y-10">
+            <div class="library-tools mb-12 space-y-10">
                 <!-- Lestrarklukka -->
                 <div id="timer-widget" class="p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] shadow-lg flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 max-w-lg mx-auto">
                     <div class="flex flex-col items-center sm:items-start">
@@ -157,7 +158,7 @@
                 </div>
 
                 <!-- Sjónrænir Tölfræði kassar -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+                <div class="stats-metrics grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
                     <!-- Hours Card -->
                     <div class="relative overflow-hidden bg-gradient-to-br from-indigo-500 to-indigo-600 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
                         <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
@@ -395,15 +396,15 @@
 
     <script src="js/catalog-identities.js?v=completion-20261009"></script>
     <script src="js/persistence.js?v=completion-20261009"></script>
-    <script src="js/accessibility.js"></script>
+    <script src="js/accessibility.js?v=responsive-20261009"></script>
     <script src="js/insights.js?v=audit-20261008"></script>
     <script src="js/browse-metadata.js?v=completion-20261009"></script>
-    <script src="js/app.js?v=completion-20261009"></script>
+    <script src="js/app.js?v=responsive-20261009"></script>
 
 <script src="js/themes.js"></script>
 <script src="js/sorting.js?v=audit-20261008"></script>
 <script src="js/backups.js?v=audit-20261008"></script>
-<script src="js/features.js?v=series-20261008"></script>
+<script src="js/features.js?v=responsive-20261009"></script>
 <script src="js/browse.js?v=completion-20261009"></script>
 
 

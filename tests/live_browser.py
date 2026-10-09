@@ -88,7 +88,7 @@ with sync_playwright() as p:
 
     def assets():
         assert page.evaluate('getComputedStyle(document.getElementById("book-grid")).display')=='grid'
-        assert page.evaluate('getComputedStyle(document.getElementById("book-grid")).gridTemplateColumns.split(" ").length')==10
+        assert page.evaluate('getComputedStyle(document.getElementById("book-grid")).gridTemplateColumns.split(" ").length')==8
         assert page.evaluate('[...document.fonts].some(font=>font.family==="Plus Jakarta Sans"&&font.status==="loaded")')
         assert page.evaluate('[...document.fonts].some(font=>font.family==="Font Awesome 6 Free"&&font.status==="loaded")')
         # Scroll through lazy-loaded covers without substituting image data.
@@ -102,7 +102,7 @@ with sync_playwright() as p:
 
     def responsive_themes():
         palettes={'light':'rgb(248, 250, 252)','dark':'rgb(9, 9, 11)','green':'rgb(7, 19, 14)','purple':'rgb(13, 7, 21)','orange':'rgb(18, 11, 5)'}
-        for width,height,cols in [(320,740,2),(390,844,2),(768,1024,6),(1440,1000,10),(1920,1080,12)]:
+        for width,height,cols in [(320,740,2),(390,844,2),(768,1024,4),(1440,1000,8),(1920,1080,9)]:
             page.set_viewport_size({'width':width,'height':height})
             for theme,color in palettes.items():
                 page.evaluate('(theme)=>setBokasafnTheme(theme)',theme);page.wait_for_timeout(220)
