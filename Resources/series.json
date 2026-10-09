@@ -1,255 +1,341 @@
 [
   {
     "id": "eragon",
-    "name": "Eragon"
+    "name": "Eragon",
+    "total": 4,
+    "knownTotal": 4
   },
   {
     "id": "harry-potter",
     "name": "Harry Potter",
-    "total": 7
+    "total": 7,
+    "knownTotal": 7
   },
   {
     "id": "hungurleikarnir",
     "name": "Hungurleikarnir",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "hvisl-hrafnanna",
     "name": "Hvísl hrafnanna",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "thriggja-heima-saga",
-    "name": "Þriggja heima saga"
+    "name": "Þriggja heima saga",
+    "knownTotal": 4
   },
   {
     "id": "artemis-fowl",
-    "name": "Artemis Fowl"
+    "name": "Artemis Fowl",
+    "total": 8,
+    "knownTotal": 8
   },
   {
     "id": "anna-i-graenuhlid",
     "name": "Anna í Grænuhlíð",
-    "total": 8
+    "total": 8,
+    "knownTotal": 8
   },
   {
     "id": "nornasaga",
     "name": "Nornasaga",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "john-john",
     "name": "John-John",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "freyju-saga",
-    "name": "Freyju saga"
+    "name": "Freyju saga",
+    "total": 2,
+    "knownTotal": 2
   },
   {
     "id": "saga-eftirlifenda",
     "name": "Saga eftirlifenda",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "hafsfolkid",
     "name": "Hafsfólkið",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "alex-rider",
-    "name": "Alex Rider"
+    "name": "Alex Rider",
+    "knownTotal": 6
   },
   {
     "id": "mjallhvit",
     "name": "Mjallhvít",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "bert",
-    "name": "Bert"
+    "name": "Bert",
+    "knownTotal": 1
   },
   {
     "id": "ulfur-og-edda",
-    "name": "Úlfur og Edda"
+    "name": "Úlfur og Edda",
+    "knownTotal": 3
   },
   {
     "id": "jarmalandskronikan",
     "name": "Jarmalandskrónikan",
-    "total": 4
+    "total": 4,
+    "knownTotal": 4
   },
   {
     "id": "dulstafir",
-    "name": "Dulstafir"
+    "name": "Dulstafir",
+    "knownTotal": 3
   },
   {
     "id": "skuggasaga",
-    "name": "Skuggasaga"
+    "name": "Skuggasaga",
+    "knownTotal": 2
   },
   {
     "id": "erlendur",
-    "name": "Erlendur"
+    "name": "Erlendur",
+    "numberingScope": "publisher-story-chronology",
+    "knownTotal": 14
   },
   {
     "id": "konrad",
-    "name": "Konráð"
+    "name": "Konráð",
+    "knownTotal": 7
   },
   {
     "id": "mordin-i-are",
-    "name": "Morðin í Åre"
+    "name": "Morðin í Åre",
+    "knownTotal": 5
   },
   {
     "id": "shetland",
     "name": "Shetland",
-    "total": 8
+    "total": 8,
+    "knownTotal": 8
   },
   {
     "id": "vera",
-    "name": "Vera"
+    "name": "Vera",
+    "numberingScope": "publisher-product-title-numbering",
+    "knownTotal": 11
   },
   {
     "id": "hildur",
-    "name": "Hildur"
+    "name": "Hildur",
+    "knownTotal": 3
   },
   {
     "id": "ruth-galloway",
-    "name": "Dr. Ruth Galloway"
+    "name": "Dr. Ruth Galloway",
+    "knownTotal": 3
   },
   {
     "id": "deild-q",
-    "name": "Deild Q"
+    "name": "Deild Q",
+    "knownTotal": 11
   },
   {
     "id": "stella-blomkvist",
-    "name": "Stella Blómkvist"
+    "name": "Stella Blómkvist",
+    "knownTotal": 13
   },
   {
     "id": "joona-linna",
-    "name": "Joona Linna"
+    "name": "Joona Linna",
+    "knownTotal": 10
   },
   {
     "id": "heimilishjalpin",
-    "name": "Heimilishjálpin"
+    "name": "Heimilishjálpin",
+    "knownTotal": 3
   },
   {
     "id": "agentarnir",
-    "name": "Agentarnir"
+    "name": "Agentarnir",
+    "knownTotal": 1
   },
   {
     "id": "kongsrikid",
-    "name": "Kóngsríkið"
+    "name": "Kóngsríkið",
+    "knownTotal": 2
   },
   {
     "id": "jack-reacher",
-    "name": "Jack Reacher"
+    "name": "Jack Reacher",
+    "numberingScope": "publisher-product-title-numbering",
+    "knownTotal": 26
   },
   {
     "id": "kronikuserian",
-    "name": "Kroníkuserían"
+    "name": "Kroníkuserían",
+    "knownTotal": 2
   },
   {
     "id": "malin-fors",
-    "name": "Malin Fors"
+    "name": "Malin Fors",
+    "knownTotal": 14
   },
   {
     "id": "maigret",
-    "name": "Maigret"
+    "name": "Maigret",
+    "knownTotal": 2
   },
   {
     "id": "dora-og-rado",
-    "name": "Dóra og Rado"
+    "name": "Dóra og Rado",
+    "knownTotal": 2
   },
   {
     "id": "osterlen-mordin",
-    "name": "Österlen-morðin"
+    "name": "Österlen-morðin",
+    "knownTotal": 2
   },
   {
     "id": "litilmagnar",
-    "name": "Lítilmagnar"
+    "name": "Lítilmagnar",
+    "knownTotal": 1
   },
   {
     "id": "seidmagn-andstaednanna",
-    "name": "Seiðmagn andstæðnanna"
+    "name": "Seiðmagn andstæðnanna",
+    "knownTotal": 3
   },
   {
     "id": "ronning-og-stilton",
-    "name": "Olivia Rönning og Tom Stilton"
+    "name": "Olivia Rönning og Tom Stilton",
+    "numberingScope": "Icelandic-publication-order",
+    "knownTotal": 4
   },
   {
     "id": "evert-backstrom",
-    "name": "Evert Bäckström"
+    "name": "Evert Bäckström",
+    "knownTotal": 3
   },
   {
     "id": "emma-skold",
-    "name": "Emma Sköld"
+    "name": "Emma Sköld",
+    "numberingScope": "Icelandic-publication-order",
+    "knownTotal": 7
   },
   {
     "id": "millennium",
-    "name": "Millennium"
+    "name": "Millennium",
+    "knownTotal": 7
   },
   {
     "id": "haparanda",
-    "name": "Haparanda"
+    "name": "Haparanda",
+    "knownTotal": 2
   },
   {
     "id": "hagfors",
-    "name": "Hagfors"
+    "name": "Hagfors",
+    "knownTotal": 6
   },
   {
     "id": "bergthora-i-hvommum",
     "name": "Bergþóra í Hvömmum",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "sjoleikurinn",
     "name": "Sjöleikurinn",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "baekur-duftsins",
     "name": "Bækur duftsins",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "brjalina-hansen",
     "name": "Ótrúleg ævintýri Brjálínu Hansen",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "skuggabruin",
     "name": "Skuggabrúin",
-    "total": 3
+    "total": 3,
+    "knownTotal": 3
   },
   {
     "id": "rokkurhaedir",
-    "name": "Rökkurhæðir"
+    "name": "Rökkurhæðir",
+    "total": 7,
+    "knownTotal": 7
   },
   {
     "id": "kepler-62",
-    "name": "Kepler 62"
+    "name": "Kepler 62",
+    "knownTotal": 6
   },
   {
     "id": "bolvun-mumiunnar",
-    "name": "Bölvun múmíunnar"
+    "name": "Bölvun múmíunnar",
+    "total": 2,
+    "knownTotal": 2
   },
   {
     "id": "a-morgun",
     "name": "Á morgun",
-    "total": 7
+    "total": 7,
+    "knownTotal": 7
   },
   {
     "id": "kurt-wallander",
-    "name": "Kurt Wallander"
+    "name": "Kurt Wallander",
+    "knownTotal": 9
   },
   {
     "id": "hordur-grimsson",
-    "name": "Hörður Grímsson"
+    "name": "Hörður Grímsson",
+    "knownTotal": 13
   },
   {
     "id": "gunnhildur",
-    "name": "Gunnhildur"
+    "name": "Gunnhildur",
+    "numberingScope": "Icelandic-publication-order",
+    "knownTotal": 5
   },
   {
     "id": "nora-sand",
-    "name": "Nora Sand"
+    "name": "Nora Sand",
+    "knownTotal": 6
+  },
+  {
+    "id": "skam",
+    "name": "SKAM",
+    "knownTotal": 4
+  },
+  {
+    "id": "ljosaskipti",
+    "name": "Ljósaskipti",
+    "total": 4,
+    "knownTotal": 4
+  },
+  {
+    "id": "handan-hulunnar",
+    "name": "Handan Hulunnar",
+    "knownTotal": 4
   }
 ]

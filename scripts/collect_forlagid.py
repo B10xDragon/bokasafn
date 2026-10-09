@@ -91,7 +91,8 @@ class Collector:
    name=a.get_text(' ',strip=True)
    if name.startswith(('Þýðandi:','Þýðendur:')):translators.append(name);continue
    if name and name not in authors:authors.append(name)
-  if not authors:raise ValueError('Missing author')
+  # Some publisher pages omit author taxonomy; a manually reviewed publisher-cover
+  # credit is accepted only with the exact image URL and verified image bytes.
   cats=[]
   for a in root.select('a[href*="/voruflokkur/"]'):
    if a.find_parent(class_='jet-listing-grid__item'):continue
@@ -129,11 +130,19 @@ class Collector:
   suitable=[x for x in sizes if 350<=x[0]<=700]
   if suitable:cover=min(suitable)[1]
   source_url(cover)
+  author_evidence=None
+  if not authors:
+   proof=item.get('reviewedCoverAuthor')
+   available={image.get('src'),*(url for width,url in sizes)}
+   if not isinstance(proof,dict) or not proof.get('name') or proof.get('url') not in available:raise ValueError('Missing author')
+   source_url(proof['url'])
+   if hashlib.sha256(self.fetch(proof['url'],True)).hexdigest()!=proof.get('sha256'):raise ValueError('Reviewed author-cover evidence hash mismatch')
+   authors=[proof['name']];author_evidence=proof
   normalized=normalize_categories(cats,desc)
   if not normalized and not allow_unmapped:raise ValueError('Unmapped book category')
   language='is' if any(c in cats for c in ['Íslenskar skáldsögur','Þýddar skáldsögur']) or translators else None
   language_basis='Icelandic fiction category' if 'Íslenskar skáldsögur' in cats else 'Icelandic translation category/translator credit' if language else 'Icelandic title and presentation; edition language not explicitly stated'
-  return {**item,'id':1000000+pid,'sourceProductId':pid,'title':title,'author':', '.join(authors),'sourceCategories':cats,'categories':normalized,'edition':edition or {'format':None,'pages':None,'year':None},'sourceDescription':desc,'coverSourceURL':cover,'language':language,'languageEvidence':language_basis,'translators':translators,'sourceHTMLSHA256':hashlib.sha256(raw).hexdigest(),'verifiedAt':datetime.now(timezone.utc).date().isoformat()}
+  return {**item,'id':1000000+pid,'sourceProductId':pid,'title':title,'author':', '.join(authors),'sourceCategories':cats,'categories':normalized,'edition':edition or {'format':None,'pages':None,'year':None},'sourceDescription':desc,'coverSourceURL':cover,'language':language,'languageEvidence':language_basis,'translators':translators,'authorEvidence':author_evidence,'sourceHTMLSHA256':hashlib.sha256(raw).hexdigest(),'verifiedAt':datetime.now(timezone.utc).date().isoformat()}
  def collect(self,candidates):
   originals=json.loads((ROOT/'tests/fixtures/original-39-books.json').read_text());keys={title_key(b['title']):b for b in originals}
   path=self.cache/'records.json';records=json.loads(path.read_text()) if path.exists() else []

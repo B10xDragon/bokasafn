@@ -1,0 +1,352 @@
+{
+  "version": 1,
+  "verifiedAt": "2026-10-09T10:56:16.375495+00:00",
+  "branch": "Beta",
+  "baselineCommit": "c4a1f26ae3ba41554cd1c5eab2d4aceb34c3db67",
+  "catalogCounts": {
+    "originalBooks": 493,
+    "finalBooks": 663,
+    "seriesBefore": 59,
+    "seriesAfter": 62,
+    "completeSeries": 12,
+    "incompleteOrUnresolvedSeries": 50,
+    "missingBooksAdded": 170,
+    "existingTitlesCorrected": 63,
+    "activeDuplicatesDiscovered": 0,
+    "historicalDuplicateIdentitiesMerged": 5,
+    "newTitlesSeparatedFromStorePresentation": 104,
+    "finiteIncompleteSeries": 11,
+    "unknownFinalLengthSeries": 39,
+    "alternateEditionsNotAdded": 10,
+    "audienceReviewCandidates": 12,
+    "uncertainUnassignedSeriesBooks": 49,
+    "unverifiedOrdinalBooks": 36
+  },
+  "environment": {
+    "chromium": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)",
+    "node": "v24.19.0",
+    "python": "Python 3.12.14",
+    "browserMode": "Real headless Chromium, static local HTTP servers; real CDN styling in live/browser browsing suites; emulated mobile 320px and larger, five themes"
+  },
+  "summary": {
+    "commandsPassed": 20,
+    "commandsFailed": 0,
+    "uniqueUnitTestCases": 104,
+    "unitCaseExecutionsIncludingThreeTimezones": 214,
+    "browserTestGroupsPassed": 68,
+    "validatorsWithZeroErrors": 3
+  },
+  "commands": [
+    {
+      "name": "regression-UTC",
+      "command": "node tests/regression.test.cjs",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 9.32,
+      "testCases": 55
+    },
+    {
+      "name": "regression-America-New_York",
+      "command": "node tests/regression.test.cjs",
+      "timezone": "America/New_York",
+      "exitCode": 0,
+      "seconds": 9.79,
+      "testCases": 55
+    },
+    {
+      "name": "regression-Atlantic-Reykjavik",
+      "command": "node tests/regression.test.cjs",
+      "timezone": "Atlantic/Reykjavik",
+      "exitCode": 0,
+      "seconds": 9.64,
+      "testCases": 55
+    },
+    {
+      "name": "browse-unit",
+      "command": "node tests/browse.test.cjs",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.22,
+      "testCases": 13
+    },
+    {
+      "name": "catalog-tools",
+      "command": "python tests/catalog_tools.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.12,
+      "testCases": 20
+    },
+    {
+      "name": "browsing-tools",
+      "command": "python tests/browsing_tools.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.06,
+      "testCases": 8
+    },
+    {
+      "name": "completion-tools",
+      "command": "python tests/completion_tools.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.63,
+      "testCases": 8
+    },
+    {
+      "name": "validate-catalog",
+      "command": "python scripts/validate_catalog.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.73
+    },
+    {
+      "name": "validate-browsing",
+      "command": "python scripts/validate_browsing.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.08
+    },
+    {
+      "name": "validate-completion",
+      "command": "python scripts/validate_completion.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 0.1
+    },
+    {
+      "name": "browser",
+      "command": "python tests/browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 24.72,
+      "testGroups": 9
+    },
+    {
+      "name": "live_browser",
+      "command": "python tests/live_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 244.12,
+      "testGroups": 11
+    },
+    {
+      "name": "features_browser",
+      "command": "python tests/features_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 111.46,
+      "testGroups": 8
+    },
+    {
+      "name": "backups_browser",
+      "command": "python tests/backups_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 115.97,
+      "testGroups": 9
+    },
+    {
+      "name": "clipboard_browser",
+      "command": "python tests/clipboard_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 81.31,
+      "testGroups": 11
+    },
+    {
+      "name": "catalog_browser",
+      "command": "python tests/catalog_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 28.38,
+      "attempts": [
+        {
+          "name": "catalog_browser",
+          "command": "python tests/catalog_browser.py",
+          "timezone": "UTC",
+          "exitCode": 1,
+          "seconds": 49.53,
+          "reason": "Concurrent browser benchmark measured 260.5 ms against the unchanged 250 ms median limit."
+        },
+        {
+          "exitCode": 0,
+          "mode": "Isolated rerun after every other browser suite and source-cache check completed."
+        }
+      ],
+      "testGroups": 6
+    },
+    {
+      "name": "cleanup_browser",
+      "command": "python tests/cleanup_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 15.95,
+      "testGroups": 3
+    },
+    {
+      "name": "browse_browser",
+      "command": "python tests/browse_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 27.6,
+      "testGroups": 7
+    },
+    {
+      "name": "completion_browser",
+      "command": "python tests/completion_browser.py",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 23.43,
+      "testGroups": 4
+    },
+    {
+      "name": "source-cache",
+      "command": "python scripts/verify_source_cache.py --cache /tmp/bokasafn-completion/cache --allow-prior-cover-evidence",
+      "timezone": "UTC",
+      "exitCode": 0,
+      "seconds": 57.11
+    }
+  ],
+  "validators": {
+    "validate-catalog": {
+      "books": 663,
+      "errors": [],
+      "warnings": [],
+      "categories": {
+        "Fantasía": 64,
+        "Fræðibækur": 9,
+        "Glæpir": 121,
+        "Hrollvekja": 12,
+        "Klassík": 76,
+        "Ljóð": 4,
+        "Ráðgáta": 15,
+        "Rómantík": 20,
+        "Skáldsögur": 395,
+        "Skáldverk": 474,
+        "Spenna": 185,
+        "Ungmenni": 202,
+        "Vísindaskáldsaga": 19,
+        "Ævintýri": 8,
+        "Ævisögur": 12,
+        "Þýddar bækur": 235
+      }
+    },
+    "validate-browsing": {
+      "books": 663,
+      "series": 62,
+      "assignedBooks": 276,
+      "uniqueAuthors": 351,
+      "multiBookSeries": 56,
+      "uncertainBooks": 85,
+      "errors": [],
+      "warnings": [
+        "1004024: verified membership; ordering remains unknown",
+        "1004225: verified membership; ordering remains unknown",
+        "1004503: verified membership; ordering remains unknown",
+        "1014276: verified membership; ordering remains unknown",
+        "1014811: verified membership; ordering remains unknown",
+        "1019603: verified membership; ordering remains unknown",
+        "1030520: verified membership; ordering remains unknown",
+        "1065749: verified membership; ordering remains unknown",
+        "1080793: verified membership; ordering remains unknown",
+        "1084940: verified membership; ordering remains unknown",
+        "1091639: verified membership; ordering remains unknown",
+        "1098482: verified membership; ordering remains unknown",
+        "1099762: verified membership; ordering remains unknown",
+        "1101950: verified membership; ordering remains unknown",
+        "1102104: verified membership; ordering remains unknown",
+        "1119145: verified membership; ordering remains unknown",
+        "1185117: verified membership; ordering remains unknown",
+        "1190665: verified membership; ordering remains unknown",
+        "1205960: verified membership; ordering remains unknown",
+        "1226006: verified membership; ordering remains unknown",
+        "1238865: verified membership; ordering remains unknown",
+        "1238907: verified membership; ordering remains unknown",
+        "1240568: verified membership; ordering remains unknown",
+        "1241384: verified membership; ordering remains unknown",
+        "1241395: verified membership; ordering remains unknown",
+        "1245406: verified membership; ordering remains unknown",
+        "1251765: verified membership; ordering remains unknown",
+        "1256203: verified membership; ordering remains unknown",
+        "1257096: verified membership; ordering remains unknown",
+        "1269194: verified membership; ordering remains unknown",
+        "1269934: verified membership; ordering remains unknown",
+        "1292346: verified membership; ordering remains unknown",
+        "1292347: verified membership; ordering remains unknown",
+        "1292510: verified membership; ordering remains unknown",
+        "1294712: verified membership; ordering remains unknown",
+        "1300389: verified membership; ordering remains unknown"
+      ]
+    },
+    "validate-completion": {
+      "books": 663,
+      "titleReviews": 663,
+      "additions": 170,
+      "completeSeries": 12,
+      "incompleteOrUnresolvedSeries": 50,
+      "errors": [],
+      "warnings": [
+        "artemis-fowl: 2 ordering decisions remain unresolved",
+        "joona-linna: 1 ordering decisions remain unresolved",
+        "jack-reacher: 1 ordering decisions remain unresolved",
+        "maigret: 1 ordering decisions remain unresolved",
+        "emma-skold: 3 ordering decisions remain unresolved",
+        "millennium: 5 ordering decisions remain unresolved",
+        "hagfors: 5 ordering decisions remain unresolved",
+        "baekur-duftsins: 1 ordering decisions remain unresolved",
+        "kurt-wallander: 7 ordering decisions remain unresolved",
+        "hordur-grimsson: 7 ordering decisions remain unresolved",
+        "handan-hulunnar: 3 ordering decisions remain unresolved"
+      ]
+    }
+  },
+  "offlinePublisherEvidenceVerification": {
+    "productPages": 663,
+    "cachedSourceCovers": 170,
+    "coversUsingPriorEvidence": 493,
+    "networkRequests": 0,
+    "errors": []
+  },
+  "performance": {
+    "catalog": {
+      "initialReadyMs": 1234.8,
+      "initialGridElements": 783,
+      "original39": {
+        "medianFilterToLayoutMs": 70.6,
+        "maxFilterToLayoutMs": 88.7
+      },
+      "expanded": {
+        "medianFilterToLayoutMs": 94.9,
+        "maxFilterToLayoutMs": 220.4
+      },
+      "catalogBooks": 663,
+      "catalogBytes": 565254,
+      "coverBytes": 22241346,
+      "allBooksReadWishlistReviewedRenderMs": 1070.1
+    },
+    "browsing": {
+      "indexAndSearchMs": 118.79999999981374,
+      "tiles": 36
+    },
+    "note": "The catalog benchmark is the isolated rerun after all other suites completed, using unchanged performance limits. The initial concurrent benchmark measured 260.5 ms against the 250 ms median limit and is recorded under command attempts. Browsing measurements come from the bounded concurrent full run."
+  },
+  "compatibility": {
+    "originalBookIdsPreserved": 493,
+    "unchangedStorageSchemaVersion": 15,
+    "jsonAndBokasafnBackups": "Passed old numeric-ID/title-based imports, repeated merges, conflicting reviews/ratings, date and challenge references, timer/statistics preservation and round trips.",
+    "urls": "Retained books, historical duplicate aliases, series/author direct links, refresh and Back/Forward passed."
+  },
+  "limitations": [
+    "Unknown series ordinals and unverified final lengths remain explicit review warnings; no order or finite length is guessed.",
+    "Publisher evidence supports new additions; 12 candidates remain withheld for audience review.",
+    "Mobile checks emulate Chromium viewports and do not substitute for physical iOS/Android testing."
+  ],
+  "fileSHA256": {
+    "Resources/books.json": "a368e7d5d34db4d1480301727b8c92b00222303afe4e5155c2f026d20cdf34ac",
+    "Resources/catalog-sources.json": "fa6f57e0aaea2fdf64ea70d376b5f635b4f9924d8694398f80a03558e5410584",
+    "Resources/series.json": "6dd7c74043a749bac0584bb1ec8ca13d8221ff9cd7c301b6834bbe62c41143e9",
+    "Resources/series-completion-audit.json": "f111974e71d915bdcb0e068217986bf79c7fa6f4c74c8350bf4158cb626402a7",
+    "Resources/catalog-identities.json": "52d56c1699a264126d7ed016e24f8b3c718153d4292b58da0bb6762337b778e9"
+  }
+}

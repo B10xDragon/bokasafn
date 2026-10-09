@@ -1,8 +1,9 @@
 # Series and author browsing
 
-The 493 active books and their IDs are unchanged. Forlagið evidence identifies
-59 series containing 94 books; 25 series contain multiple available books.
-348 author identities cover the entire catalog, including coauthors.
+The catalog now contains 663 active books with 351 stable author identities.
+62 series contain 276 assigned books; 56 have multiple available books.
+See [SERIES_COMPLETION.md](SERIES_COMPLETION.md) for the catalog-wide completion
+and title audit, verified additions, explicit gaps and audience holds.
 
 Bókaflokkar and Höfundar appear in the existing navigation. Direct links use
 `?series=eragon`, `?author=arnaldur-indridason` and `?browse=series|author`.
@@ -22,30 +23,27 @@ Unicode accents and Icelandic characters; names retain their original spelling.
 `Resources/series-audit.json` records a decision for every active book, with the
 publisher product URL, title, review date, captured HTML SHA-256 and evidence.
 Verified entries include the publisher description and related active book IDs
-used for cross-checking. Research reuses the complete Forlagið product-page
-captures verified on 2026-10-08 during the catalog audit; each capture was checked
-against its recorded hash and the active catalog's source URL. No other source
-was used. No titles, covers, biographies or portraits were added.
+used for cross-checking. All 493 original product pages were freshly verified on 2026-10-09, and every
+new product page was verified on Forlagið. Raw publisher titles remain separate
+from clean `catalogTitle` values. No other source, biography or portrait is used.
 
 `no_verified_evidence` means the reviewed publisher metadata did not establish
 literary series membership; it does not assert that a book is standalone.
 Publishing imprints and mentions of other works are excluded. Unnamed sequels
 and trilogies remain flagged rather than receiving invented series names.
 
-59 books require further review: 49 have unassigned/uncertain series metadata
-and ten have verified membership but unknown numbering. These remain available
-as books. Unknown ordinals appear last, explicitly labelled, and have no
-previous/next navigation. Vera's publisher title and description use conflicting
-numbering, so the conflicting ordinal was withheld. All uncertain titles and
-reasons are in the machine-readable audit.
+85 books require further series review: 49 unassigned/uncertain and 36 with
+verified membership but unknown numbering. These remain available as books.
+Unknown ordinals appear last, explicitly labelled, and have no previous/next
+navigation. Vera uses the publisher's product-title numbers consistently rather
+than mixing them with translated publication counts.
 
-Verified totals describe the publisher's series, not library completeness.
-Progress always counts only available catalog members, once per existing read
-ID. For example, Harry Potter has four available books (4–7), so progress is
-out of four even though the verified series total is seven. Split volumes of
-Bölvun múmíunnar use the explicit fyrri/seinni labels for order; no total is
-asserted. Author-character sequences use the publisher's labels, not a guessed
-bibliographic order.
+Verified `total` describes a finite main sequence. `knownTotal` records only a
+verified lower bound when the final length is unknown. The UI displays available
+versus known totals and missing/unresolved numbers separately from reading
+progress, which counts only available members once per read ID. Harry Potter
+has seven available works and progress out of seven; Eragon has three of four
+and progress out of three. Companion works are excluded from main-series counts.
 
 ## Maintaining the data
 
@@ -61,8 +59,8 @@ bibliographic order.
   Each coauthor gets a separate identity. Translators retain their existing role.
 - When editing the author registry, regenerate `js/browse-metadata.js` using
   `python scripts/build_browse_metadata.py`.
-- Run both `python scripts/validate_catalog.py` and
-  `python scripts/validate_browsing.py`, then the browsing tests.
+- Run `python scripts/validate_catalog.py`,
+  `python scripts/validate_browsing.py` and `python scripts/validate_completion.py`, then the browsing tests.
 
 The browsing validator fails on duplicate/stale identities, invalid references,
 missing audits or source mismatches, inconsistent names/totals, invalid ordinal
@@ -76,9 +74,17 @@ The site remains static with no new runtime dependency or backend.
 
 ## Validation
 
-See `Resources/browsing-test-results.json` for counts and measured performance.
+See `Resources/series-completion-tests.json` for current counts and measured performance;
+`Resources/browsing-test-results.json` records the earlier browsing implementation.
 The regression suite passes in UTC, Atlantic/Reykjavik and America/New_York.
 All existing browser suites and the seven new browsing groups pass. Mobile
 checks cover 320px and larger widths across every theme, with keyboard controls
 and screen-reader labels. Existing catalog tests also verify cover loading,
 recommendations, random selection, sorting, statistics and loading performance.
+
+Title changes keep the old display title in `titleAliases` and its historical
+identity in `legacyTitles`. Never overwrite an existing legacy title mapping to
+point at a different author's book. New additions require a reviewed event in
+`series-completion-audit.json`, fresh source evidence and an approved audience
+assessment. Keep the earlier cleanup audit unchanged. The historical curation
+script deliberately refuses replay after this later maintenance audit exists.

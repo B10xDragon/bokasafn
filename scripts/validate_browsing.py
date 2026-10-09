@@ -27,7 +27,7 @@ def inspect(books,series,authors,audit,sources):
   e=evidence.get(b['id'],{});source=sources.get(b['id'],{})
   require(e.get('sourceURL')==b.get('sourceURL')==source.get('url') and e.get('sourceHTMLSHA256')==source.get('sourceHTMLSHA256'),f'{b["id"]}: missing/mismatched Forlagið evidence')
   require(forlagid_product(e.get('sourceURL')) and bool(re.fullmatch('[0-9a-f]{64}',e.get('sourceHTMLSHA256',''))),f'{b["id"]}: invalid publisher URL/hash')
-  require(e.get('sourceTitle')==b['title'],f'{b["id"]}: publisher identity mismatch')
+  require(e.get('sourceTitle')==source.get('title') and source.get('catalogTitle',source.get('title'))==b['title'],f'{b["id"]}: publisher identity mismatch')
   require(e.get('status') in ['verified','uncertain','no_verified_evidence'],f'{b["id"]}: invalid audit status')
   s=b.get('series')
   if not s:
@@ -35,14 +35,18 @@ def inspect(books,series,authors,audit,sources):
    require(e.get('status')!='verified',f'{b["id"]}: verified series missing');continue
   registry=sdict.get(s.get('id'));require(registry is not None,f'{b["id"]}: unknown series ID')
   if not registry:continue
-  require(s.get('name')==registry['name'] and s.get('total')==registry.get('total'),f'{b["id"]}: inconsistent series definition')
+  require(s.get('name')==registry['name'] and s.get('total')==registry.get('total') and s.get('knownTotal')==registry.get('knownTotal') and s.get('numberingScope')==registry.get('numberingScope'),f'{b["id"]}: inconsistent series definition')
+  known=s.get('knownTotal');require(known is None or type(known) is int and known>0,f'{b["id"]}: invalid known series count')
   n=s.get('number');total=s.get('total');require(n is None or type(n) is int and n>0,f'{b["id"]}: invalid series number')
   require(total is None or type(total) is int and total>0 and (n is None or type(n) is int and n<=total),f'{b["id"]}: invalid series total')
   require(e.get('status')=='verified' and e.get('series')==s and bool(e.get('evidence')),f'{b["id"]}: series lacks reviewed publisher evidence')
   if n is None:warnings.append(f'{b["id"]}: verified membership; ordering remains unknown')
   members[s['id']].append(b)
  for sid,items in members.items():
+  require(sdict[sid].get('knownTotal',max(len(items),1))>=len(items),f'{sid}: known count smaller than available membership')
   numbers=[b['series']['number'] for b in items if b['series']['number'] is not None]
+  require(sdict[sid].get('knownTotal',max(numbers,default=1))>=max(numbers,default=1),f'{sid}: known count smaller than a verified ordinal')
+  require(not sdict[sid].get('total') or sdict[sid].get('knownTotal',sdict[sid]['total'])==sdict[sid]['total'],f'{sid}: finite total and known count disagree')
   require(len(numbers)==len(set(numbers)),f'{sid}: repeated series numbers require explicit edition/subseries review')
  require(set(members)==set(sdict),'Series registry contains empty/stale groups')
  require({aid for b in books for aid in b.get('authorIds',[])}==set(adict),'Author registry contains empty/stale identities')

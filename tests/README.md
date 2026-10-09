@@ -135,8 +135,8 @@ strict errors versus likely-match warnings and legitimate same-title/different-a
 and numbered-series cases. Frozen pre-cleanup identities replace the former
 assumption that original metadata could never be corrected.
 
-Series and author browsing adds `node tests/browse.test.cjs` (10 unit checks),
-`python tests/browsing_tools.py` (7 validator checks), and
+Series and author browsing adds `node tests/browse.test.cjs` (13 unit checks),
+`python tests/browsing_tools.py` (8 validator checks), and
 `python tests/browse_browser.py` (7 real-server browser groups). These exercise
 verified ordering with gaps, unknown numbers, multiple authors, conservative
 name normalization, typed search, catalog-only progress, direct links and
@@ -145,3 +145,22 @@ layouts, keyboard focus and complete-catalog performance.
 
 Run `python scripts/validate_browsing.py` after changing catalog metadata;
 see [BROWSING.md](../BROWSING.md) for the source review and maintenance process.
+
+Complete-series and title maintenance adds:
+
+```sh
+python scripts/validate_completion.py
+python tests/completion_tools.py
+python tests/completion_browser.py
+```
+
+Run all three catalog validators, all Python tool suites, the Node regression
+suite in UTC/New York/Reykjavík, `node tests/browse.test.cjs`, and all nine browser
+suites (`browser`, `live_browser`, `features_browser`, `backups_browser`,
+`clipboard_browser`, `catalog_browser`, `cleanup_browser`, `browse_browser`,
+`completion_browser`). The completion checks cover finite/unknown totals,
+missing and unknown numbers, title aliases, all original IDs and metadata,
+held unsuitable additions, cover evidence, cleaned book dialogs, historical
+edition aliases, conflict preservation, old-title imports and mobile notes.
+See [SERIES_COMPLETION.md](../SERIES_COMPLETION.md) and its machine-readable test
+report for the latest full-run results.

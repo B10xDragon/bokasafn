@@ -8,7 +8,7 @@ class BrowsingMetadata(unittest.TestCase):
   self.books=[{'id':1,'title':'Bók','author':'J. K. Höfundur','authorIds':['hofundur'],'sourceURL':'https://www.forlagid.is/vara/bok/','series':{'id':'saga','name':'Saga','number':1,'total':3}}]
   self.series=[{'id':'saga','name':'Saga','total':3}];self.authors=[{'id':'hofundur','name':'J.K. Höfundur','aliases':[]}]
   self.audit=[{'bookId':1,'status':'verified','sourceURL':self.books[0]['sourceURL'],'sourceHTMLSHA256':'a'*64,'sourceTitle':'Bók','series':copy.deepcopy(self.books[0]['series']),'evidence':'Fyrsta bókin í þríleiknum.'}]
-  self.sources={1:{'url':self.books[0]['sourceURL'],'sourceHTMLSHA256':'a'*64}}
+  self.sources={1:{'title':'Bók','url':self.books[0]['sourceURL'],'sourceHTMLSHA256':'a'*64}}
  def result(self):return inspect(self.books,self.series,self.authors,self.audit,self.sources)
  def test_valid_gaps_and_name_punctuation(self):self.assertFalse(self.result()['errors'])
  def test_missing_number_warns_without_inventing_order(self):
@@ -30,4 +30,9 @@ class BrowsingMetadata(unittest.TestCase):
  def test_duplicate_author_variants_and_incomplete_audit_fail(self):
   self.authors.append({'id':'other','name':'J. K. Höfundur','aliases':[]});self.assertTrue(self.result()['errors'])
   self.authors.pop();self.audit=[];self.assertTrue(self.result()['errors'])
+ def test_known_minimum_cannot_hide_a_verified_volume(self):
+  self.series[0].pop('total');self.series[0]['knownTotal']=2
+  self.books[0]['series']={'id':'saga','name':'Saga','number':3,'knownTotal':2}
+  self.audit[0]['series']=copy.deepcopy(self.books[0]['series'])
+  self.assertTrue(any('smaller than a verified ordinal' in e for e in self.result()['errors']))
 if __name__=='__main__':unittest.main()

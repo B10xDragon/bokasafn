@@ -154,6 +154,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                     pages: Number.isFinite(Number(book.pages)) && Number(book.pages) > 0 ? Number(book.pages) : '',
                     publicationYear: Number.isInteger(book.publicationYear) ? book.publicationYear : null,
                     series: book.series || null,
+                    titleAliases: Array.isArray(book.titleAliases) ? book.titleAliases : [],
                     authorIds: Array.isArray(book.authorIds) ? book.authorIds : [],
                     sourceURL: typeof book.sourceURL === 'string' ? book.sourceURL : '',
                     searchText: (String(book.title || '') + '\n' + String(book.author || '')).normalize('NFC').toLocaleLowerCase('is')

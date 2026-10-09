@@ -37,7 +37,7 @@ def inspect_books(books,root=ROOT,sources=None,audit=None,identities=None):
    check(r is not None,label,'missing source evidence')
    if r:
     check(r.get('url')==b.get('sourceURL'),label,'source URL mismatch')
-    check(r.get('title')==b.get('title') and r.get('catalogAuthor',r.get('author'))==b.get('author'),label,'source title/author mismatch')
+    check(r.get('catalogTitle',r.get('title'))==b.get('title') and r.get('catalogAuthor',r.get('author'))==b.get('author'),label,'source title/author mismatch')
     imageurl=urlparse(r.get('coverSourceURL',''));check(imageurl.scheme=='https' and imageurl.hostname in {'www.forlagid.is','forlagid.is'} and imageurl.path.startswith('/wp-content/uploads/'),label,'invalid cover source')
     check(r.get('edition',{}).get('pages')==pages,label,'source page count mismatch')
     check(r.get('edition',{}).get('year')==year,label,'source publication year mismatch')
@@ -70,17 +70,22 @@ def validate(root=ROOT):
  source_list=json.loads((root/'Resources/catalog-sources.json').read_text());sources={r['id']:r for r in source_list}
  audit=json.loads((root/'Resources/catalog-audit.json').read_text());entries={r['id']:r for r in audit['entries']}
  identities=json.loads((root/'Resources/catalog-identities.json').read_text())
- report=inspect_books(books,root,sources,entries,identities)
+ maintenance_path=root/'Resources/series-completion-audit.json'
+ maintenance=json.loads(maintenance_path.read_text()) if maintenance_path.exists() else {}
+ additions={e['bookId']:e for e in maintenance.get('additions',[])}
+ current_audit={**entries,**{bid:{**e,'status':'retained'} for bid,e in additions.items()}}
+ report=inspect_books(books,root,sources,current_audit,identities)
  if len(sources)!=len(source_list):report['errors'].append('Duplicate source ID')
  if set(sources)!=set(b['id'] for b in books):report['errors'].append('Source/catalog membership mismatch')
  baseline=json.loads((root/'tests/fixtures/pre-cleanup-books.json').read_text())
  if set(entries)!=set(b['id'] for b in baseline) or len(entries)!=len(audit['entries']):report['errors'].append('Audit must cover every original ID exactly once')
- if audit['counts']['original']!=len(baseline) or audit['counts']['final']!=len(books):report['errors'].append('Audit count mismatch')
+ if audit['counts']['original']!=len(baseline) or audit['counts']['final']+len(additions)!=len(books):report['errors'].append('Audit count mismatch')
  counts=audit['counts']
  for field,kind in [('duplicatesRemoved','duplicate'),('childrenRemoved','children'),('comicsRemoved','comic')]:
   if counts[field]!=sum(e['status']=='removed' and e.get('kind')==kind for e in entries.values()):report['errors'].append('Audit reason count mismatch: '+field)
  if counts['manualReview']!=sum(e['status']=='uncertain' for e in entries.values()):report['errors'].append('Manual review count mismatch')
  expected_aliases={str(e['id']):e['duplicateOf'] for e in entries.values() if e.get('duplicateOf')}
+ expected_aliases.update({str(e['removedId']):e['retainedId'] for e in maintenance.get('duplicateAliases',[])})
  if identities['aliases']!=expected_aliases:report['errors'].append('Alias mapping differs from reviewed duplicate decisions')
  archived={b['id'] for b in identities['archived']};aliases=identities['aliases']
  for b in baseline:

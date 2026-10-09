@@ -38,6 +38,17 @@ function seriesProgress(series, data = userData) {
 }
 function availableBookCount(count) { return `${count} ${count === 1 ? 'bók' : 'bækur'} í safninu`; }
 function seriesProgressText(progress) { return `${progress.read} af ${progress.available} ${progress.available === 1 ? 'bók lesin' : 'bókum lesnar'}`; }
+function seriesAvailability(series) {
+    const numbers = [...new Set(series.books.map(b => b.series.number).filter(n => Number.isInteger(n) && n > 0))];
+    const known = series.total || series.knownTotal || Math.max(series.books.length, ...numbers);
+    const missing = Array.from({length: known}, (_, i) => i + 1).filter(n => !numbers.includes(n));
+    const unknown = series.books.filter(b => b.series.number == null).length;
+    return {known, available: series.books.length, missing, unknown, complete: Boolean(series.total && !missing.length && !unknown)};
+}
+function seriesAvailabilityText(series) {
+    const info = seriesAvailability(series);
+    return info.known ? `${info.available} af ${series.total ? '' : 'að minnsta kosti '}${info.known} bókum í safninu` : `${availableBookCount(info.available)} · Heildarfjöldi óstaðfestur`;
+}
 function seriesNeighbors(book) {
     if (!book?.series || book.series.number == null) return {};
     const books = browseIndex.series.get(book.series.id)?.books.filter(b => b.series.number != null) || [];
@@ -45,7 +56,7 @@ function seriesNeighbors(book) {
     return i < 0 ? {} : {previous: books[i-1], next: books[i+1]};
 }
 function catalogMatchesSearch(book, query) {
-    return browseFold(book.title + '\n' + book.author + '\n' + (book.series?.name || '')).includes(browseFold(query));
+    return browseFold(book.title + '\n' + (book.titleAliases || []).join('\n') + '\n' + book.author + '\n' + (book.series?.name || '')).includes(browseFold(query));
 }
 function browseSuggestions(query) {
     const q = browseFold(query).trim();
@@ -106,13 +117,14 @@ function refreshBrowse(reset = false) {
         container.innerHTML=browseBookCards(items.slice(0,browseState.limit));
         const related=document.getElementById('browse-related');
         if(kind==='series' && entry) {
-            const progress=seriesProgress(entry);const names=[...new Set(entry.books.flatMap(b=>b.author.split(', ')))];
-            related.innerHTML=`<p>${escapeHTML(names.join(' · '))}</p><p role="status">${seriesProgressText(progress)} í safninu</p><progress max="${progress.available}" value="${progress.read}" aria-label="Lestrarframvinda"></progress><p class="feature-note">${entry.total?`Forlagið tilgreinir ${entry.total} bækur í þessum bókaflokki. `:''}Hér birtast aðeins bækur sem eru í safninu.${entry.books.some(b=>b.series.number==null)?' Bækur með óstaðfesta röð birtast aftast; ekki er gert ráð fyrir röðun þeirra.':''}</p>`;
+            const progress=seriesProgress(entry);const availability=seriesAvailability(entry);const names=[...new Set(entry.books.flatMap(b=>b.author.split(', ')))];
+            const scopeNote = entry.numberingScope === 'Icelandic-publication-order' ? ' Röðin fylgir staðfestri íslenskri útgáfuröð hjá Forlaginu.' : entry.numberingScope === 'publisher-story-chronology' ? ' Röðin fylgir innri tímaröð sögunnar hjá Forlaginu.' : '';
+            related.innerHTML=`<p>${escapeHTML(names.join(' · '))}</p><p class="series-availability">${seriesAvailabilityText(entry)}</p><p role="status">${seriesProgressText(progress)} í safninu</p><progress max="${progress.available}" value="${progress.read}" aria-label="Lestrarframvinda"></progress><p class="feature-note">${entry.total?`Forlagið tilgreinir ${entry.total} bækur í aðalröðinni. `:'Heildarlengd aðalraðarinnar er óstaðfest; þekktar raðtölur sýna aðeins staðfest lágmark. '}Hér birtast aðeins bækur sem eru í safninu.${scopeNote}${entry.books.some(b=>b.series.number==null)?' Bækur með óstaðfesta röð birtast aftast; ekki er gert ráð fyrir röðun þeirra.':''}</p>${availability.missing.length?`<p class="series-missing">${availability.unknown?'Óstaðfest eða vantar bókarnúmer':'Vantar bókarnúmer'}: ${availability.missing.join(', ')}.${availability.unknown?' Bækur með óstaðfest númer geta samsvarað þessum eyðum.':''}</p>`:''}`;
         } else related.innerHTML=entry?`<h3>Bókaflokkar höfundar</h3><div class="feature-actions">${[...new Set(entry.books.filter(b=>b.series).map(b=>b.series.id))].map(s=>browseLink('series',s,browseIndex.series.get(s).name)).join('') || '<p>Enginn staðfestur bókaflokkur í safninu.</p>'}</div>`:'';
     } else {
         items=[...entries.values()].filter(x=>browseFold([x.name,...(x.aliases || [])].join(' ')).includes(query)).sort((a,b)=>a.name.localeCompare(b.name,'is'));
         document.getElementById('browse-related').innerHTML='';
-        container.innerHTML=items.slice(0,browseState.limit).map(x=>{const p=kind==='series'?seriesProgress(x):null;return `<article class="browse-tile"><div class="browse-cover-stack" aria-hidden="true">${x.books.slice(0,3).map(b=>`<img alt="" src="${escapeHTML(b.cover)}" loading="lazy" decoding="async" onerror="handleCoverError(this)">`).join('')}</div><h3>${browseLink(kind,x.id,x.name)}</h3><p>${availableBookCount(x.books.length)}</p>${p?`<p>${escapeHTML([...new Set(x.books.map(b=>b.author))].join(' · '))}</p><p>${seriesProgressText(p)}</p>`:''}</article>`;}).join('');
+        container.innerHTML=items.slice(0,browseState.limit).map(x=>{const p=kind==='series'?seriesProgress(x):null;return `<article class="browse-tile"><div class="browse-cover-stack" aria-hidden="true">${x.books.slice(0,3).map(b=>`<img alt="" src="${escapeHTML(b.cover)}" loading="lazy" decoding="async" onerror="handleCoverError(this)">`).join('')}</div><h3>${browseLink(kind,x.id,x.name)}</h3><p>${kind==='series'?seriesAvailabilityText(x):availableBookCount(x.books.length)}</p>${p?`<p>${escapeHTML([...new Set(x.books.map(b=>b.author))].join(' · '))}</p><p>${seriesProgressText(p)}</p>`:''}</article>`;}).join('');
     }
     document.getElementById('browse-count').textContent=`Sýnir ${Math.min(items.length,browseState.limit)} af ${items.length} ${id?'bókum':kind==='series'?'bókaflokkum':'höfundum'}`;
     if (!items.length) container.innerHTML='<p>Engar niðurstöður. Prófaðu aðra leit eða síur.</p>';

@@ -236,16 +236,44 @@ test('old JSON and BOKASAFN backups migrate duplicate IDs and preserve archived 
 console.log(`${passed} total regression tests passed`);
 test('all deployed duplicate mappings preserve identities and old saved history',()=>{
  const identities=JSON.parse(fs.readFileSync(path.join(root,'Resources/catalog-identities.json')));
- assert.deepEqual(identities.aliases,{'1030282':37,'1099991':29,'1275924':21});
+ for(const [old,target] of Object.entries({'1030282':37,'1099991':29,'1275924':21}))assert.equal(identities.aliases[old],target);
  const frozen=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/pre-cleanup-books.json')));
  const h=harness();for(const book of frozen){assert(h.run(`historyBook(${book.id})`));assert.equal(h.run(`canonicalBookId(${book.id})`),identities.aliases[book.id]||book.id);}
  const refs=Object.entries(identities.aliases).flatMap(([id,target])=>[Number(id),target]);h.ctx.refs=refs;
- h.run('userData=normalizeUserData({version:15,read:refs,liked:refs,totalSeconds:900});');assert.equal(h.run('readingMetrics().books'),3);assert.equal(h.data().totalSeconds,900);
+ h.run('userData=normalizeUserData({version:15,read:refs,liked:refs,totalSeconds:900});');assert.equal(h.run('readingMetrics().books'),new Set(Object.values(identities.aliases)).size);assert.equal(h.data().totalSeconds,900);
 });
 test('rollback preserves exact stored text and denied rollback never overwrites the original',()=>{
  const raw=' { "version":15, "read":[1030282,37], "totalSeconds":123 } ';
  const h=harness({library_v15:raw});h.run('loadUserData()');assert.equal(h.storage.get('library_catalog_backup_20261008'),raw);assert.deepEqual(h.data().read,[37]);
  const denied=harness({library_v15:raw});denied.ctx.localStorage.setItem=(key,value)=>{if(key==='library_catalog_backup_20261008')throw Error('quota');denied.storage.set(key,value);};
  denied.run('loadUserData();saveUserData()');assert.equal(denied.storage.get('library_v15'),raw);assert.equal(denied.run('storageWritable'),false);
+});
+console.log(`${passed} total regression tests passed`);
+
+test('all pre-completion IDs and old-title backups preserve their original work and statistics',()=>{
+ const old=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/pre-series-completion-books.json')));const h=harness();h.ctx.old=old;
+ h.run('userData=normalizeUserData({version:15,read:old.map(b=>b.id),liked:old.map(b=>b.id),session:null,totalSeconds:456,dailyProgress:{"2026-01-01":456}})');
+ assert.equal(h.run('readingMetrics().books'),old.length);assert.equal(h.data().totalSeconds,456);
+ const before=h.data();h.run('userData=normalizeUserData(parseBackupLine(encodeBackupLine(createReadingBackup())).data)');assert.deepEqual(h.data(),before);
+ h.run('userData=normalizeUserData({version:14,read:old.map(b=>b.title)})');assert.deepEqual(new Set(h.data().read),new Set(old.map(b=>b.id)));
+});
+test('identical new title by another author cannot steal legacy archived reading history',()=>{
+ const h=harness();assert(catalog.some(b=>b.title==='Allt eða ekkert'&&b.author.includes('Simona')));
+ h.run('userData=parseBackup(JSON.stringify({version:14,read:["Allt eða ekkert"],liked:["Allt eða ekkert"],reviews:{"Allt eða ekkert":{rating:4,comment:"Nicole Yoon"}}})).data');
+ assert.deepEqual(h.data().read,[2]);assert.deepEqual(h.data().liked,[2]);assert.equal(h.data().reviews[2].comment,'Nicole Yoon');
+});
+test('historical Harry Potter edition merging retains conflicting ratings without double-counting',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,read:[1126426,1110431],liked:[1126426],reviews:{1126426:{rating:2,comment:"Old edition"},1110431:{rating:5,comment:"Prose"}},completedDates:{1126426:"2026-01-01"},session:null,totalSeconds:123})');
+ assert.deepEqual(h.data().read,[1110431]);assert.deepEqual(h.data().liked,[1110431]);assert.equal(h.run('readingMetrics().books'),1);assert.equal(h.data().totalSeconds,123);assert.equal(h.data().reviewConflicts.length,1);assert.equal(h.data().completedDates[1110431],'2026-01-01');
+ const before=h.data();h.run('userData=normalizeUserData(parseBackupLine(encodeBackupLine(createReadingBackup())).data)');assert.deepEqual(h.data(),before);
+});
+console.log(`${passed} total regression tests passed`);
+
+test('publisher-renamed editions preserve both identity and conflicting reviews in old backups',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,read:[1219882,1297974,1239308,1297976],reviews:{1219882:{rating:2,comment:"Undir yfirborðinu"},1297974:{rating:5,comment:"Heimilishjálpin"}},session:null,totalSeconds:321})');
+ assert.deepEqual(new Set(h.data().read),new Set([1297974,1297976]));assert.equal(h.run('readingMetrics().books'),2);assert.equal(h.data().reviewConflicts.length,1);assert.equal(h.data().totalSeconds,321);
+ const before=h.data();h.run('userData=normalizeUserData(parseBackupLine(encodeBackupLine(createReadingBackup())).data)');assert.deepEqual(h.data(),before);
+ assert.equal(h.run('parseBackup(JSON.stringify({version:14,read:["Undir yfirborðinu"]})).data.read[0]'),1297974);
+ assert.equal(h.run('parseBackup(JSON.stringify({version:14,read:["Það sem þernan sér"]})).data.read[0]'),1297976);
 });
 console.log(`${passed} total regression tests passed`);

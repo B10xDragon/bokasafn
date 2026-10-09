@@ -1738,5 +1738,20 @@
     "id": "asgeir-hvitaskald",
     "name": "Ásgeir Hvítaskáld",
     "aliases": []
+  },
+  {
+    "id": "artemis-fowl",
+    "name": "Artemis Fowl",
+    "aliases": []
+  },
+  {
+    "id": "stieg-larsson",
+    "name": "Stieg Larsson",
+    "aliases": []
+  },
+  {
+    "id": "david-lagercrantz",
+    "name": "David Lagercrantz",
+    "aliases": []
   }
 ]

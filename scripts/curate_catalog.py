@@ -11,6 +11,7 @@ from catalog_categories import normalize_categories
 from catalog_language import icelandic_evidence
 ROOT=Path(__file__).resolve().parents[1]
 def apply(verified,decisions,cache):
+ if (ROOT/'Resources/series-completion-audit.json').exists():raise ValueError('Historical curation replay would discard reviewed series additions/titles. Maintain the completion audit and run the current catalog validators instead.')
  current_path=ROOT/'Resources/books.json'
  current={b['id']:b for b in json.loads(current_path.read_text())} if current_path.exists() else {}
  original=json.loads((ROOT/'tests/fixtures/pre-cleanup-books.json').read_text())

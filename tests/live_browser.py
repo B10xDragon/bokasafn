@@ -57,7 +57,7 @@ def context(browser, **options):
 
 def ready(page):
     page.goto(URL,wait_until='networkidle')
-    page.wait_for_function(f'appReady && window.featuresReady && allBooks.length==={len(CATALOG)}')
+    page.wait_for_function(f'typeof appReady !== "undefined" && appReady && window.featuresReady && allBooks.length==={len(CATALOG)}')
     page.evaluate('document.fonts.ready')
     page.wait_for_timeout(300)
 
@@ -141,7 +141,7 @@ with sync_playwright() as p:
             page.fill('#book-search',query)
             def fold(value):
                 return ''.join(c for c in unicodedata.normalize('NFKD',value).lower() if not unicodedata.combining(c)).replace('þ','th').replace('ð','d').replace('æ','ae')
-            expected=[book['id'] for book in CATALOG if fold(query) in fold(book['title']+'\n'+book['author']+'\n'+book.get('series',{}).get('name',''))]
+            expected=[book['id'] for book in CATALOG if fold(query) in fold(book['title']+'\n'+'\n'.join(book.get('titleAliases',[]))+'\n'+book['author']+'\n'+book.get('series',{}).get('name',''))]
             actual=page.locator('#book-grid .book-card').evaluate_all('(cards)=>cards.map(card=>Number(card.dataset.bookId))')
             assert page.evaluate('filteredBooks.map(book=>book.id)')==expected,(query,expected)
             assert actual==expected[:60],(query,actual,expected[:60])
