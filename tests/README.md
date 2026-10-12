@@ -234,3 +234,22 @@ Formspree URL: **no live emails are sent and mailbox delivery is not verified**.
 The documented provider contract uses a JSON `next` string on HTTP success.
 Owner activation and the required real delivery test are in
 `BOOK_SUGGESTIONS_SETUP.md`.
+
+Activated Formspree endpoint checks:
+
+```sh
+node tests/suggestions.test.cjs
+python tests/suggestions_browser.py
+python tests/suggestions_browser.py --engine firefox
+PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 python tests/suggestions_browser.py --engine webkit
+```
+
+The configured endpoint is intercepted in every suggestion browser run. No real
+POSTs or test emails are sent. Tests cover the enabled owner-provided form ID,
+JSON POST headers and field names, `next`/`ok` acceptance, unexpected bodies,
+server-side field errors, malformed server HTML, network failures, unavailable
+service and rate limits. They verify the exact Icelandic success text, retained
+drafts, duplicate-submit prevention and layouts across all themes. Firefox and
+Linux WebKit runs exercise the same form flow; Linux WebKit does not establish
+physical Safari/iOS delivery. Recipient verification and the single real mailbox
+test remain separate owner steps in `BOOK_SUGGESTIONS_SETUP.md`.

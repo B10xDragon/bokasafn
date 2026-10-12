@@ -42,6 +42,24 @@ function suggestionPayload(values) {
         ...(values.series ? {'Bókaflokkur':values.series} : {}), ...(values.reason ? {'Ástæða fyrir tillögu':values.reason} : {}),
         ...(values.url ? {'Hlekkur á Forlagið':values.url} : {}), message:body.join('\n\n'), _gotcha:''};
 }
+function formspreeAccepted(status, result) {
+    return status >= 200 && status < 300 && result !== null && typeof result === 'object'
+        && !Array.isArray(result) && !('error' in result) && !('errors' in result)
+        && result.ok !== false && (result.ok === true || (typeof result.next === 'string' && result.next.length > 0));
+}
+function formspreeFeedback(status, result) {
+    if (status === 429) return {message:'Of margar sendingar. Bíddu aðeins og reyndu aftur.'};
+    const names = {'Bókatitill':'title',title:'title','Höfundur':'author',author:'author','Bókaflokkur':'series',series:'series','Ástæða fyrir tillögu':'reason',reason:'reason','Hlekkur á Forlagið':'url',url:'url'};
+    const labels = {title:'bókatitilinn',author:'nafn höfundar',series:'bókaflokkinn',reason:'ástæðuna fyrir tillögunni',url:'hlekkinn á Forlagið'};
+    if ([400,422].includes(status) && Array.isArray(result?.errors)) {
+        for (const error of result.errors) {
+            const field = Object.prototype.hasOwnProperty.call(names,error?.field) ? names[error.field] : null;
+            if (field) return {field,message:'Vinsamlegast athugaðu '+labels[field]+' og reyndu aftur.'};
+        }
+    }
+    if ([401,403,404].includes(status)) return {message:'Sendingar eru ekki tiltækar núna. Reyndu aftur síðar.'};
+    return {message:'Ekki tókst að staðfesta sendingu. Textinn þinn er varðveittur hér; reyndu aftur síðar.'};
+}
 async function submitRecommendation(event) {
     event?.preventDefault();
     if (suggestionSending) return;
@@ -60,18 +78,21 @@ async function submitRecommendation(event) {
     const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),20000);
     try {
         const response=await fetch(endpoint,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(suggestionPayload(values)),signal:controller.signal,credentials:'omit',referrerPolicy:'strict-origin-when-cross-origin',redirect:'error'});
-        if (response.status===429) throw new Error('rate');
-        const result=await response.json();
-        // Formspree core v4 recognises a JSON next string as success.
-        // Do not redirect there, and do not accept error or unrecognised bodies.
-        if (!response.ok || !result || typeof result.next !== 'string' || 'errors' in result || 'error' in result || result.ok === false) {
-            throw new Error('service');
+        const result = await response.json().catch(() => null);
+        if (!formspreeAccepted(response.status,result)) {
+            const feedback = formspreeFeedback(response.status,result);
+            suggestionStatus(feedback.message,true);
+            if (feedback.field) {
+                const input=document.getElementById(fields[feedback.field]);
+                input.setAttribute('aria-invalid','true');input.focus();
+            }
+            return;
         }
-        // Acceptance confirms provider receipt, not final delivery to the mailbox.
-        suggestionStatus('Tillagan hefur verið móttekin. Takk fyrir!');
+        // Service acceptance confirms receipt, not final delivery to the mailbox.
+        suggestionStatus('Tillagan þín hefur verið send!');
         // Keep the submitted draft visible. Never store visitors’ drafts in browser storage.
     } catch (error) {
-        suggestionStatus(error.message==='rate' ? 'Of margar sendingar. Bíddu aðeins og reyndu aftur.' : 'Ekki tókst að staðfesta sendingu. Textinn þinn er varðveittur hér; reyndu aftur síðar.',true);
+        suggestionStatus(formspreeFeedback(0,null).message,true);
     } finally {
         clearTimeout(timeout);suggestionSending=false;form.setAttribute('aria-busy','false');syncSuggestionAvailability();
     }
