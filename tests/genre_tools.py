@@ -12,12 +12,12 @@ class GenreAudit(unittest.TestCase):
  def test_real_hunger_games_and_fantasy_core(self):
   for b in self.books:
    sid=b.get('series',{}).get('id')
-   if sid=='hungurleikarnir':self.assertTrue({'Vísindaskáldskapur','Dystópía','Spenna'}<=set(b['categories']))
+   if sid=='hungurleikarnir':self.assertTrue({'Vísindaskáldskapur og dystópía','Spenna og glæpasögur'}<=set(b['categories']))
    if sid in ['harry-potter','eragon']:self.assertTrue({'Fantasía','Ævintýri'}<=set(b['categories']))
    if b['id'] in [1128809,1261322]:self.assertNotIn('Fantasía',b['categories'])
-   if b['id'] in [4,1166304]:self.assertIn('Vísindaskáldskapur',b['categories'])
+   if b['id'] in [4,1166304]:self.assertIn('Vísindaskáldskapur og dystópía',b['categories'])
  def test_normalizes_aliases_case_and_composed_icelandic(self):
-  for old,new in [('Fantasia','Fantasía'),('GLÆPIR','Glæpasögur'),('Vi\u0301sindaska\u0301ldsaga','Vísindaskáldskapur'),('Hrollvekja','Hrollvekjur')]:self.assertEqual(normalize_genre(old,self.tax),new)
+  for old,new in [('Fantasia','Fantasía'),('GLÆPIR','Spenna og glæpasögur'),('Vi\u0301sindaska\u0301ldsaga','Vísindaskáldskapur og dystópía'),('Hrollvekja','Hrollvekjur og ráðgátur')]:self.assertEqual(normalize_genre(old,self.tax),new)
   self.assertIsNone(normalize_genre(None,self.tax))
  def test_empty_and_invalid_genre_types_fail_safely(self):
   for bad in [None,{},'Fantasía',[],[None],[{}],['']]:
@@ -39,18 +39,30 @@ class GenreAudit(unittest.TestCase):
  def test_legitimate_individual_secondary_genre_is_allowed(self):
   self.synthetic([['Fantasía','Ævintýri'],['Fantasía','Ævintýri','Rómantík'],['Fantasía','Ævintýri']]);self.assertFalse(self.result(False)['errors']);self.assertFalse(self.result(False)['warnings'])
  def test_excessive_tagging_is_a_review_warning(self):
-  self.synthetic([['Fantasía','Ævintýri','Rómantík','Spenna','Hrollvekjur']]);r=self.result(False);self.assertFalse(r['errors']);self.assertTrue(any('excessive' in x for x in r['warnings']))
- def test_potential_content_contradiction_is_not_automatic_rejection(self):
-  self.synthetic([['Fantasía','Raunsæjar skáldsögur']]);r=self.result(False);self.assertFalse(r['errors']);self.assertTrue(any('speculative' in x for x in r['warnings']))
+  self.synthetic([['Fantasía','Ævintýri','Rómantík','Spenna og glæpasögur','Hrollvekjur og ráðgátur']]);r=self.result(False);self.assertFalse(r['errors']);self.assertTrue(any('excessive' in x for x in r['warnings']))
+ def test_broad_fiction_does_not_claim_exclusive_realism(self):
+  self.synthetic([['Fantasía','Skáldsögur og skáldskapur']]);r=self.result(False);self.assertFalse(r['errors']);self.assertFalse(r['warnings'])
  def test_missing_audit_and_publisher_source_fail(self):
   self.audit['entries'].pop();self.assertTrue(self.result()['errors'])
   self.audit['entries'][0]['publisherEvidence']['url']='https://www.example.org/book';self.assertTrue(any('Forlagið' in x for x in self.result()['errors']))
  def test_manual_review_fallback_cannot_be_claimed_as_verified(self):
-  e=next(e for e in self.audit['entries'] if 'Skáldskapur' in e['newGenres']);e['status']='reviewed';self.assertTrue(any('fallback' in x for x in self.result()['errors']))
+  e=next(e for e in self.audit['entries'] if 'Skáldskapur' in e['classification']['detailedGenres']);e['status']='reviewed';self.assertTrue(any('fallback' in x for x in self.result()['errors']))
  def test_no_book_identity_or_other_metadata_changed(self):
   old=json.loads((ROOT/'tests/fixtures/pre-genre-audit-books.json').read_text());self.assertEqual({b['id'] for b in old},{b['id'] for b in self.books})
   by={b['id']:b for b in self.books}
   for b in old:self.assertEqual({k:v for k,v in b.items() if k!='categories'},{k:v for k,v in by[b['id']].items() if k not in ['categories','classification']})
  def test_taxonomy_alias_targets_are_valid(self):
   self.tax['aliases']['Gamalt']='Óþekkt';self.assertTrue(any('unknown target' in x for x in self.result(False)['errors']))
+ def test_fourteen_broad_groups_and_one_to_three_tags(self):
+  self.assertEqual(len(self.tax['genres']),14)
+  self.assertTrue(all(1<=len(b['categories'])<=3 for b in self.books))
+ def test_crime_mysteries_are_not_automatically_horror(self):
+  for b in self.books:
+   old=b['classification']['detailedGenres']
+   if 'Glæpasögur' in old and 'Leyndardómar' in old and 'Hrollvekjur' not in old:self.assertNotIn('Hrollvekjur og ráðgátur',b['categories'])
+ def test_simplification_preserves_original_evidence_and_classification_properties(self):
+  before=json.loads((ROOT/'tests/fixtures/pre-simplified-genres.json').read_text());by={b['id']:b for b in self.books}
+  for old in before:
+   new=by[old['id']];self.assertEqual(old['categories'],new['classification']['detailedGenres'])
+   for key in ['literaryForm','audienceTags','translated','legacyFacets']:self.assertEqual(old['classification'][key],new['classification'][key])
 if __name__=='__main__':unittest.main()

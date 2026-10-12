@@ -6,8 +6,8 @@ with sync_playwright() as p:
  def filtering():
   reset(page);page.evaluate('activeCategories=["Vísindaskáldsaga","Dystópía"];applyFilters()')
   ids=page.evaluate('filteredBooks.map(b=>b.id)');assert {35,36,38}<=set(ids)
-  assert page.evaluate('filteredBooks.every(b=>b.categories.includes("Vísindaskáldskapur")&&b.categories.includes("Dystópía"))')
-  assert page.evaluate('activeCategories[0]')=='Vísindaskáldskapur'
+  assert page.evaluate('filteredBooks.every(b=>b.categories.includes("Vísindaskáldskapur og dystópía"))')
+  assert page.evaluate('activeCategories[0]')=='Vísindaskáldskapur og dystópía'
   page.evaluate('activeCategories=["Fantasía","Ævintýri"];applyFilters()');assert page.evaluate('filteredBooks.some(b=>b.series?.id==="eragon")')
  check('canonical and legacy multi-genre filters with complete series',filtering)
  def search():
@@ -19,12 +19,12 @@ with sync_playwright() as p:
  def recommendations():
   reset(page);page.evaluate('userData=normalizeUserData({version:15,read:[35],reviews:{35:{rating:5,comment:"Frábær dystópía"}}});updateStatsUI();document.getElementById("recommendations-panel").open=true')
   page.wait_for_timeout(200);assert page.evaluate('recommendations().length')==6;assert page.evaluate('recommendations().some(r=>[36,38].includes(r.book?.id||r.id))')
-  assert page.evaluate('allBooks.filter(b=>[36,38].includes(b.id)).every(b=>b.categories.includes("Dystópía"))')
+  assert page.evaluate('allBooks.filter(b=>[36,38].includes(b.id)).every(b=>b.categories.includes("Vísindaskáldskapur og dystópía"))')
  check('personalized recommendations retain meaningful corrected genres',recommendations)
  def stats():
   page.evaluate('userData=normalizeUserData({version:15,read:[35,36,38],totalSeconds:420});updateStatsUI();showPage("stats")')
   assert page.evaluate('userData.totalSeconds')==420
-  assert page.evaluate('readingMetrics().genres')==3
+  assert page.evaluate('readingMetrics().genres')==2
   assert page.evaluate('historyBooks().filter(b=>userData.read.includes(b.id)).every(b=>!bookGenres(b).includes("Þýddar bækur"))')
  check('favorite genres exclude translation and audience metadata without changing reading time',stats)
  def layouts():

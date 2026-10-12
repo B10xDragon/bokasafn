@@ -1,0 +1,330 @@
+{
+  "date": "2026-10-12",
+  "branch": "Beta",
+  "baselineCommit": "bf5227313267f41df61158a21e2cddc741877453",
+  "allPassed": true,
+  "booksReviewed": 663,
+  "genreListsChanged": 550,
+  "genresBefore": 26,
+  "genresAfter": 14,
+  "seriesReviewed": 62,
+  "seriesInconsistencies": 0,
+  "genreErrors": 0,
+  "manualReviewWarnings": 17,
+  "distinctUnitCases": 143,
+  "unitExecutionsIncludingThreeTimeZones": 273,
+  "browserGroupsPassed": 91,
+  "browserGroupCounts": {
+    "browser": 9,
+    "live_browser": 11,
+    "features_browser": 8,
+    "backups_browser": 9,
+    "clipboard_browser": 11,
+    "cleanup_browser": 3,
+    "browse_browser": 7,
+    "completion_browser": 4,
+    "responsive_browser": 6,
+    "cross_engine_browser": 4,
+    "catalog_browser": 6,
+    "genre_browser": 6,
+    "suggestions_browser": 7
+  },
+  "commands": [
+    {
+      "name": "regression-UTC",
+      "command": [
+        "node",
+        "tests/regression.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "regression-America-New_York",
+      "command": [
+        "node",
+        "tests/regression.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "regression-Atlantic-Reykjavik",
+      "command": [
+        "node",
+        "tests/regression.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browse-node",
+      "command": [
+        "node",
+        "tests/browse.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "suggestions-node",
+      "command": [
+        "node",
+        "tests/suggestions.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "catalog_tools",
+      "command": [
+        "python",
+        "tests/catalog_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browsing_tools",
+      "command": [
+        "python",
+        "tests/browsing_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "completion_tools",
+      "command": [
+        "python",
+        "tests/completion_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "genre_tools",
+      "command": [
+        "python",
+        "tests/genre_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-catalog",
+      "command": [
+        "python",
+        "scripts/validate_catalog.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-browsing",
+      "command": [
+        "python",
+        "scripts/validate_browsing.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-completion",
+      "command": [
+        "python",
+        "scripts/validate_completion.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-genres",
+      "command": [
+        "python",
+        "scripts/validate_genres.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browser",
+      "command": [
+        "python",
+        "tests/browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "live_browser",
+      "command": [
+        "python",
+        "tests/live_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "features_browser",
+      "command": [
+        "python",
+        "tests/features_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "backups_browser",
+      "command": [
+        "python",
+        "tests/backups_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "clipboard_browser",
+      "command": [
+        "python",
+        "tests/clipboard_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "cleanup_browser",
+      "command": [
+        "python",
+        "tests/cleanup_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browse_browser",
+      "command": [
+        "python",
+        "tests/browse_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "completion_browser",
+      "command": [
+        "python",
+        "tests/completion_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "responsive_browser",
+      "command": [
+        "python",
+        "tests/responsive_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "cross_engine_browser",
+      "command": [
+        "python",
+        "tests/cross_engine_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "genre_browser",
+      "command": [
+        "python",
+        "tests/genre_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "suggestions_browser",
+      "command": [
+        "python",
+        "tests/suggestions_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "catalog_browser",
+      "command": [
+        "python",
+        "tests/catalog_browser.py"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "engines": {
+    "chromium": "151.0.7922.173",
+    "firefox": "153.0",
+    "webkit": "26.5"
+  },
+  "responsive": {
+    "requestedWidths": [
+      320,
+      360,
+      375,
+      390,
+      430,
+      480,
+      600,
+      720,
+      768,
+      820,
+      1024,
+      1180,
+      1280,
+      1366,
+      1440,
+      1920,
+      2560
+    ],
+    "intermediateWidths": [
+      340,
+      412,
+      540,
+      640,
+      744,
+      900,
+      1100,
+      1179,
+      1181,
+      1250,
+      1500,
+      2048
+    ],
+    "themes": [
+      "light",
+      "dark",
+      "green",
+      "purple",
+      "orange"
+    ],
+    "uncaughtErrors": []
+  },
+  "performance": {
+    "initialReadyMs": 1202,
+    "initialGridElements": 783,
+    "original39": {
+      "medianFilterToLayoutMs": 76.2,
+      "maxFilterToLayoutMs": 93.4
+    },
+    "expanded": {
+      "medianFilterToLayoutMs": 119.7,
+      "maxFilterToLayoutMs": 154.5
+    },
+    "catalogBooks": 663,
+    "catalogBytes": 801406,
+    "coverBytes": 22241346,
+    "allBooksReadWishlistReviewedRenderMs": 1375.7
+  },
+  "email": {
+    "provider": "Formspree",
+    "operational": false,
+    "endpointConfigured": false,
+    "recipientVerificationRequired": true,
+    "liveDeliveryVerified": false,
+    "liveEmailsSent": 0,
+    "automatedTesting": "simulated Formspree HTTP acceptance/error contract",
+    "setup": "BOOK_SUGGESTIONS_SETUP.md"
+  },
+  "publisherEvidence": "All 663 previously verified Forlagið evidence records unchanged from genre-audit-v1.json; no new metadata or unsupported plot details introduced.",
+  "metadataPreserved": "All IDs and fields outside categories/classification unchanged; original form/audience/translation/legacy facets and detailed genres preserved.",
+  "limitations": [
+    "Headless Firefox and Linux WebKit engine; no native Safari, physical iOS, iPadOS, Android or Samsung Internet test.",
+    "Suggestion acceptance/errors tested against intercepted documented API responses. Account/recipient setup and the deployed-site mailbox test remain owner actions.",
+    "Keyboard geometry was simulated; no physical software keyboard test."
+  ],
+  "checksums": {
+    "Resources/books.json": "05443a389aab5333a2a79ca2b99f70f9e8824d3a0ee1bf46efd6a068b1c543e8",
+    "Resources/genre-taxonomy.json": "79d24d157e9a53bbcfcf9410f34199fda167029a61d7757b7231282e347bc7a0",
+    "Resources/genre-audit.json": "e051a08e92885f27884bf6bb5b26d56727d5a1be7164648df67e9fdc91d0ca81",
+    "js/suggestion-config.js": "837c84016cfcda2b501cac5542f31a13aea492cd80c8bb3b6a1eb11168887c90",
+    "js/suggestions.js": "8671c745f624e00fbdb03f6f7ac9b9b14bf4b4df01a4af99722986d31e7d8cf1"
+  }
+}

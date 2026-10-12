@@ -279,7 +279,7 @@ test('publisher-renamed editions preserve both identity and conflicting reviews 
 console.log(`${passed} total regression tests passed`);
 
 test('genre aliases normalize Icelandic names and old metadata facets never enter current genre lists',()=>{
- const h=harness();assert.equal(h.run('normalizeGenreFilter("GLÆPIR")'),'Glæpasögur');assert.equal(h.run('normalizeGenreFilter("Vi\\u0301sindaska\\u0301ldsaga")'),'Vísindaskáldskapur');
+ const h=harness();assert.equal(h.run('normalizeGenreFilter("GLÆPIR")'),'Spenna og glæpasögur');assert.equal(h.run('normalizeGenreFilter("Vi\\u0301sindaska\\u0301ldsaga")'),'Vísindaskáldskapur og dystópía');
  assert.deepEqual(JSON.parse(h.run('JSON.stringify(bookGenres({categories:["Ungmenni","Þýddar bækur","Fantasía","Fantasia"]}))')),['Fantasía']);
 });
 test('old category filters still match current books without writing reading data',()=>{
@@ -292,11 +292,11 @@ test('the full Hunger Games trilogy matches old science spelling and combined ne
  for(const id of [35,36,38]){assert(h.run(`matchesAdvanced(historyBook(${id}),{category:"Vísindaskáldsaga"})`));assert(h.run(`matchesGenre(historyBook(${id}),"Dystópía")`));assert(h.run(`matchesGenre(historyBook(${id}),"Spenna")`));}
 });
 test('favorite genre statistics count literary categories rather than audience, language or store umbrellas',()=>{
- const h=harness();h.run('userData=normalizeUserData({version:15,read:[35,36,38]});renderVisualStats()');assert.equal(h.run('readingMetrics().genres'),3);
- const text=h.nodes.get('visual-stats-categories').innerHTML;assert(text.includes('Dystópía')&&text.includes('Vísindaskáldskapur'));assert(!text.includes('Ungmenni')&&!text.includes('Þýddar bækur')&&!text.includes('Skáldverk'));
+ const h=harness();h.run('userData=normalizeUserData({version:15,read:[35,36,38]});renderVisualStats()');assert.equal(h.run('readingMetrics().genres'),2);
+ const text=h.nodes.get('visual-stats-categories').innerHTML;assert(text.includes('Vísindaskáldskapur og dystópía')&&text.includes('Spenna og glæpasögur'));assert(!text.includes('Ungmenni')&&!text.includes('Þýddar bækur')&&!text.includes('Skáldverk'));
 });
 test('corrected genres guide recommendations without sharing merely a teen-audience facet',()=>{
- const h=harness();h.run(`allBooks=[{id:900051,title:'Lestur',author:'A',categories:['Glæpasögur'],classification:{audienceTags:['Ungmenni']}},{id:900052,title:'Rétt grein',author:'B',categories:['Glæpasögur'],classification:{audienceTags:[]}},{id:900053,title:'Sama aldur',author:'C',categories:['Fantasía'],classification:{audienceTags:['Ungmenni']}}];userData=normalizeUserData({version:15,read:[900051],reviews:{900051:{rating:5,comment:''}}});`);
+ const h=harness();h.run(`allBooks=[{id:900051,title:'Lestur',author:'A',categories:['Spenna og glæpasögur'],classification:{audienceTags:['Ungmenni']}},{id:900052,title:'Rétt grein',author:'B',categories:['Spenna og glæpasögur'],classification:{audienceTags:[]}},{id:900053,title:'Sama aldur',author:'C',categories:['Fantasía'],classification:{audienceTags:['Ungmenni']}}];userData=normalizeUserData({version:15,read:[900051],reviews:{900051:{rating:5,comment:''}}});`);
  assert.equal(h.run('recommendations()[0].book.id'),900052);assert.equal(h.run('recommendations()[1].score'),0);
 });
 test('random selection and combined filters respect new and old genre spellings',()=>{
@@ -310,4 +310,8 @@ test('genre changes preserve old JSON and BOKASAFN backups, ratings, challenges 
 test('archived genre interpretation keeps raw historical metadata and completion history intact',()=>{
  const h=harness();h.run('var archived=historyBook(1);var original=JSON.stringify(archived);bookGenres(archived);userData=normalizeUserData({version:15,read:[1,35],completedDates:{1:"2026-01-01"}})');assert.equal(h.run('JSON.stringify(archived)'),h.run('original'));assert.equal(h.run('readingMetrics().books'),2);assert.equal(h.data().completedDates[1],'2026-01-01');
 });
+console.log(`${passed} total regression tests passed`);
+
+test('all previous 26-genre queries retain every previously classified book',()=>{const h=harness();const previous=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/pre-simplified-genres.json')));for(const b of previous){h.ctx.bid=b.id;for(const query of b.categories){h.ctx.query=query;assert(h.run('matchesGenre(historyBook(bid),query)'),b.title+': '+query)}}});
+test('historical mystery filters include crime mysteries without adding horror tags',()=>{const h=harness();h.run('activeCategories=["Ráðgáta"];applyFilters()');assert(h.run('filteredBooks.some(b=>b.series?.id==="erlendur")'));assert(h.run('allBooks.filter(b=>b.series?.id==="erlendur").every(b=>!b.categories.includes("Hrollvekjur og ráðgátur"))'));});
 console.log(`${passed} total regression tests passed`);

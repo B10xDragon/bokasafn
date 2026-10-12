@@ -16,6 +16,7 @@ def inspect(books,taxonomy,audit=None):
  def require(ok,msg):
   if not ok:errors.append(msg)
  require(len(names)==len(taxonomy['genres']),'Duplicate taxonomy names')
+ require(12<=len(names)<=14,'Taxonomy must contain 12–14 broad genres')
  require(len({g['id'] for g in taxonomy['genres']})==len(taxonomy['genres']),'Duplicate taxonomy IDs')
  for g in taxonomy['genres']:
   require(bool(re.fullmatch('[a-z][a-z0-9-]*',g['id'])) and bool(g.get('definition')) and g.get('family') in {'fiction','nonfiction','form','tradition','general'},'Invalid taxonomy definition: '+g['name'])
@@ -33,7 +34,7 @@ def inspect(books,taxonomy,audit=None):
     suggestion=normalize_genre(c,taxonomy)
     message='metadata facet/deprecated name' if c in taxonomy.get('legacyFacets',{}) else 'deprecated/spelling/capitalization' if suggestion in names else 'unknown genre'
     errors.append(f'{bid}: {message}: {c}'+(f' (use {suggestion})' if suggestion in names else ''))
-  if len(cats)>4:warnings.append(f'{bid}: excessive tagging ({len(cats)}); review justification')
+  if len(cats)>3:warnings.append(f'{bid}: excessive tagging ({len(cats)}); review justification')
   if 'Raunsæjar skáldsögur' in cats and any(x in cats for x in ['Fantasía','Vísindaskáldskapur']):warnings.append(f'{bid}: realistic and speculative genres coexist; review whether different strands justify this')
   meta=book.get('classification')
   if not isinstance(meta,dict):errors.append(f'{bid}: missing separate classification metadata')
@@ -62,7 +63,7 @@ def inspect(books,taxonomy,audit=None):
    require(p.get('url')==b.get('sourceURL') and url.scheme=='https' and not url.username and not url.password and url.hostname in {'www.forlagid.is','forlagid.is'} and url.path.startswith('/vara/') and bool(re.fullmatch('[0-9a-f]{64}',p.get('sourceHTMLSHA256',''))) and bool(p.get('verifiedAt')) and type(p.get('sourceProductId')) is int and p['sourceProductId']>0,f'{bid}: missing verified Forlagið evidence')
    if p.get('descriptionUsable') is False:require(e.get('status')=='manual_review',f'{bid}: unusable publisher description needs review')
    if e.get('status')=='manual_review':warnings.append(f'{bid}: manual content/subgenre review remains: '+e.get('reason',''))
-   if 'Skáldskapur' in b['categories']:require(e.get('status')=='manual_review',f'{bid}: generic fiction fallback needs explicit manual-review status')
+   if 'Skáldskapur' in b.get('classification',{}).get('detailedGenres',[]):require(e.get('status')=='manual_review',f'{bid}: generic fiction fallback needs explicit manual-review status')
   for s in audit.get('series',[]):
    for b in groups.get(s['seriesId'],[]):
     missing=set(s.get('sharedMajorGenres',[]))-set(b['categories'])

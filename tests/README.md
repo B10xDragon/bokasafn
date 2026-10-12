@@ -213,3 +213,24 @@ After editing the taxonomy, regenerate its dependency-free browser registry:
 not a literary classifier and cannot overwrite the reviewed catalog.
 For an optional offline reparse of saved Forlagið proof, run
 `python scripts/verify_genre_sources.py --cache PATH` with the source HTML cache.
+
+Simplified genres and book suggestions:
+
+```sh
+node tests/suggestions.test.cjs
+python tests/suggestions_browser.py
+python tests/genre_tools.py
+python tests/genre_browser.py
+python scripts/validate_genres.py
+```
+
+The genre suite checks the 14-group taxonomy, every former 26-genre query,
+context-sensitive crime-mystery grouping and unchanged metadata/forms.
+Suggestion tests cover pending activation, required fields, secure optional
+Forlagið URLs, lengths/control characters, inert script input, provider acceptance,
+unexpected responses, network/500/429 errors, double submissions, touch/keyboard,
+all themes and 320/390/768/1440px layouts. The browser suite intercepts its test
+Formspree URL: **no live emails are sent and mailbox delivery is not verified**.
+The documented provider contract uses a JSON `next` string on HTTP success.
+Owner activation and the required real delivery test are in
+`BOOK_SUGGESTIONS_SETUP.md`.

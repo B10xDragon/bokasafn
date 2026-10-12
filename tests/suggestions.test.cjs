@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const ctx={URL};vm.createContext(ctx);vm.runInContext(fs.readFileSync('js/suggestion-config.js','utf8')+'\n'+fs.readFileSync('js/suggestions.js','utf8'),ctx);let n=0;
+const test=(name,fn)=>{fn();n++;console.log('PASS '+name)};
+const valid={title:'Hermiskaði',author:'Suzanne Collins',series:'Hungurleikarnir',reason:'Góð bók fyrir unglinga.',url:'https://www.forlagid.is/vara/hermiskadi/'};
+ctx.values=valid;
+test('configuration defaults to pending without any public credentials',()=>assert.equal(vm.runInContext('suggestionEndpoint()',ctx),''));
+test('only an enabled Formspree form-ID endpoint may receive submissions',()=>{for(const endpoint of ['https://evil.invalid/f/abcde123','http://formspree.io/f/abcde123','https://formspree.io/recipient@gmail.com','https://formspree.io/f/abcde123?recipient=evil','https://formspree.io/f/abcde123']){ctx.endpoint=endpoint;const value=vm.runInContext('BOKASAFN_SUGGESTIONS={enabled:true,endpoint};suggestionEndpoint()',ctx);assert.equal(Boolean(value),endpoint==='https://formspree.io/f/abcde123')}});
+test('valid Icelandic values pass',()=>assert.equal(vm.runInContext('validateSuggestion(values)',ctx),null));
+test('missing title has Icelandic field-specific feedback',()=>{ctx.values={...valid,title:' '};assert.equal(vm.runInContext('validateSuggestion(values).field',ctx),'title')});
+test('author is required',()=>{ctx.values={...valid,author:''};assert.equal(vm.runInContext('validateSuggestion(values).field',ctx),'author')});
+test('optional blank fields are accepted',()=>{ctx.values={...valid,series:'',reason:'',url:''};assert.equal(vm.runInContext('validateSuggestion(values)',ctx),null)});
+test('length and header-control characters cannot escape limits',()=>{for(const change of [{title:'x'.repeat(141)},{author:'a\nb'},{series:'\u0000'},{reason:'x'.repeat(2001)},{url:'x'.repeat(601)}]){ctx.values={...valid,...change};assert(vm.runInContext('validateSuggestion(values)',ctx))}});
+test('optional URLs accept only HTTPS Forlagið product pages',()=>{for(const url of ['javascript:alert(1)','https://forlagid.is.evil.invalid/vara/test','http://forlagid.is/vara/test','https://u:p@forlagid.is/vara/test','https://forlagid.is/','https://forlagid.is:8443/vara/test','https://forlagid.is/vara/']){ctx.values={...valid,url};assert.equal(vm.runInContext('validateSuggestion(values).field',ctx),'url')}});
+test('email subject and readable body include all provided details',()=>{ctx.values=valid;const p=JSON.parse(vm.runInContext('JSON.stringify(suggestionPayload(values))',ctx));assert.equal(p.subject,'Bókasafn — Ný bókatillaga: Hermiskaði');for(const field of ['Hermiskaði','Suzanne Collins','Hungurleikarnir','Góð bók fyrir unglinga.',valid.url])assert(p.message.includes(field));assert.equal(p._gotcha,'');assert(!('email' in p));assert(!('_to' in p))});
+test('script-like input remains literal data instead of rendered markup',()=>{ctx.values={...valid,title:'<script>alert(1)</script>',reason:'<img src=x onerror=alert(1)>'};assert.equal(vm.runInContext('validateSuggestion(values)',ctx),null);const p=vm.runInContext('suggestionPayload(values)',ctx);assert(p.message.includes('<script>'));assert.equal(p['Bókatitill'],ctx.values.title)});
+console.log(n+' suggestion unit cases passed');

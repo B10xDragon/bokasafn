@@ -214,7 +214,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         }
 
         function toggleCategory(cat) {
-            cat = normalizeGenreFilter(cat);
+            cat = normalizeGenreSelection(cat);
             if (cat === 'Allir') {
                 activeCategories = [];
             } else {
@@ -235,7 +235,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         }
 
         function applyFilters() {
-            activeCategories = [...new Set(activeCategories.map(normalizeGenreFilter))];
+            activeCategories = [...new Set(activeCategories.map(normalizeGenreSelection))];
             const signature = JSON.stringify([searchQuery, activeCategories,
                 typeof filtersValue === 'function' ? filtersValue() : null,
                 document.getElementById('book-sort')?.value || 'default']);
@@ -426,54 +426,11 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         function openRecommendModal() {
             openModal('recommend-modal', 'recommend-modal-content');
             
-            const titleInput = document.getElementById('rec-title');
-            const authorInput = document.getElementById('rec-author');
-            const ideasInput = document.getElementById('rec-ideas');
-            
-            if (titleInput) titleInput.value = '';
-            if (authorInput) authorInput.value = '';
-            if (ideasInput) ideasInput.value = '';
+            syncSuggestionAvailability();
         }
 
         function closeRecommendModal() {
             closeModal('recommend-modal', 'recommend-modal-content');
-        }
-
-        function submitRecommendation() {
-            const titleEl = document.getElementById('rec-title');
-            const title = titleEl ? titleEl.value.trim() : '';
-            const authorEl = document.getElementById('rec-author');
-            const author = authorEl ? authorEl.value.trim() : '';
-            const ideasEl = document.getElementById('rec-ideas');
-            const ideas = ideasEl ? ideasEl.value.trim() : '';
-            
-            if (!title) {
-                if (titleEl) {
-                    titleEl.classList.add('shake-element');
-                    setTimeout(() => titleEl.classList.remove('shake-element'), 300);
-                }
-                showToast("Þú verður að fylla út heiti bókar!", "error");
-                return;
-            }
-            
-            const email = "OdIG01@gskolar.is";
-            const subject = encodeURIComponent("Bókameðmæli frá Bókasafni Unglingadeildar");
-            let bodyText = `Hæ!\n\nÉg vil mæla með eftirfarandi bók fyrir bókasafnið:\n\n`;
-            bodyText += `Heiti bókar: ${title}\n`;
-            if (author) {
-                bodyText += `Höfundur: ${author}\n`;
-            }
-            if (ideas) {
-                bodyText += `Hugmyndir / umsögn: ${ideas}\n`;
-            }
-            
-            const body = encodeURIComponent(bodyText);
-            const mailtoUrl = `mailto:${email}?subject=${subject}&body=${body}`;
-            
-            window.location.href = mailtoUrl;
-            
-            closeRecommendModal();
-            showToast("Tillagan þín hefur verið undirbúin í tölvupósti!");
         }
 
         function setRating(r) {
