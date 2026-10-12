@@ -22,7 +22,7 @@ function matchesGenre(book, query) {
     const name = normalizeGenreFilter(query), facet = genreRegistry.legacyFacets[name];
     if (!facet) return bookGenres(book).includes(name);
     const metadata = book.classification;
-    if (!metadata) return (book.categories || []).some(c => genreRegistry.legacyFacets[normalizeGenreFilter(c)] === facet || (facet === 'fiction' && genreRegistry.legacyFacets[normalizeGenreFilter(c)] === 'novel')); 
+    if (!metadata) return (book.categories || []).some(c => genreRegistry.legacyFacets[normalizeGenreFilter(c)] === facet || (facet === 'fiction' && genreRegistry.legacyFacets[normalizeGenreFilter(c)] === 'novel'));
     if (facet === 'audience') return Boolean(metadata.audienceTags?.includes('Ungmenni'));
     if (facet === 'translation') return metadata.translated;
     if (facet === 'novel') return metadata.literaryForm === 'novel' || Boolean(metadata.legacyFacets?.includes('Skáldsögur'));
