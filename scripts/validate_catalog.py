@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from catalog_keys import title_key, author_key, likely_duplicate
 ROOT=Path(__file__).resolve().parents[1]
-ALLOWED={'Grín','Rómantík','Þýddar bækur','Spenna','Ævintýri','Fantasía','Hrollvekja','Ráðgáta','Ungmenni','Glæpir','Klassík','Ævisögur','Vísindaskáldsaga','Skáldsögur','Skáldverk','Fræðibækur','Ljóð'}
+ALLOWED={g['name'] for g in json.loads((ROOT/'Resources/genre-taxonomy.json').read_text())['genres']}
 def forlagid_product(url):
  try:
   p=urlparse(url);return p.scheme=='https' and p.hostname in {'forlagid.is','www.forlagid.is'} and p.path.startswith('/vara/') and not p.username

@@ -185,3 +185,31 @@ Run both alongside all nine existing browser suites and the existing Node/tool
 checks. Keep the catalog performance benchmark isolated from parallel browsers.
 See [RESPONSIVE_DESIGN.md](../RESPONSIVE_DESIGN.md) for implementation details,
 verified coverage, screenshots and physical-device limitations.
+
+Complete genre audit checks:
+
+```sh
+python scripts/validate_genres.py
+python tests/genre_tools.py
+python tests/genre_browser.py
+```
+
+The validator fails definite schema/name/provenance errors and emits review
+warnings for unusual tagging or majority differences between series volumes.
+It does not assign genres automatically. `GENRE_AUDIT.md` documents all reviewed
+series, the taxonomy and unresolved classifications; `Resources/genre-audit.json`
+contains a decision and publisher evidence for every active book.
+
+`tests/genre_browser.py` uses actual CDN assets and Chromium at
+320/390/820/1440px. It verifies legacy and canonical multi-genre filters,
+series search/URLs, personalized recommendations, genre statistics, detail
+badges, overflow and preserved raw preferences in JSON/BOKASAFN backups.
+The Node suite additionally verifies random picking and combined genre/state/page
+filters, archived reading history, earned achievements and old JSON imports.
+Run the Node suite in all three documented time zones.
+
+After editing the taxonomy, regenerate its dependency-free browser registry:
+`python scripts/build_genre_metadata.py`. Historical publisher-store mapping is
+not a literary classifier and cannot overwrite the reviewed catalog.
+For an optional offline reparse of saved Forlagið proof, run
+`python scripts/verify_genre_sources.py --cache PATH` with the source HTML cache.

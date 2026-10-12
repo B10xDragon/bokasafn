@@ -15,7 +15,7 @@ function harness(stored = {}) {
         window:{addEventListener(){}}, localStorage:{get length(){return storage.size},key(i){return [...storage.keys()][i]??null},getItem(key){return storage.get(key)??null},setItem(key,value){storage.set(key,value)},removeItem(key){storage.delete(key)}},sessionStorage:{get length(){return 0},key(){return null},getItem(){return null},setItem(){},removeItem(){}},
         setInterval(){return 1},clearInterval(){},setTimeout(){},requestAnimationFrame(){},rememberBookFocus(){return null},restoreBookFocus(){},prepareDialog(){},restoreDialogFocus(){} };
     vm.createContext(ctx);
-    for (const file of ['js/catalog-identities.js','js/persistence.js','js/insights.js','js/app.js','js/backups.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
+    for (const file of ['js/genre-metadata.js','js/genres.js','js/catalog-identities.js','js/persistence.js','js/insights.js','js/app.js','js/backups.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
     vm.runInContext('allBooks = '+JSON.stringify(catalog),ctx);
     vm.runInContext('appReady = true; userDataLoaded = true;', ctx);
     return {ctx,storage,nodes,run(code){return vm.runInContext(code,ctx)},data(){return JSON.parse(vm.runInContext('JSON.stringify(userData)',ctx))}};
@@ -275,5 +275,39 @@ test('publisher-renamed editions preserve both identity and conflicting reviews 
  const before=h.data();h.run('userData=normalizeUserData(parseBackupLine(encodeBackupLine(createReadingBackup())).data)');assert.deepEqual(h.data(),before);
  assert.equal(h.run('parseBackup(JSON.stringify({version:14,read:["Undir yfirborðinu"]})).data.read[0]'),1297974);
  assert.equal(h.run('parseBackup(JSON.stringify({version:14,read:["Það sem þernan sér"]})).data.read[0]'),1297976);
+});
+console.log(`${passed} total regression tests passed`);
+
+test('genre aliases normalize Icelandic names and old metadata facets never enter current genre lists',()=>{
+ const h=harness();assert.equal(h.run('normalizeGenreFilter("GLÆPIR")'),'Glæpasögur');assert.equal(h.run('normalizeGenreFilter("Vi\\u0301sindaska\\u0301ldsaga")'),'Vísindaskáldskapur');
+ assert.deepEqual(JSON.parse(h.run('JSON.stringify(bookGenres({categories:["Ungmenni","Þýddar bækur","Fantasía","Fantasia"]}))')),['Fantasía']);
+});
+test('old category filters still match current books without writing reading data',()=>{
+ const h=harness();const old=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/pre-genre-audit-books.json')));h.ctx.old=old;
+ for(const b of old){h.ctx.bid=b.id;for(const c of b.categories.filter(c=>['Ungmenni','Þýddar bækur','Skáldsögur','Skáldverk'].includes(c))){h.ctx.query=c;assert(h.run('matchesGenre(allBooks.find(b=>b.id===bid),query)'),b.title+': '+c);}}
+ assert.deepEqual(h.data().read,[]);
+});
+test('the full Hunger Games trilogy matches old science spelling and combined new genres',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15})');
+ for(const id of [35,36,38]){assert(h.run(`matchesAdvanced(historyBook(${id}),{category:"Vísindaskáldsaga"})`));assert(h.run(`matchesGenre(historyBook(${id}),"Dystópía")`));assert(h.run(`matchesGenre(historyBook(${id}),"Spenna")`));}
+});
+test('favorite genre statistics count literary categories rather than audience, language or store umbrellas',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,read:[35,36,38]});renderVisualStats()');assert.equal(h.run('readingMetrics().genres'),3);
+ const text=h.nodes.get('visual-stats-categories').innerHTML;assert(text.includes('Dystópía')&&text.includes('Vísindaskáldskapur'));assert(!text.includes('Ungmenni')&&!text.includes('Þýddar bækur')&&!text.includes('Skáldverk'));
+});
+test('corrected genres guide recommendations without sharing merely a teen-audience facet',()=>{
+ const h=harness();h.run(`allBooks=[{id:900051,title:'Lestur',author:'A',categories:['Glæpasögur'],classification:{audienceTags:['Ungmenni']}},{id:900052,title:'Rétt grein',author:'B',categories:['Glæpasögur'],classification:{audienceTags:[]}},{id:900053,title:'Sama aldur',author:'C',categories:['Fantasía'],classification:{audienceTags:['Ungmenni']}}];userData=normalizeUserData({version:15,read:[900051],reviews:{900051:{rating:5,comment:''}}});`);
+ assert.equal(h.run('recommendations()[0].book.id'),900052);assert.equal(h.run('recommendations()[1].score'),0);
+});
+test('random selection and combined filters respect new and old genre spellings',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,liked:[35]})');assert.equal(h.run('chooseRandom(allBooks.filter(b=>matchesAdvanced(b,{category:"Vísindaskáldsaga",state:"wishlist",min:100})),()=>0).id'),35);
+ assert.equal(h.run('matchesAdvanced(historyBook(37),{category:"Vísindaskáldskapur"})'),false);
+});
+test('genre changes preserve old JSON and BOKASAFN backups, ratings, challenges and arbitrary legacy preference text',()=>{
+ const h=harness();h.run(`userData=normalizeUserData({version:15,read:[35],liked:[37],reviews:{35:{rating:5,comment:'Þ æ ö'}},totalSeconds:456,session:null,achievements:{'five-genres':'2026-01-01'},challenges:[{id:'g',kind:'fantasy',title:'Gömul áskorun',target:1,start:'2026-01-01',baseline:[37],completed:'2026-01-02'}]});localStorage.setItem('bokasafn_genre_filters','["Vísindaskáldsaga","Skáldsögur"]');var backup=createReadingBackup();var j=parseBackup(JSON.stringify(backup));var t=parseBackupLine(encodeBackupLine(backup));`);
+ assert.equal(h.run('JSON.stringify(j.data)'),h.run('JSON.stringify(t.data)'));assert.equal(h.run('t.raw.storage.local.bokasafn_genre_filters'),'["Vísindaskáldsaga","Skáldsögur"]');assert.equal(h.run('t.data.totalSeconds'),456);assert.equal(h.run('t.data.achievements["five-genres"]'),'2026-01-01');assert.equal(h.run('t.data.challenges[0].completed'),'2026-01-02');assert.equal(h.run('parseBackup(JSON.stringify({version:14,read:["Hungurleikarnir"]})).data.read[0]'),35);
+});
+test('archived genre interpretation keeps raw historical metadata and completion history intact',()=>{
+ const h=harness();h.run('var archived=historyBook(1);var original=JSON.stringify(archived);bookGenres(archived);userData=normalizeUserData({version:15,read:[1,35],completedDates:{1:"2026-01-01"}})');assert.equal(h.run('JSON.stringify(archived)'),h.run('original'));assert.equal(h.run('readingMetrics().books'),2);assert.equal(h.data().completedDates[1],'2026-01-01');
 });
 console.log(`${passed} total regression tests passed`);

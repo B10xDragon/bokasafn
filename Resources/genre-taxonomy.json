@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "genres": [
+    {
+      "id": "fantasy",
+      "name": "Fantasía",
+      "family": "fiction",
+      "definition": "Bókstaflegir galdrar, goðsagnaverur eða aðrir töfraheimar eru meginforsendur frásagnar, ekki aðeins myndlíkingar."
+    },
+    {
+      "id": "scifi",
+      "name": "Vísindaskáldskapur",
+      "family": "fiction",
+      "definition": "Ímyndaðar vísindalegar/tæknilegar forsendur, geimverur eða framtíðarveröld eru burðarás skáldaðrar frásagnar."
+    },
+    {
+      "id": "dystopia",
+      "name": "Dystópía",
+      "family": "fiction",
+      "definition": "Skáldað samfélag alræðis, kúgunar eða djúpstæðrar félagslegrar hnignunar; ekki hvert einasta persónulegt áfall."
+    },
+    {
+      "id": "suspense",
+      "name": "Spenna",
+      "family": "fiction",
+      "definition": "Viðvarandi hætta, ógn, eltingarleikur eða spennutryllisbygging; orðið spennandi eitt getur verið markaðsmál."
+    },
+    {
+      "id": "crime",
+      "name": "Glæpasögur",
+      "family": "fiction",
+      "definition": "Sakamál, glæparannsókn eða átök við gerendur eru burðarás; umfjöllun um glæpi í fræðiriti nægir ekki."
+    },
+    {
+      "id": "mystery",
+      "name": "Leyndardómar",
+      "family": "fiction",
+      "definition": "Lausn ráðgátu, rannsókn hvarfs eða dularfullra ummerkja ber frásögnina; ekki allar ráðgátur fela í sér glæp."
+    },
+    {
+      "id": "horror",
+      "name": "Hrollvekjur",
+      "family": "fiction",
+      "definition": "Ógn, ásókn, hryllingur eða hrollvekjuforsenda er miðlægt form; ein hræðileg sena eða lýsingarorð um glæp nægir ekki."
+    },
+    {
+      "id": "adventure",
+      "name": "Ævintýri",
+      "family": "fiction",
+      "definition": "Ferðalag, leiðangur, björgun eða stórar hættulegar raunir bera frásögnina; ekki hvert ævintýri er yfirnáttúrulegt."
+    },
+    {
+      "id": "historical",
+      "name": "Sögulegar skáldsögur",
+      "family": "fiction",
+      "definition": "Skálduð frásögn endurskapar sérstakt eldra tímabil/atburði. Sagnfræðirit eru aðskilin og aldur útgáfu nægir ekki."
+    },
+    {
+      "id": "realism",
+      "name": "Raunsæjar skáldsögur",
+      "family": "fiction",
+      "definition": "Skálduð líf, þroski, fjölskylda og samfélag innan eðlilegra veruleikaforsenda. Ekki sett með fantasíu sem lýsir sama söguheimi."
+    },
+    {
+      "id": "romance",
+      "name": "Rómantík",
+      "family": "fiction",
+      "definition": "Ástarsamband, leit að ást eða ástarflækja er aðalþráður; aukasamband eða kynferðisleg sena eitt nægir ekki."
+    },
+    {
+      "id": "literary",
+      "name": "Bókmenntaskáldskapur",
+      "family": "fiction",
+      "definition": "Útgefandi leggur áherslu á margræða/stílmiðaða, tilraunakennda eða íhugula persónufrásögn. Ekki samheiti yfir allar skáldsögur."
+    },
+    {
+      "id": "magical",
+      "name": "Töfraraunsæi",
+      "family": "fiction",
+      "definition": "Óvenjulegir eða yfirnáttúrulegir atburðir fléttast inn í annars kunnuglega veröld í bókmenntamiðaðri frásögn."
+    },
+    {
+      "id": "humor",
+      "name": "Húmor",
+      "family": "fiction",
+      "definition": "Gaman, háð eða kómedíutónn er staðfest og miðlægur; ekki bætt við eingöngu vegna fyndins höfundar eða starfs hans."
+    },
+    {
+      "id": "autofiction",
+      "name": "Skáldævisögur",
+      "family": "fiction",
+      "definition": "Skálduð eða tilraunakennd eiginlífsfrásögn; aðskilin frá staðreyndalegum sjálfsævisögum."
+    },
+    {
+      "id": "poetry",
+      "name": "Ljóð",
+      "family": "form",
+      "definition": "Ljóð, kvæði eða söguljóð eru form verksins; það að höfundur hafi áður skrifað ljóð nægir ekki."
+    },
+    {
+      "id": "stories",
+      "name": "Smásögur",
+      "family": "form",
+      "definition": "Smásögur, örsögur eða afmarkaðar stuttar frásagnir eru form safnsins; ekki allar bækur í Skáldverkum eru skáldsögur."
+    },
+    {
+      "id": "drama",
+      "name": "Leikrit og handrit",
+      "family": "form",
+      "definition": "Leikrit eða sjónvarps-/kvikmyndahandrit með senum og samtölum; ekki þykkt bókar eða myndskreyting."
+    },
+    {
+      "id": "classic",
+      "name": "Klassískar bókmenntir",
+      "family": "tradition",
+      "definition": "Staðfest sígild bókmenntaverk/hefð. Forlagiðs bókaflokkur einn gerir ekki orðabók að klassískri skáldsögu."
+    },
+    {
+      "id": "history",
+      "name": "Saga",
+      "family": "nonfiction",
+      "definition": "Fræðileg frásögn af raunverulegum sögulegum atburðum, tímabilum eða þróun; sögulegar skáldsögur aðskildar."
+    },
+    {
+      "id": "biography",
+      "name": "Ævisögur",
+      "family": "nonfiction",
+      "definition": "Frásögn af ævi raunverulegs fólks, samin af öðrum; skáldaðar sögupersónur gera ekki skáldsögu að ævisögu."
+    },
+    {
+      "id": "memoir",
+      "name": "Sjálfsævisögur",
+      "family": "nonfiction",
+      "definition": "Staðfestar eigin æviminningar, dagbækur eða sjálfsævisögur; skáldævisögur eru aðskildar."
+    },
+    {
+      "id": "reference",
+      "name": "Fræðibækur",
+      "family": "nonfiction",
+      "definition": "Upplýsinga-, kennslu-, hand- eða orðabækur; aðeins notað þegar form/markmið er fræðilegt."
+    },
+    {
+      "id": "society",
+      "name": "Samfélagsmál",
+      "family": "nonfiction",
+      "definition": "Staðreyndamiðuð samfélagsumræða/fræðsla, t.d. um ofbeldi eða kerfi. Félagslegur söguþráður einn gerir skáldsögu ekki að fræðiriti."
+    },
+    {
+      "id": "technology",
+      "name": "Tækni",
+      "family": "nonfiction",
+      "definition": "Fræðileg umfjöllun um tæki, uppfinningar eða tæknilega þróun; ekki vísindaskáldskapur."
+    },
+    {
+      "id": "fiction",
+      "name": "Skáldskapur",
+      "family": "general",
+      "definition": "Varfærinn bráðabirgðaflokkur þegar skáldað form er staðfest en gögn nægja ekki til nákvæmari greinar; krefst skráðrar handvirkrar yfirferðar."
+    }
+  ],
+  "aliases": {
+    "Fantasia": "Fantasía",
+    "Glæpir": "Glæpasögur",
+    "Glæpasaga": "Glæpasögur",
+    "Ráðgáta": "Leyndardómar",
+    "Hrollvekja": "Hrollvekjur",
+    "Klassík": "Klassískar bókmenntir",
+    "Vísindaskáldsaga": "Vísindaskáldskapur",
+    "Vísindaskáldsögur": "Vísindaskáldskapur",
+    "Grín": "Húmor",
+    "Dystopia": "Dystópía",
+    "Humor": "Húmor",
+    "Dystópia": "Dystópía"
+  },
+  "legacyFacets": {
+    "Ungmenni": "audience",
+    "Ungmennabókmenntir": "audience",
+    "Þýddar bækur": "translation",
+    "Skáldsögur": "novel",
+    "Skáldverk": "fiction"
+  },
+  "notes": [
+    "Audience, language/translation, series and physical format are not genres.",
+    "Literary forms and the classic-literature tradition are explicit useful reading facets, not age/store marketing.",
+    "Skáldskapur is a documented uncertainty fallback, not a silently guessed specific genre."
+  ]
+}

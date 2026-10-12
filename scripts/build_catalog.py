@@ -20,6 +20,7 @@ def factual_summary(r):
  if edition['pages']:facts.append(f"Skráður blaðsíðufjöldi þeirrar útgáfu er {edition['pages']}.")
  return opening+' '+ ' '.join(facts)
 def main(cache):
+ if (ROOT/'Resources/genre-audit.json').exists():raise ValueError('Historical store-facet rebuild would overwrite reviewed literary genres. Maintain genre-audit.json and run validate_genres.py.')
  if (ROOT/'Resources/catalog-audit.json').exists():
   raise ValueError("This catalog has a reviewed 13+ audit. Use curate_catalog.py with updated source evidence and explicit decisions; the expansion builder cannot resurrect retired IDs.")
  original=json.loads((ROOT/'tests/fixtures/original-39-books.json').read_text())

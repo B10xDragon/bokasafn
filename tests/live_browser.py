@@ -164,8 +164,9 @@ with sync_playwright() as p:
         reset(page)
         page.locator('[data-category="Ævintýri"]').click();page.locator('[data-category="Fantasía"]').click()
         ids=[book['id'] for book in CATALOG if 'Ævintýri' in book['categories'] and any(c in ['Fantasía','Fantasia'] for c in book['categories'])]
-        assert page.locator('.book-card').evaluate_all('(cards)=>cards.map(card=>Number(card.dataset.bookId))')==ids
-        page.fill('#book-search','Álfareiðin');assert page.locator('.book-card').count()==1
+        assert page.evaluate('filteredBooks.map(book=>book.id)')==ids
+        assert page.locator('.book-card').evaluate_all('(cards)=>cards.map(card=>Number(card.dataset.bookId))')==ids[:60]
+        page.fill('#book-search','Hobbitinn');assert page.locator('.book-card').count()==1
         page.fill('#book-search','');page.locator('[data-category="Allir"]').click()
         assert page.locator('[data-category="Fantasia"]').count()==0
         for mode in ['title-asc','title-desc','author-asc','pages-asc','pages-desc','default']:

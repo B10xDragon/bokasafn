@@ -146,9 +146,8 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                     id: Number(book.id),
                     title: String(book.title || '').trim(),
                     author: String(book.author || '').trim(),
-                    categories: Array.isArray(book.categories) && book.categories.length
-                        ? [...new Set(book.categories.map(c => String(c).trim()).map(c => c === 'Fantasia' ? 'Fantasía' : c).filter(Boolean))]
-                        : ['Almennt'],
+                    categories: bookGenres(book),
+                    classification: book.classification || null,
                     description: String(book.description || '').trim(),
                     cover: String(book.cover || '').trim(),
                     pages: Number.isFinite(Number(book.pages)) && Number(book.pages) > 0 ? Number(book.pages) : '',
@@ -215,6 +214,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         }
 
         function toggleCategory(cat) {
+            cat = normalizeGenreFilter(cat);
             if (cat === 'Allir') {
                 activeCategories = [];
             } else {
@@ -235,6 +235,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
         }
 
         function applyFilters() {
+            activeCategories = [...new Set(activeCategories.map(normalizeGenreFilter))];
             const signature = JSON.stringify([searchQuery, activeCategories,
                 typeof filtersValue === 'function' ? filtersValue() : null,
                 document.getElementById('book-sort')?.value || 'default']);
@@ -250,7 +251,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                 const matchesCategories = activeCategories.every(cat => {
                     if (cat === '❤️ Óskalisti') return userData.liked.includes(b.id);
                     if (cat === '✅ Lesið') return userData.read.includes(b.id);
-                    return b.categories.includes(cat);
+                    return matchesGenre(b, cat);
                 });
                 
                 return search && matchesCategories;
@@ -380,7 +381,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
                             <img src="${escapeHTML(b.cover || COVER_PLACEHOLDER)}" alt="Bókarkápa: ${escapeHTML(b.title)}" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" decoding="async" onload="finishCoverLoading(this)" onerror="handleCoverError(this)">
                         </div>
                         <div class="mt-4 flex flex-wrap gap-1 justify-center">
-                            ${b.categories.map(c => `<span class="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase border border-indigo-100/50">${escapeHTML(c)}</span>`).join('')}
+                            ${bookGenres(b).map(c => `<span class="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase border border-indigo-100/50">${escapeHTML(c)}</span>`).join('')}
                         </div>
                     </div>
                     <div class="flex-grow min-w-0 space-y-6 w-full">
@@ -825,7 +826,7 @@ books.sort((a, b) => Number(a.id) - Number(b.id));
             let authCounts = Object.create(null);
 
             readBooks.forEach(b => {
-                b.categories.forEach(c => {
+                bookGenres(b).forEach(c => {
                     catCounts[c] = (catCounts[c] || 0) + 1;
                 });
                 authCounts[b.author] = (authCounts[b.author] || 0) + 1;

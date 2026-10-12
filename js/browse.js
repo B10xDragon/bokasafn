@@ -112,7 +112,7 @@ function refreshBrowse(reset = false) {
     const entry=entries.get(id);
     if (id) {
         const state=document.getElementById('browse-state')?.value;const category=document.getElementById('browse-category')?.value;const sort=document.getElementById('browse-sort')?.value;
-        items=(entry?.books || []).filter(b=>catalogMatchesSearch(b,query) && (!category || b.categories.includes(category)) && (!state || state==='read' && userData.read.includes(b.id) || state==='unread' && !userData.read.includes(b.id) || state==='wishlist' && userData.liked.includes(b.id))).slice();
+        items=(entry?.books || []).filter(b=>catalogMatchesSearch(b,query) && (!category || matchesGenre(b, category)) && (!state || state==='read' && userData.read.includes(b.id) || state==='unread' && !userData.read.includes(b.id) || state==='wishlist' && userData.liked.includes(b.id))).slice();
         items.sort((a,b)=>sort==='series'?seriesBookOrder(a,b):sort?.startsWith('pages')?(!a.pages)-(!b.pages) || (sort==='pages-desc'?-1:1)*((Number(a.pages)||0)-(Number(b.pages)||0)) || a.id-b.id:a.title.localeCompare(b.title,'is') || a.id-b.id);
         container.innerHTML=browseBookCards(items.slice(0,browseState.limit));
         const related=document.getElementById('browse-related');

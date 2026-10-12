@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),books=JSON.parse(fs.readFileSync(path.join(root,'Resources/books.json')));
 const ctx={console,allBooks:books,userData:{read:[],liked:[]},document:{addEventListener(){}},Map,Set};vm.createContext(ctx);
-for(const f of ['js/browse-metadata.js','js/browse.js'])vm.runInContext(fs.readFileSync(path.join(root,f),'utf8'),ctx);
+for(const f of ['js/genre-metadata.js','js/genres.js','js/browse-metadata.js','js/browse.js'])vm.runInContext(fs.readFileSync(path.join(root,f),'utf8'),ctx);
 const run=s=>vm.runInContext(s,ctx),json=s=>JSON.parse(run(`JSON.stringify(${s})`));let count=0;
 function test(name,fn){fn();count++;console.log('PASS '+name)}
 run('buildBrowseIndex()');
