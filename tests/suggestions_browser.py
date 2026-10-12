@@ -18,6 +18,7 @@ with sync_playwright() as p:
  def open_form():page.evaluate('openRecommendModal()');page.wait_for_timeout(100)
  def activate():page.evaluate('BOKASAFN_SUGGESTIONS={enabled:true,endpoint:"'+ENDPOINT+'"};syncSuggestionAvailability()')
  def fill():
+  page.evaluate('localStorage.removeItem(SUGGESTION_COOLDOWN_KEY);syncSuggestionAvailability()')
   page.fill('#rec-title','Hermiskaði');page.fill('#rec-author','Suzanne Collins');page.fill('#rec-series','Hungurleikarnir');page.fill('#rec-ideas','Góð bók. Þ æ ö');page.fill('#rec-url','https://www.forlagid.is/vara/hermiskadi/')
  def pending():
   open_form();expect(page.locator('#suggestion-submit')).to_be_enabled();assert page.evaluate('suggestionEndpoint()')==ENDPOINT;page.evaluate('BOKASAFN_SUGGESTIONS.enabled=false;syncSuggestionAvailability()');expect(page.locator('#suggestion-submit')).to_be_disabled();assert 'bíður virkjunar' in page.locator('#suggestion-status').inner_text();expect(page.locator('#rec-title')).to_be_focused()
@@ -34,9 +35,15 @@ with sync_playwright() as p:
   fill();page.fill('#rec-title','<script>window.injected=true</script>');page.locator('#suggestion-submit').click();expect(page.locator('#suggestion-status')).to_contain_text('Tillagan þín hefur verið send!');assert len(SENT)==1
   assert SENT[-1]['subject']=='Bókasafn — Ný bókatillaga: <script>window.injected=true</script>';assert SENT[-1]['Höfundur']=='Suzanne Collins';assert SENT[-1]['_gotcha']=='';assert not page.evaluate('Boolean(window.injected)');assert page.input_value('#rec-title').startswith('<script>');assert page.evaluate('document.querySelectorAll("#suggestion-status script").length')==0
  check('confirmed provider acceptance alone shows success and script text stays inert',success)
+ def cooldown():
+  before=len(SENT);page.evaluate('submitRecommendation()');assert len(SENT)==before;expect(page.locator('#suggestion-submit')).to_be_disabled()
+  page.evaluate('openDeleteAllConfirmation()');page.locator('#feature-dialog-body button.destructive').click();assert page.evaluate('suggestionCooldown().until>Date.now()');page.evaluate('restoreUserStorage(localStorage,{},true)');assert page.evaluate('suggestionCooldown().until>Date.now()');page.reload();page.wait_for_function('window.featuresReady');open_form();expect(page.locator('#suggestion-submit')).to_be_disabled();page.evaluate('submitRecommendation()');assert len(SENT)==before
+  other=ctx.new_page();ready(other);other.evaluate('openRecommendModal()');expect(other.locator('#suggestion-submit')).to_be_disabled();other.close()
+  page.evaluate('localStorage.setItem(SUGGESTION_COOLDOWN_KEY,JSON.stringify({until:Date.now()-1,token:"expired"}));syncSuggestionAvailability()');expect(page.locator('#suggestion-submit')).to_be_enabled()
+ check('seven-day cooldown blocks repeat requests and survives deletion reload and another tab until expiry',cooldown)
  def duplicate():
   global MODE
-  MODE='slow';fill();before=len(SENT);snapshot=page.evaluate('()=>{submitRecommendation();submitRecommendation();return {busy:suggestionSending,disabled:document.getElementById("suggestion-submit").disabled,aria:document.getElementById("suggestion-form").getAttribute("aria-busy")}}');assert snapshot=={'busy':True,'disabled':True,'aria':'true'};expect(page.locator('#suggestion-status')).to_contain_text('Tillagan þín hefur verið send!');assert len(SENT)==before+1;MODE='success'
+  MODE='slow';fill();before=len(SENT);snapshot=page.evaluate('()=>{sendRecommendation();submitRecommendation();return {busy:suggestionSending,disabled:document.getElementById("suggestion-submit").disabled,aria:document.getElementById("suggestion-form").getAttribute("aria-busy")}}');assert snapshot=={'busy':True,'disabled':True,'aria':'true'};expect(page.locator('#suggestion-status')).to_contain_text('Tillagan þín hefur verið send!');assert len(SENT)==before+1;MODE='success'
  check('in-flight double submits produce one request and accessible busy feedback',duplicate)
  def failures():
   global MODE
@@ -48,6 +55,13 @@ with sync_playwright() as p:
   global MODE
   MODE='validation';fill();page.locator('#suggestion-submit').click();expect(page.locator('#rec-author')).to_have_attribute('aria-invalid','true');expect(page.locator('#rec-author')).to_be_focused();assert 'nafn höfundar' in page.locator('#suggestion-status').inner_text();assert '<script>' not in page.locator('#suggestion-status').inner_text();assert page.input_value('#rec-title')=='Hermiskaði';assert not page.evaluate('Boolean(window.injected)');MODE='success'
  check('provider field validation is mapped to Icelandic feedback and focus without unsafe HTML',server_validation)
+ def storage_failures():
+  fill();before=len(SENT)
+  for failure in ['read','write']:
+   page.evaluate("(failure)=>{window.originalGateStorage=localStorage;Object.defineProperty(window,'localStorage',{configurable:true,value:{getItem(){if(failure==='read')throw Error('denied');return null},setItem(){throw Error('denied')},removeItem(){}}})}",failure)
+   page.evaluate('submitRecommendation()');assert len(SENT)==before;assert 'vafrageymslunnar' in page.locator('#suggestion-status').inner_text();assert page.input_value('#rec-title')=='Hermiskaði'
+   page.evaluate("Object.defineProperty(window,'localStorage',{configurable:true,value:originalGateStorage});syncSuggestionAvailability()")
+ check('denied storage blocks HTTP submission instead of silently permitting spam',storage_failures)
  def layouts():
   for width in [320,390,768,1440]:
    page.set_viewport_size({'width':width,'height':800})

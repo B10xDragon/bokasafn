@@ -1,0 +1,273 @@
+{
+  "date": "2026-10-12",
+  "branch": "Beta",
+  "allTestsPassed": true,
+  "distinctUnitCases": 149,
+  "unitExecutionsIncludingThreeTimeZones": 279,
+  "browserGroupsPassed": 114,
+  "browserGroups": {
+    "browser": 9,
+    "live_browser": 11,
+    "features_browser": 8,
+    "backups_browser": 9,
+    "clipboard_browser": 11,
+    "cleanup_browser": 3,
+    "browse_browser": 7,
+    "completion_browser": 4,
+    "responsive_browser": 6,
+    "cross_engine_browser": 4,
+    "catalog_browser": 6,
+    "genre_browser": 6,
+    "suggestions_browser": 10,
+    "suggestion-firefox": 10,
+    "suggestion-webkit": 10
+  },
+  "commands": [
+    {
+      "name": "regression-UTC",
+      "command": [
+        "node",
+        "tests/regression.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "regression-America-New_York",
+      "command": [
+        "node",
+        "tests/regression.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "regression-Atlantic-Reykjavik",
+      "command": [
+        "node",
+        "tests/regression.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browse-node",
+      "command": [
+        "node",
+        "tests/browse.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "suggestions-node",
+      "command": [
+        "node",
+        "tests/suggestions.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "catalog_tools",
+      "command": [
+        "python",
+        "tests/catalog_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browsing_tools",
+      "command": [
+        "python",
+        "tests/browsing_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "completion_tools",
+      "command": [
+        "python",
+        "tests/completion_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "genre_tools",
+      "command": [
+        "python",
+        "tests/genre_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-catalog",
+      "command": [
+        "python",
+        "scripts/validate_catalog.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-browsing",
+      "command": [
+        "python",
+        "scripts/validate_browsing.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-completion",
+      "command": [
+        "python",
+        "scripts/validate_completion.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-genres",
+      "command": [
+        "python",
+        "scripts/validate_genres.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browser",
+      "command": [
+        "python",
+        "tests/browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "live_browser",
+      "command": [
+        "python",
+        "tests/live_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "features_browser",
+      "command": [
+        "python",
+        "tests/features_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "backups_browser",
+      "command": [
+        "python",
+        "tests/backups_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "clipboard_browser",
+      "command": [
+        "python",
+        "tests/clipboard_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "cleanup_browser",
+      "command": [
+        "python",
+        "tests/cleanup_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browse_browser",
+      "command": [
+        "python",
+        "tests/browse_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "completion_browser",
+      "command": [
+        "python",
+        "tests/completion_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "responsive_browser",
+      "command": [
+        "python",
+        "tests/responsive_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "cross_engine_browser",
+      "command": [
+        "python",
+        "tests/cross_engine_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "genre_browser",
+      "command": [
+        "python",
+        "tests/genre_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "suggestions_browser",
+      "command": [
+        "python",
+        "tests/suggestions_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "suggestion-firefox",
+      "command": [
+        "python",
+        "tests/suggestions_browser.py",
+        "--engine",
+        "firefox"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "suggestion-webkit",
+      "command": [
+        "python",
+        "tests/suggestions_browser.py",
+        "--engine",
+        "webkit"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "catalog_browser",
+      "command": [
+        "python",
+        "tests/catalog_browser.py"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "cooldownMilliseconds": 604800000,
+  "survivesReadingDataDeletion": true,
+  "survivesBackupReplacement": true,
+  "survivesReloadAndOtherTabs": true,
+  "failedSubmissionsCanRetry": true,
+  "storageFailureBlocksSubmissions": true,
+  "newOutsideServices": 0,
+  "serverSideEnforced": false,
+  "limitations": [
+    "Clearing all site storage, editing client code/storage, changing devices or direct Formspree POSTs can bypass this browser-only limit.",
+    "Real emails were not sent; provider responses were mocked.",
+    "Linux WebKit is not physical Safari/iOS testing."
+  ],
+  "pagesSource": {
+    "branch": "Beta",
+    "path": "/",
+    "url": "https://b10xdragon.github.io/bokasafn/"
+  }
+}

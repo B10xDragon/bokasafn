@@ -253,3 +253,5 @@ drafts, duplicate-submit prevention and layouts across all themes. Firefox and
 Linux WebKit runs exercise the same form flow; Linux WebKit does not establish
 physical Safari/iOS delivery. Recipient verification and the single real mailbox
 test remain separate owner steps in `BOOK_SUGGESTIONS_SETUP.md`.
+
+Cooldown tests additionally verify the actual delete-all button, backup replacement, reload, another tab, expiry, reservation rollback and denied storage. The seven-day key is outside reading-data namespaces. This is browser-side enforcement; it cannot survive deliberate removal of all site storage or direct provider requests.

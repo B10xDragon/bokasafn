@@ -46,3 +46,9 @@ Provider documentation inspected on 2026-10-12:
 Automated tests intercept the configured form-ID URL and simulate this documented response format, network failure, 500, 429 and unexpected bodies. These tests exercise the browser integration without transmitting visitor data or emails. **They are not an end-to-end provider/mailbox test.** The real end-to-end test in step 8 remains pending; the endpoint itself is already configured. Mocked Chromium, Firefox and Linux WebKit runs send no live emails. Linux WebKit is not physical Safari/iOS testing.
 
 Activation verification: **145 distinct unit cases**, **275 executions** including three time zones, and **108 browser groups passed**. The actual configured endpoint was intercepted in all suggestion tests; **zero real test emails** were sent. Results: `Resources/suggestion-activation-test-results.json`.
+
+## Seven-day browser cooldown
+
+The form reserves a seven-day timestamp before submitting and retains it after confirmed acceptance. Failed submissions release their reservation for retry. The separate `suggestion-rate-limit-v1` key is excluded from reading-data deletion, JSON/text backups and backup replacement. Clearing “Eyða gögnum”, reloading and reopening a tab therefore do not reset it. Web Locks serialize submissions across tabs where supported. If persistent storage is inaccessible or corrupt, sending is blocked rather than silently allowing unlimited requests.
+
+This is a browser usability limit, not server-side spam enforcement: clearing all site storage, changing browsers/devices, editing client code or directly posting to the public Formspree endpoint can bypass it. No new outside service, account, fingerprinting or backend was added. Absolute seven-day enforcement cannot be provided by the static site alone.

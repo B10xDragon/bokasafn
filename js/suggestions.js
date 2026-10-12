@@ -1,5 +1,24 @@
 // No account/email address required from visitors; no credentials in the frontend.
 let suggestionSending = false;
+const SUGGESTION_COOLDOWN_KEY = 'suggestion-rate-limit-v1';
+const SUGGESTION_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
+let suggestionCooldownTimer;
+function suggestionCooldown() {
+    try {
+        const raw=localStorage.getItem(SUGGESTION_COOLDOWN_KEY);
+        if (raw===null) return {until:0};
+        const value=JSON.parse(raw);
+        if (!Number.isSafeInteger(value.until) || value.until<0 || value.until>8640000000000000 || typeof value.token!=='string') throw Error('invalid');
+        return value;
+    } catch { return {until:Infinity,unavailable:true}; }
+}
+function suggestionCooldownMessage(state) {
+    return state.unavailable ? 'Ekki er hægt að staðfesta biðtímann. Athugaðu heimildir vafrageymslunnar.'
+        : 'Aðeins má senda eina bókatillögu á sjö daga fresti. Þú getur sent aftur '+new Date(state.until).toLocaleString('is-IS')+'.';
+}
+function releaseSuggestionReservation(token) {
+    try { if (suggestionCooldown().token===token) localStorage.removeItem(SUGGESTION_COOLDOWN_KEY); } catch {}
+}
 function suggestionEndpoint() {
     const config = globalThis.BOKASAFN_SUGGESTIONS;
     return config?.enabled === true && /^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]{6,32}$/.test(config.endpoint || '') ? config.endpoint : '';
@@ -10,11 +29,17 @@ function suggestionStatus(message, error = false) {
     status.setAttribute('role', error ? 'alert' : 'status');
 }
 function syncSuggestionAvailability() {
-    document.getElementById('suggestion-submit').disabled = suggestionSending || !suggestionEndpoint();
+    const state=suggestionCooldown(), blocked=state.until>Date.now();
+    document.getElementById('suggestion-submit').disabled = suggestionSending || blocked || !suggestionEndpoint();
     if (!suggestionEndpoint()) suggestionStatus('Sending bókatillagna bíður virkjunar. Ekki er hægt að senda enn.');
+    else if (blocked && !suggestionSending && !document.getElementById('suggestion-status').textContent.startsWith('Tillagan þín hefur verið send!')) suggestionStatus(suggestionCooldownMessage(state));
+    if (!blocked && (document.getElementById('suggestion-status').textContent.startsWith('Aðeins má senda eina') || (state.until>0 && document.getElementById('suggestion-status').textContent.startsWith('Tillagan þín hefur verið send!')))) suggestionStatus('');
+    clearTimeout(suggestionCooldownTimer);
+    if (blocked && Number.isFinite(state.until)) suggestionCooldownTimer=setTimeout(syncSuggestionAvailability,Math.min(60000,Math.max(1,state.until-Date.now())));
+
 }
 function suggestionDraftChanged() {
-    if (!suggestionSending && suggestionEndpoint()) suggestionStatus('');
+    if (!suggestionSending && suggestionEndpoint()) { suggestionStatus('');syncSuggestionAvailability(); }
 }
 function validateSuggestion(values) {
     const limits = {title:140, author:120, series:140, reason:2000, url:600};
@@ -63,6 +88,19 @@ function formspreeFeedback(status, result) {
 async function submitRecommendation(event) {
     event?.preventDefault();
     if (suggestionSending) return;
+    if (globalThis.navigator?.locks) {
+        return navigator.locks.request('suggestion-submit', {ifAvailable:true}, lock => {
+            if (lock) return sendRecommendation();
+            suggestionStatus('Sending er þegar í gangi í öðrum flipa. Bíddu aðeins.',true);
+        });
+    }
+    return sendRecommendation();
+}
+async function sendRecommendation(event) {
+    event?.preventDefault();
+    if (suggestionSending) return;
+    const cooldown=suggestionCooldown();
+    if (cooldown.until>Date.now()) { suggestionStatus(suggestionCooldownMessage(cooldown),true);syncSuggestionAvailability();return; }
     const fields = {title:'rec-title', author:'rec-author', series:'rec-series', reason:'rec-ideas', url:'rec-url'};
     const values = Object.fromEntries(Object.entries(fields).map(([key,id]) => [key,document.getElementById(id).value.trim()]));
     Object.values(fields).forEach(id=>document.getElementById(id).removeAttribute('aria-invalid'));
@@ -71,6 +109,11 @@ async function submitRecommendation(event) {
     const endpoint = suggestionEndpoint();
     if (!endpoint) { syncSuggestionAvailability();return; }
     if (document.getElementById('rec-website').value) { suggestionStatus('Ekki tókst að senda. Reyndu aftur.',true);return; }
+    const token=Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+    // Reserve before POST; failed storage cannot silently allow unlimited submissions.
+    try { localStorage.setItem(SUGGESTION_COOLDOWN_KEY,JSON.stringify({until:Date.now()+SUGGESTION_COOLDOWN_MS,token})); }
+    catch { suggestionStatus('Ekki er hægt að vista biðtímann. Athugaðu heimildir vafrageymslunnar.',true);return; }
+    let accepted=false;
     suggestionSending=true;
     const form=document.getElementById('suggestion-form');form.setAttribute('aria-busy','true');
     const button=document.getElementById('suggestion-submit');button.disabled=true;
@@ -89,11 +132,17 @@ async function submitRecommendation(event) {
             return;
         }
         // Service acceptance confirms receipt, not final delivery to the mailbox.
-        suggestionStatus('Tillagan þín hefur verið send!');
+        accepted=true;
+        suggestionStatus('Tillagan þín hefur verið send! '+suggestionCooldownMessage(suggestionCooldown()));
         // Keep the submitted draft visible. Never store visitors’ drafts in browser storage.
     } catch (error) {
         suggestionStatus(formspreeFeedback(0,null).message,true);
     } finally {
+        if (!accepted) releaseSuggestionReservation(token);
         clearTimeout(timeout);suggestionSending=false;form.setAttribute('aria-busy','false');syncSuggestionAvailability();
     }
 }
+
+if (typeof window !== 'undefined') window.addEventListener('storage', event => {
+    if (event.key===SUGGESTION_COOLDOWN_KEY || event.key===null) syncSuggestionAvailability();
+});
