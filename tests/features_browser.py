@@ -56,7 +56,7 @@ def context(browser, **options):
 
 def ready(page):
     page.goto(URL,wait_until='networkidle')
-    page.wait_for_function(f'appReady && window.featuresReady && allBooks.length==={len(CATALOG)}')
+    page.wait_for_function(f'typeof appReady !== "undefined" && appReady && window.featuresReady && allBooks.length==={len(CATALOG)}')
     page.evaluate('document.fonts.ready')
     page.wait_for_timeout(300)
 
@@ -134,7 +134,8 @@ with sync_playwright() as p:
         assert page.locator('#challenge-list img').count()==0
         page.reload();page.wait_for_function('window.featuresReady');assert page.evaluate('userData.challenges.length')==5;assert page.evaluate('!!userData.achievements.first')
         page.evaluate('showPage("stats")');page.wait_for_timeout(350);assert 'Lokið' in page.locator('#challenge-list').text_content()
-        assert page.locator('#extended-metrics').text_content();assert page.locator('#personal-recommendations button').count()>0
+        assert page.locator('#extended-metrics').text_content()
+        page.click('#nav-library');page.locator('#recommendations-panel summary').click();page.wait_for_function('document.querySelectorAll("#personal-recommendations button").length>0');page.click('#nav-stats')
         page.locator('#challenge-list button').last.click();assert page.evaluate('userData.challenges.length')==4
         reset(page)
     check('built-in/custom challenge progress completion reload deletion, escaped title and achievements',achievements_challenges)

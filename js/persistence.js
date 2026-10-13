@@ -67,7 +67,7 @@ function normalizeUserData(raw) {
     // Unknown titles are retained and retried on future loads; never silently discard them.
     function resolve(reference, titleReference) {
         if (titleReference && typeof reference === 'string') {
-            const book = allBooks.find(book => book.title === reference) || catalogLegacyBook(reference);
+            const book = catalogLegacyBook(reference) || allBooks.find(book => book.title === reference);
             return book ? book.id : null;
         }
         return Number.isSafeInteger(reference) && reference >= 0 ? reference : null;

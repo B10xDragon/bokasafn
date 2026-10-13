@@ -189,7 +189,7 @@ function readingMetrics() {
     averageSession: sessions.length
       ? sessions.reduce((n, s) => n + s.seconds, 0) / sessions.length
       : null,
-    genres: new Set(books.flatMap((b) => b.categories)).size,
+    genres: new Set(books.flatMap((b) => bookGenres(b))).size,
     ...activitySummary(),
   };
 }
@@ -229,7 +229,7 @@ function challengeProgress(c) {
   if (c.kind === "pages")
     return books.reduce((n, b) => n + (Number(b.pages) || 0), 0);
   if (c.kind === "fantasy")
-    return books.filter((b) => b.categories.includes("Fantasía")).length;
+    return books.filter((b) => matchesGenre(b, "Fantasía")).length;
   if (c.kind === "author") {
     const previous = new Set(
       historyBooks()
@@ -316,7 +316,7 @@ function matchesAdvanced(b, f) {
     (!f.max || (pages > 0 && pages <= f.max)) &&
     (!f.rating || rating >= f.rating) &&
     (!f.author || b.author === f.author) &&
-    (!f.category || b.categories.includes(f.category))
+    (!f.category || matchesGenre(b, f.category))
   );
 }
 function chooseRandom(books, random = Math.random) {

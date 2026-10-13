@@ -15,7 +15,7 @@ def main(cache,allow_prior_covers=False):
  sources=json.loads((ROOT/'Resources/catalog-sources.json').read_text());collector=OfflineCollector(cache);errors=[];fresh_covers=0;prior_covers=0
  for index,r in enumerate(sources):
   try:
-   parsed=collector.parse({'url':r['url'],'discoveredIn':r['discoveredIn']},allow_unmapped=True)
+   parsed=collector.parse({'url':r['url'],'discoveredIn':r.get('discoveredIn',[]),'reviewedCoverAuthor':r.get('authorEvidence')},allow_unmapped=True)
    # Catalog IDs are stable historical identities, not publisher product IDs.
    for field in ['sourceProductId','title','author','sourceCategories','edition','coverSourceURL','sourceHTMLSHA256']:
     if parsed[field]!=r[field]:raise ValueError('Source metadata changed: '+field)

@@ -124,3 +124,6 @@ The existing library_v14/v15 storage and JSON/text backup formats are unchanged.
 catalog and is imported against the expanded catalog in the regression tests.
 Run all existing suites plus `tests/catalog_browser.py`; the browser suite measures
 initial rendering, filter latency and DOM size with real site dependencies.
+
+For verified series metadata, author identities, browsing URLs and their
+validation workflow, see [BROWSING.md](BROWSING.md).

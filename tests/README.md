@@ -134,3 +134,124 @@ idempotent normalization and conflicting import checks; catalog tools now exerci
 strict errors versus likely-match warnings and legitimate same-title/different-author
 and numbered-series cases. Frozen pre-cleanup identities replace the former
 assumption that original metadata could never be corrected.
+
+Series and author browsing adds `node tests/browse.test.cjs` (13 unit checks),
+`python tests/browsing_tools.py` (8 validator checks), and
+`python tests/browse_browser.py` (7 real-server browser groups). These exercise
+verified ordering with gaps, unknown numbers, multiple authors, conservative
+name normalization, typed search, catalog-only progress, direct links and
+Back/Forward, unchanged portable backups, all five themes and 320–1920px
+layouts, keyboard focus and complete-catalog performance.
+
+Run `python scripts/validate_browsing.py` after changing catalog metadata;
+see [BROWSING.md](../BROWSING.md) for the source review and maintenance process.
+
+Complete-series and title maintenance adds:
+
+```sh
+python scripts/validate_completion.py
+python tests/completion_tools.py
+python tests/completion_browser.py
+```
+
+Run all three catalog validators, all Python tool suites, the Node regression
+suite in UTC/New York/Reykjavík, `node tests/browse.test.cjs`, and all nine browser
+suites (`browser`, `live_browser`, `features_browser`, `backups_browser`,
+`clipboard_browser`, `catalog_browser`, `cleanup_browser`, `browse_browser`,
+`completion_browser`). The completion checks cover finite/unknown totals,
+missing and unknown numbers, title aliases, all original IDs and metadata,
+held unsuitable additions, cover evidence, cleaned book dialogs, historical
+edition aliases, conflict preservation, old-title imports and mobile notes.
+See [SERIES_COMPLETION.md](../SERIES_COMPLETION.md) and its machine-readable test
+report for the latest full-run results.
+
+Responsive UI checks:
+
+```sh
+python tests/responsive_browser.py
+python -m playwright install firefox webkit
+python -m playwright install-deps firefox webkit
+python tests/cross_engine_browser.py
+```
+
+The six responsive groups render all 17 requested widths and 12 intermediate
+widths, all five themes, touch/keyboard disclosures, dialogs, simulated keyboard
+viewport geometry, long titles/backups, contrast and 200% text scaling. They
+write actual screenshots and measurements to the temporary verification artifact
+folder. Cross-engine tests add four groups using Firefox and Linux WebKit;
+`--engines firefox` or `--engines webkit` runs one installed engine explicitly.
+Missing engines/dependencies fail rather than silently claiming coverage.
+Run both alongside all nine existing browser suites and the existing Node/tool
+checks. Keep the catalog performance benchmark isolated from parallel browsers.
+See [RESPONSIVE_DESIGN.md](../RESPONSIVE_DESIGN.md) for implementation details,
+verified coverage, screenshots and physical-device limitations.
+
+Complete genre audit checks:
+
+```sh
+python scripts/validate_genres.py
+python tests/genre_tools.py
+python tests/genre_browser.py
+```
+
+The validator fails definite schema/name/provenance errors and emits review
+warnings for unusual tagging or majority differences between series volumes.
+It does not assign genres automatically. `GENRE_AUDIT.md` documents all reviewed
+series, the taxonomy and unresolved classifications; `Resources/genre-audit.json`
+contains a decision and publisher evidence for every active book.
+
+`tests/genre_browser.py` uses actual CDN assets and Chromium at
+320/390/820/1440px. It verifies legacy and canonical multi-genre filters,
+series search/URLs, personalized recommendations, genre statistics, detail
+badges, overflow and preserved raw preferences in JSON/BOKASAFN backups.
+The Node suite additionally verifies random picking and combined genre/state/page
+filters, archived reading history, earned achievements and old JSON imports.
+Run the Node suite in all three documented time zones.
+
+After editing the taxonomy, regenerate its dependency-free browser registry:
+`python scripts/build_genre_metadata.py`. Historical publisher-store mapping is
+not a literary classifier and cannot overwrite the reviewed catalog.
+For an optional offline reparse of saved Forlagið proof, run
+`python scripts/verify_genre_sources.py --cache PATH` with the source HTML cache.
+
+Simplified genres and book suggestions:
+
+```sh
+node tests/suggestions.test.cjs
+python tests/suggestions_browser.py
+python tests/genre_tools.py
+python tests/genre_browser.py
+python scripts/validate_genres.py
+```
+
+The genre suite checks the 14-group taxonomy, every former 26-genre query,
+context-sensitive crime-mystery grouping and unchanged metadata/forms.
+Suggestion tests cover pending activation, required fields, secure optional
+Forlagið URLs, lengths/control characters, inert script input, provider acceptance,
+unexpected responses, network/500/429 errors, double submissions, touch/keyboard,
+all themes and 320/390/768/1440px layouts. The browser suite intercepts its test
+Formspree URL: **no live emails are sent and mailbox delivery is not verified**.
+The documented provider contract uses a JSON `next` string on HTTP success.
+Owner activation and the required real delivery test are in
+`BOOK_SUGGESTIONS_SETUP.md`.
+
+Activated Formspree endpoint checks:
+
+```sh
+node tests/suggestions.test.cjs
+python tests/suggestions_browser.py
+python tests/suggestions_browser.py --engine firefox
+PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 python tests/suggestions_browser.py --engine webkit
+```
+
+The configured endpoint is intercepted in every suggestion browser run. No real
+POSTs or test emails are sent. Tests cover the enabled owner-provided form ID,
+JSON POST headers and field names, `next`/`ok` acceptance, unexpected bodies,
+server-side field errors, malformed server HTML, network failures, unavailable
+service and rate limits. They verify the exact Icelandic success text, retained
+drafts, duplicate-submit prevention and layouts across all themes. Firefox and
+Linux WebKit runs exercise the same form flow; Linux WebKit does not establish
+physical Safari/iOS delivery. Recipient verification and the single real mailbox
+test remain separate owner steps in `BOOK_SUGGESTIONS_SETUP.md`.
+
+Cooldown tests additionally verify the actual delete-all button, backup replacement, reload, another tab, expiry, reservation rollback and denied storage. The seven-day key is outside reading-data namespaces. This is browser-side enforcement; it cannot survive deliberate removal of all site storage or direct provider requests.

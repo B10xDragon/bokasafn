@@ -52,6 +52,8 @@
 
 
 <link rel="stylesheet" href="css/features.css">
+<link rel="stylesheet" href="css/browse.css?v=series-20261008">
+<link rel="stylesheet" href="css/responsive.css?v=simplified-20261012">
 </head>
 <body class="pb-24 relative">
 
@@ -59,10 +61,10 @@
 
 
     <!-- Leiðsögustika (isoleruð á eigin vélbúnaðarlagi fyrir mýkra skrun) -->
-    <nav class="bg-white/70 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200/50 transform translate-z-0">
-        <div class="-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-4 cursor-pointer group shrink-0" role="button" tabindex="0" aria-label="Opna bókasafnið" onclick="showPage('library')">
-                <div class="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200 group-hover:rotate-12 transition-all duration-300">
+    <nav aria-label="Aðalleiðsögn" class="site-nav bg-white/70 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200/50 transform translate-z-0">
+        <div class="nav-shell mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="nav-brand flex items-center gap-4 cursor-pointer group shrink-0" role="button" tabindex="0" aria-label="Opna bókasafnið" onclick="showPage('library')">
+                <div class="nav-logo w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200 group-hover:rotate-12 transition-all duration-300">
                     <i aria-hidden="true" class="fas fa-book-open text-xl"></i>
                 </div>
                 <div>
@@ -75,14 +77,16 @@
                 <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none z-10">
                     <i aria-hidden="true" class="fas fa-search text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
                 </div>
-                <input type="text" id="book-search" aria-label="Leita eftir bókartitli eða höfundi" aria-controls="search-suggestions" oninput="handleSearch()" onfocus="handleSearch()"
+                <input type="text" id="book-search" aria-label="Leita eftir bókartitli, höfundi eða bókaflokki" aria-controls="search-suggestions" oninput="handleSearch()" onfocus="handleSearch()"
                     placeholder="Leita..." 
                     class="w-full pl-12 pr-6 py-4 bg-slate-100/80 border-2 border-transparent rounded-[2rem] focus:ring-0 focus:bg-white focus:border-indigo-400 transition-all outline-none text-sm font-semibold shadow-inner">
                 <ul id="search-suggestions" class="absolute left-0 right-0 top-full mt-3 bg-white/90 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-slate-100 hidden max-h-64 overflow-y-auto overflow-hidden z-50"></ul>
             </div>
 
-            <div class="flex gap-1 md:gap-2 items-center bg-slate-200/50 p-1.5 rounded-[1.8rem]">
+            <div class="browse-nav flex gap-1 md:gap-2 items-center bg-slate-200/50 p-1.5 rounded-[1.8rem]">
                 <button onclick="showPage('library')" id="nav-library" class="px-4 md:px-6 py-2.5 rounded-[1.5rem] bg-white shadow-md text-indigo-600 font-bold transition-all whitespace-nowrap">Bækur</button>
+                <button type="button" id="nav-series" class="px-4 py-2 rounded-xl font-bold" onclick="openBrowse('series')">Bókaflokkar</button>
+                <button type="button" id="nav-authors" class="px-4 py-2 rounded-xl font-bold" onclick="openBrowse('author')">Höfundar</button>
                 <button onclick="showPage('stats')" id="nav-stats" class="px-4 md:px-6 py-2.5 rounded-[1.5rem] text-slate-600 hover:text-indigo-600 font-bold transition-all whitespace-nowrap">Lesturinn minn</button>
 
 <button
@@ -97,11 +101,11 @@
         </div>
     </nav>
 
-    <main class="max-w-[100rem] mx-auto p-4 md:p-10">
+    <main id="site-main" class="max-w-[100rem] mx-auto p-4 md:p-10">
         
         <!-- Bókasafnið -->
         <div id="library-page" class="page-container active">
-            <div class="mb-12 space-y-10">
+            <div class="library-tools mb-12 space-y-10">
                 <!-- Lestrarklukka -->
                 <div id="timer-widget" class="p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] shadow-lg flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 max-w-lg mx-auto">
                     <div class="flex flex-col items-center sm:items-start">
@@ -154,7 +158,7 @@
                 </div>
 
                 <!-- Sjónrænir Tölfræði kassar -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+                <div class="stats-metrics grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
                     <!-- Hours Card -->
                     <div class="relative overflow-hidden bg-gradient-to-br from-indigo-500 to-indigo-600 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] shadow-xl text-white group hover:scale-[1.02] transition-all duration-300">
                         <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-all"></div>
@@ -342,29 +346,38 @@
             </button>
             <div class="space-y-6">
                 <div>
-                    <h3 id="recommend-dialog-title" class="text-xl md:text-2xl font-black text-slate-900 tracking-tighter flex items-center gap-3">
+                    <h3 id="recommend-dialog-title" class="pr-8 text-xl md:text-2xl font-black text-slate-900 tracking-tighter flex items-center gap-3">
                         <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-sm"><i aria-hidden="true" class="fas fa-envelope-open-text"></i></div>
-                        Mælir þú með bók?
+                        <span class="min-w-0 break-words">Bókatillaga</span>
                     </h3>
-                    <p class="text-slate-400 font-bold uppercase tracking-widest text-[9px] mt-2">Sendu tillögu þína til bókavarðar</p>
+                    <p class="text-slate-400 font-bold uppercase tracking-widest text-[9px] mt-2">Leggðu til bók fyrir Bókasafn</p>
                 </div>
-                <div class="space-y-4">
+                <form id="suggestion-form" aria-labelledby="recommend-dialog-title" oninput="suggestionDraftChanged()" novalidate onsubmit="submitRecommendation(event)" class="space-y-4">
                     <div>
-                        <label for="rec-title" class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Heiti bókar <span class="text-rose-500">*</span></label>
-                        <input type="text" id="rec-title" required class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-3 outline-none focus:bg-white focus:border-indigo-400 transition-all font-semibold text-sm shadow-sm" placeholder="T.d. Hornauga">
+                        <label for="rec-title" class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Bókatitill <span class="text-rose-500">*</span></label>
+                        <input type="text" id="rec-title" name="title" maxlength="140" required aria-describedby="suggestion-status" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-3 outline-none focus:bg-white focus:border-indigo-400 transition-all font-semibold text-sm shadow-sm" placeholder="T.d. Hornauga">
                     </div>
                     <div>
-                        <label for="rec-author" class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Höfundur (valfrjálst)</label>
-                        <input type="text" id="rec-author" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-3 outline-none focus:bg-white focus:border-indigo-400 transition-all font-semibold text-sm shadow-sm" placeholder="T.d. Jón Jónsson">
+                        <label for="rec-author" class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Höfundur <span class="text-rose-500">*</span></label>
+                        <input type="text" id="rec-author" name="author" maxlength="120" required aria-describedby="suggestion-status" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-3 outline-none focus:bg-white focus:border-indigo-400 transition-all font-semibold text-sm shadow-sm" placeholder="T.d. Jón Jónsson">
                     </div>
+                    <div><label for="rec-series" class="block text-sm font-bold mb-2">Bókaflokkur (valfrjálst)</label>
+                        <input id="rec-series" name="series" maxlength="140" class="suggestion-input" autocomplete="off"></div>
                     <div>
-                        <label for="rec-ideas" class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Hugmyndir eða umsögn (valfrjálst)</label>
-                        <textarea id="rec-ideas" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-4 text-sm font-semibold outline-none focus:bg-white focus:border-indigo-400 shadow-sm min-h-[100px] transition-all" placeholder="Af hverju mælir þú með þessari bók?"></textarea>
+                        <label for="rec-ideas" class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Ástæða fyrir tillögu (valfrjálst)</label>
+                        <textarea id="rec-ideas" name="reason" maxlength="2000" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-4 text-sm font-semibold outline-none focus:bg-white focus:border-indigo-400 shadow-sm min-h-[100px] transition-all" placeholder="Af hverju mælir þú með þessari bók?"></textarea>
                     </div>
-                </div>
-                <button onclick="submitRecommendation()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-indigo-700 transition-all text-xs uppercase tracking-widest active:scale-95">
-                    <i aria-hidden="true" class="fas fa-paper-plane mr-2"></i> Senda tillögu
-                </button>
+
+                    <div><label for="rec-url" class="block text-sm font-bold mb-2">Hlekkur á Forlagið (valfrjálst)</label>
+                        <input id="rec-url" name="url" type="url" maxlength="600" class="suggestion-input" placeholder="https://www.forlagid.is/vara/…" inputmode="url"></div>
+                    <div class="suggestion-honeypot" aria-hidden="true"><label for="rec-website">Vefsíða</label><input id="rec-website" name="_gotcha" tabindex="-1" autocomplete="off"></div>
+                    <p class="text-xs">Ein bókatillaga á sjö daga fresti í þessum vafra. „Eyða gögnum“ endurstillir ekki biðtímann.</p>
+                    <p class="text-xs">Tillögur fara í gegnum Formspree. Ekki senda persónuupplýsingar. <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer" class="underline">Persónuvernd þjónustunnar</a></p>
+                    <p id="suggestion-status" role="status" aria-live="polite" aria-atomic="true" class="text-sm" tabindex="-1"></p>
+                    <button type="submit" id="suggestion-submit" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-indigo-700 transition-all text-xs uppercase tracking-widest active:scale-95">
+                        <i aria-hidden="true" class="fas fa-paper-plane mr-2"></i> Senda tillögu
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -390,16 +403,22 @@
         <p id="success-message" class="font-black text-[12px] uppercase tracking-wider"></p>
     </div>
 
-    <script src="js/catalog-identities.js?v=audit-20261008"></script>
-    <script src="js/persistence.js?v=audit-20261008"></script>
-    <script src="js/accessibility.js"></script>
-    <script src="js/insights.js?v=audit-20261008"></script>
-    <script src="js/app.js?v=audit-20261008"></script>
+    <script src="js/genre-metadata.js?v=simplified-20261012"></script>
+    <script src="js/genres.js?v=simplified-20261012"></script>
+    <script src="js/catalog-identities.js?v=completion-20261009"></script>
+    <script src="js/persistence.js?v=completion-20261009"></script>
+    <script src="js/accessibility.js?v=responsive-20261009"></script>
+    <script src="js/insights.js?v=simplified-20261012"></script>
+    <script src="js/browse-metadata.js?v=completion-20261009"></script>
+    <script src="js/suggestion-config.js?v=cooldown-20261012"></script>
+    <script src="js/suggestions.js?v=cooldown-20261012"></script>
+    <script src="js/app.js?v=simplified-20261012"></script>
 
 <script src="js/themes.js"></script>
 <script src="js/sorting.js?v=audit-20261008"></script>
 <script src="js/backups.js?v=audit-20261008"></script>
-<script src="js/features.js?v=audit-20261008"></script>
+<script src="js/features.js?v=responsive-20261009"></script>
+<script src="js/browse.js?v=simplified-20261012"></script>
 
 
 <div id="appearance-panel" class="hidden">

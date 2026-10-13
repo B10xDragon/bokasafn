@@ -1,4 +1,5 @@
-"""Map Forlagið store categories and explicit genre claims to a small UI vocabulary."""
+"""Historical normalized shopping facets, NOT the reviewed literary genre taxonomy.
+Do not deploy these as book genres; use genre-audit.json and validate_genres.py."""
 import re
 CATEGORY_MAP={
  '13 ára og eldri':'Ungmenni','6-12 ára':'Barnabækur','0-5 ára':'Barnabækur',

@@ -90,6 +90,8 @@ class RepeatCuration(unittest.TestCase):
    record={'id':1001234,'sourceProductId':1234,'title':'Gömul saga','author':'Höfundur','sourceCategories':['13 ára og eldri'],'sourceDescription':'Verified substantial adolescent prose narrative.','edition':{'pages':None,'year':None,'format':None},'url':'https://www.forlagid.is/vara/saga/','coverSourceURL':'https://www.forlagid.is/wp-content/uploads/cover.jpg','sourceHTMLSHA256':'a'*64,'verifiedAt':'2026-10-08'}
    prior={**record,'id':1,'coverSHA256':hashlib.sha256(raw).hexdigest(),'coverSourceSHA256':'b'*64,'coverVerifiedAt':'2026-10-07'}
    (root/'Resources/catalog-sources.json').write_text(json.dumps([prior]))
+   browsing={'series':{'id':'saga','name':'Saga','number':1},'authorIds':['hofundur']}
+   (root/'Resources/books.json').write_text(json.dumps([{**old,**browsing}]))
    decisions={'1':{'status':'retained','kind':'prose','audience':'13+','comic':False,'identityVerified':True,'reason':'Verified teen prose'},'2':{'status':'removed','kind':'children','audience':'under13','comic':False,'identityVerified':True,'reason':'Verified younger-reader edition'}}
    original_root=curate_catalog.ROOT
    try:
@@ -97,7 +99,8 @@ class RepeatCuration(unittest.TestCase):
     with contextlib.redirect_stdout(io.StringIO()):
      for _ in range(2):
       curate_catalog.apply([{'catalogId':1,'record':record},{'catalogId':2,'error':'No fresh page'}],decisions,root/'cache')
-      books=json.loads((root/'Resources/books.json').read_text());self.assertEqual(books[0]['cover'],cover);self.assertEqual(books[0]['id'],1);self.assertIsNone(books[0]['pages'])
+      books=json.loads((root/'Resources/books.json').read_text());self.assertEqual(books[0]['cover'],cover);self.assertEqual(books[0]['id'],1)
+      for key,value in browsing.items():self.assertEqual(books[0][key],value);self.assertIsNone(books[0]['pages'])
       sources=json.loads((root/'Resources/catalog-sources.json').read_text());self.assertEqual(sources[0]['coverVerifiedAt'],'2026-10-07')
       identities=json.loads((root/'Resources/catalog-identities.json').read_text());self.assertEqual(identities['archived'][0]['id'],2)
    finally:curate_catalog.ROOT=original_root

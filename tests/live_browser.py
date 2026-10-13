@@ -2,6 +2,7 @@
 Run: python tests/live_browser.py (requires Playwright, Chromium, curl and network).
 Downloaded dependencies and screenshots stay in the system temporary directory.
 """
+import unicodedata
 import hashlib
 import json
 import mimetypes
@@ -56,7 +57,7 @@ def context(browser, **options):
 
 def ready(page):
     page.goto(URL,wait_until='networkidle')
-    page.wait_for_function(f'appReady && window.featuresReady && allBooks.length==={len(CATALOG)}')
+    page.wait_for_function(f'typeof appReady !== "undefined" && appReady && window.featuresReady && allBooks.length==={len(CATALOG)}')
     page.evaluate('document.fonts.ready')
     page.wait_for_timeout(300)
 
@@ -87,7 +88,7 @@ with sync_playwright() as p:
 
     def assets():
         assert page.evaluate('getComputedStyle(document.getElementById("book-grid")).display')=='grid'
-        assert page.evaluate('getComputedStyle(document.getElementById("book-grid")).gridTemplateColumns.split(" ").length')==10
+        assert page.evaluate('getComputedStyle(document.getElementById("book-grid")).gridTemplateColumns.split(" ").length')==8
         assert page.evaluate('[...document.fonts].some(font=>font.family==="Plus Jakarta Sans"&&font.status==="loaded")')
         assert page.evaluate('[...document.fonts].some(font=>font.family==="Font Awesome 6 Free"&&font.status==="loaded")')
         # Scroll through lazy-loaded covers without substituting image data.
@@ -101,7 +102,7 @@ with sync_playwright() as p:
 
     def responsive_themes():
         palettes={'light':'rgb(248, 250, 252)','dark':'rgb(9, 9, 11)','green':'rgb(7, 19, 14)','purple':'rgb(13, 7, 21)','orange':'rgb(18, 11, 5)'}
-        for width,height,cols in [(320,740,2),(390,844,2),(768,1024,6),(1440,1000,10),(1920,1080,12)]:
+        for width,height,cols in [(320,740,2),(390,844,2),(768,1024,4),(1440,1000,8),(1920,1080,9)]:
             page.set_viewport_size({'width':width,'height':height})
             for theme,color in palettes.items():
                 page.evaluate('(theme)=>setBokasafnTheme(theme)',theme);page.wait_for_timeout(220)
@@ -138,11 +139,14 @@ with sync_playwright() as p:
         reset(page)
         for query in ['Hildur','vetrar','ORRI','ó','no such book 000']:
             page.fill('#book-search',query)
-            expected=[book['id'] for book in CATALOG if query.lower() in book['title'].lower() or query.lower() in book['author'].lower()]
+            def fold(value):
+                return ''.join(c for c in unicodedata.normalize('NFKD',value).lower() if not unicodedata.combining(c)).replace('þ','th').replace('ð','d').replace('æ','ae')
+            expected=[book['id'] for book in CATALOG if fold(query) in fold(book['title']+'\n'+'\n'.join(book.get('titleAliases',[]))+'\n'+book['author']+'\n'+book.get('series',{}).get('name',''))]
             actual=page.locator('#book-grid .book-card').evaluate_all('(cards)=>cards.map(card=>Number(card.dataset.bookId))')
             assert page.evaluate('filteredBooks.map(book=>book.id)')==expected,(query,expected)
             assert actual==expected[:60],(query,actual,expected[:60])
-            assert page.locator('#search-suggestions [role=button]').count()==min(5,len(expected)) if expected else page.locator('#search-suggestions').is_hidden()
+            assert page.locator('#search-suggestions [data-result-type=book]').count()==min(5,len(expected))
+            assert page.locator('#search-suggestions [role=button]').count()<=11
         page.fill('#book-search','Hildur');page.keyboard.press('ArrowDown')
         first=page.locator('#search-suggestions [role=button]').first
         expect(first).to_be_focused();page.keyboard.press('ArrowDown');expect(first.locator('xpath=following-sibling::li[1]')).to_be_focused()
@@ -160,8 +164,9 @@ with sync_playwright() as p:
         reset(page)
         page.locator('[data-category="Ævintýri"]').click();page.locator('[data-category="Fantasía"]').click()
         ids=[book['id'] for book in CATALOG if 'Ævintýri' in book['categories'] and any(c in ['Fantasía','Fantasia'] for c in book['categories'])]
-        assert page.locator('.book-card').evaluate_all('(cards)=>cards.map(card=>Number(card.dataset.bookId))')==ids
-        page.fill('#book-search','Álfareiðin');assert page.locator('.book-card').count()==1
+        assert page.evaluate('filteredBooks.map(book=>book.id)')==ids
+        assert page.locator('.book-card').evaluate_all('(cards)=>cards.map(card=>Number(card.dataset.bookId))')==ids[:60]
+        page.fill('#book-search','Hobbitinn');assert page.locator('.book-card').count()==1
         page.fill('#book-search','');page.locator('[data-category="Allir"]').click()
         assert page.locator('[data-category="Fantasia"]').count()==0
         for mode in ['title-asc','title-desc','author-asc','pages-asc','pages-desc','default']:

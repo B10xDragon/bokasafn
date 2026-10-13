@@ -15,7 +15,7 @@ function harness(stored = {}) {
         window:{addEventListener(){}}, localStorage:{get length(){return storage.size},key(i){return [...storage.keys()][i]??null},getItem(key){return storage.get(key)??null},setItem(key,value){storage.set(key,value)},removeItem(key){storage.delete(key)}},sessionStorage:{get length(){return 0},key(){return null},getItem(){return null},setItem(){},removeItem(){}},
         setInterval(){return 1},clearInterval(){},setTimeout(){},requestAnimationFrame(){},rememberBookFocus(){return null},restoreBookFocus(){},prepareDialog(){},restoreDialogFocus(){} };
     vm.createContext(ctx);
-    for (const file of ['js/catalog-identities.js','js/persistence.js','js/insights.js','js/app.js','js/backups.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
+    for (const file of ['js/genre-metadata.js','js/genres.js','js/catalog-identities.js','js/persistence.js','js/insights.js','js/app.js','js/backups.js']) vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
     vm.runInContext('allBooks = '+JSON.stringify(catalog),ctx);
     vm.runInContext('appReady = true; userDataLoaded = true;', ctx);
     return {ctx,storage,nodes,run(code){return vm.runInContext(code,ctx)},data(){return JSON.parse(vm.runInContext('JSON.stringify(userData)',ctx))}};
@@ -236,11 +236,11 @@ test('old JSON and BOKASAFN backups migrate duplicate IDs and preserve archived 
 console.log(`${passed} total regression tests passed`);
 test('all deployed duplicate mappings preserve identities and old saved history',()=>{
  const identities=JSON.parse(fs.readFileSync(path.join(root,'Resources/catalog-identities.json')));
- assert.deepEqual(identities.aliases,{'1030282':37,'1099991':29,'1275924':21});
+ for(const [old,target] of Object.entries({'1030282':37,'1099991':29,'1275924':21}))assert.equal(identities.aliases[old],target);
  const frozen=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/pre-cleanup-books.json')));
  const h=harness();for(const book of frozen){assert(h.run(`historyBook(${book.id})`));assert.equal(h.run(`canonicalBookId(${book.id})`),identities.aliases[book.id]||book.id);}
  const refs=Object.entries(identities.aliases).flatMap(([id,target])=>[Number(id),target]);h.ctx.refs=refs;
- h.run('userData=normalizeUserData({version:15,read:refs,liked:refs,totalSeconds:900});');assert.equal(h.run('readingMetrics().books'),3);assert.equal(h.data().totalSeconds,900);
+ h.run('userData=normalizeUserData({version:15,read:refs,liked:refs,totalSeconds:900});');assert.equal(h.run('readingMetrics().books'),new Set(Object.values(identities.aliases)).size);assert.equal(h.data().totalSeconds,900);
 });
 test('rollback preserves exact stored text and denied rollback never overwrites the original',()=>{
  const raw=' { "version":15, "read":[1030282,37], "totalSeconds":123 } ';
@@ -248,4 +248,70 @@ test('rollback preserves exact stored text and denied rollback never overwrites 
  const denied=harness({library_v15:raw});denied.ctx.localStorage.setItem=(key,value)=>{if(key==='library_catalog_backup_20261008')throw Error('quota');denied.storage.set(key,value);};
  denied.run('loadUserData();saveUserData()');assert.equal(denied.storage.get('library_v15'),raw);assert.equal(denied.run('storageWritable'),false);
 });
+console.log(`${passed} total regression tests passed`);
+
+test('all pre-completion IDs and old-title backups preserve their original work and statistics',()=>{
+ const old=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/pre-series-completion-books.json')));const h=harness();h.ctx.old=old;
+ h.run('userData=normalizeUserData({version:15,read:old.map(b=>b.id),liked:old.map(b=>b.id),session:null,totalSeconds:456,dailyProgress:{"2026-01-01":456}})');
+ assert.equal(h.run('readingMetrics().books'),old.length);assert.equal(h.data().totalSeconds,456);
+ const before=h.data();h.run('userData=normalizeUserData(parseBackupLine(encodeBackupLine(createReadingBackup())).data)');assert.deepEqual(h.data(),before);
+ h.run('userData=normalizeUserData({version:14,read:old.map(b=>b.title)})');assert.deepEqual(new Set(h.data().read),new Set(old.map(b=>b.id)));
+});
+test('identical new title by another author cannot steal legacy archived reading history',()=>{
+ const h=harness();assert(catalog.some(b=>b.title==='Allt eða ekkert'&&b.author.includes('Simona')));
+ h.run('userData=parseBackup(JSON.stringify({version:14,read:["Allt eða ekkert"],liked:["Allt eða ekkert"],reviews:{"Allt eða ekkert":{rating:4,comment:"Nicole Yoon"}}})).data');
+ assert.deepEqual(h.data().read,[2]);assert.deepEqual(h.data().liked,[2]);assert.equal(h.data().reviews[2].comment,'Nicole Yoon');
+});
+test('historical Harry Potter edition merging retains conflicting ratings without double-counting',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,read:[1126426,1110431],liked:[1126426],reviews:{1126426:{rating:2,comment:"Old edition"},1110431:{rating:5,comment:"Prose"}},completedDates:{1126426:"2026-01-01"},session:null,totalSeconds:123})');
+ assert.deepEqual(h.data().read,[1110431]);assert.deepEqual(h.data().liked,[1110431]);assert.equal(h.run('readingMetrics().books'),1);assert.equal(h.data().totalSeconds,123);assert.equal(h.data().reviewConflicts.length,1);assert.equal(h.data().completedDates[1110431],'2026-01-01');
+ const before=h.data();h.run('userData=normalizeUserData(parseBackupLine(encodeBackupLine(createReadingBackup())).data)');assert.deepEqual(h.data(),before);
+});
+console.log(`${passed} total regression tests passed`);
+
+test('publisher-renamed editions preserve both identity and conflicting reviews in old backups',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,read:[1219882,1297974,1239308,1297976],reviews:{1219882:{rating:2,comment:"Undir yfirborðinu"},1297974:{rating:5,comment:"Heimilishjálpin"}},session:null,totalSeconds:321})');
+ assert.deepEqual(new Set(h.data().read),new Set([1297974,1297976]));assert.equal(h.run('readingMetrics().books'),2);assert.equal(h.data().reviewConflicts.length,1);assert.equal(h.data().totalSeconds,321);
+ const before=h.data();h.run('userData=normalizeUserData(parseBackupLine(encodeBackupLine(createReadingBackup())).data)');assert.deepEqual(h.data(),before);
+ assert.equal(h.run('parseBackup(JSON.stringify({version:14,read:["Undir yfirborðinu"]})).data.read[0]'),1297974);
+ assert.equal(h.run('parseBackup(JSON.stringify({version:14,read:["Það sem þernan sér"]})).data.read[0]'),1297976);
+});
+console.log(`${passed} total regression tests passed`);
+
+test('genre aliases normalize Icelandic names and old metadata facets never enter current genre lists',()=>{
+ const h=harness();assert.equal(h.run('normalizeGenreFilter("GLÆPIR")'),'Spenna og glæpasögur');assert.equal(h.run('normalizeGenreFilter("Vi\\u0301sindaska\\u0301ldsaga")'),'Vísindaskáldskapur og dystópía');
+ assert.deepEqual(JSON.parse(h.run('JSON.stringify(bookGenres({categories:["Ungmenni","Þýddar bækur","Fantasía","Fantasia"]}))')),['Fantasía']);
+});
+test('old category filters still match current books without writing reading data',()=>{
+ const h=harness();const old=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/pre-genre-audit-books.json')));h.ctx.old=old;
+ for(const b of old){h.ctx.bid=b.id;for(const c of b.categories.filter(c=>['Ungmenni','Þýddar bækur','Skáldsögur','Skáldverk'].includes(c))){h.ctx.query=c;assert(h.run('matchesGenre(allBooks.find(b=>b.id===bid),query)'),b.title+': '+c);}}
+ assert.deepEqual(h.data().read,[]);
+});
+test('the full Hunger Games trilogy matches old science spelling and combined new genres',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15})');
+ for(const id of [35,36,38]){assert(h.run(`matchesAdvanced(historyBook(${id}),{category:"Vísindaskáldsaga"})`));assert(h.run(`matchesGenre(historyBook(${id}),"Dystópía")`));assert(h.run(`matchesGenre(historyBook(${id}),"Spenna")`));}
+});
+test('favorite genre statistics count literary categories rather than audience, language or store umbrellas',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,read:[35,36,38]});renderVisualStats()');assert.equal(h.run('readingMetrics().genres'),2);
+ const text=h.nodes.get('visual-stats-categories').innerHTML;assert(text.includes('Vísindaskáldskapur og dystópía')&&text.includes('Spenna og glæpasögur'));assert(!text.includes('Ungmenni')&&!text.includes('Þýddar bækur')&&!text.includes('Skáldverk'));
+});
+test('corrected genres guide recommendations without sharing merely a teen-audience facet',()=>{
+ const h=harness();h.run(`allBooks=[{id:900051,title:'Lestur',author:'A',categories:['Spenna og glæpasögur'],classification:{audienceTags:['Ungmenni']}},{id:900052,title:'Rétt grein',author:'B',categories:['Spenna og glæpasögur'],classification:{audienceTags:[]}},{id:900053,title:'Sama aldur',author:'C',categories:['Fantasía'],classification:{audienceTags:['Ungmenni']}}];userData=normalizeUserData({version:15,read:[900051],reviews:{900051:{rating:5,comment:''}}});`);
+ assert.equal(h.run('recommendations()[0].book.id'),900052);assert.equal(h.run('recommendations()[1].score'),0);
+});
+test('random selection and combined filters respect new and old genre spellings',()=>{
+ const h=harness();h.run('userData=normalizeUserData({version:15,liked:[35]})');assert.equal(h.run('chooseRandom(allBooks.filter(b=>matchesAdvanced(b,{category:"Vísindaskáldsaga",state:"wishlist",min:100})),()=>0).id'),35);
+ assert.equal(h.run('matchesAdvanced(historyBook(37),{category:"Vísindaskáldskapur"})'),false);
+});
+test('genre changes preserve old JSON and BOKASAFN backups, ratings, challenges and arbitrary legacy preference text',()=>{
+ const h=harness();h.run(`userData=normalizeUserData({version:15,read:[35],liked:[37],reviews:{35:{rating:5,comment:'Þ æ ö'}},totalSeconds:456,session:null,achievements:{'five-genres':'2026-01-01'},challenges:[{id:'g',kind:'fantasy',title:'Gömul áskorun',target:1,start:'2026-01-01',baseline:[37],completed:'2026-01-02'}]});localStorage.setItem('bokasafn_genre_filters','["Vísindaskáldsaga","Skáldsögur"]');var backup=createReadingBackup();var j=parseBackup(JSON.stringify(backup));var t=parseBackupLine(encodeBackupLine(backup));`);
+ assert.equal(h.run('JSON.stringify(j.data)'),h.run('JSON.stringify(t.data)'));assert.equal(h.run('t.raw.storage.local.bokasafn_genre_filters'),'["Vísindaskáldsaga","Skáldsögur"]');assert.equal(h.run('t.data.totalSeconds'),456);assert.equal(h.run('t.data.achievements["five-genres"]'),'2026-01-01');assert.equal(h.run('t.data.challenges[0].completed'),'2026-01-02');assert.equal(h.run('parseBackup(JSON.stringify({version:14,read:["Hungurleikarnir"]})).data.read[0]'),35);
+});
+test('archived genre interpretation keeps raw historical metadata and completion history intact',()=>{
+ const h=harness();h.run('var archived=historyBook(1);var original=JSON.stringify(archived);bookGenres(archived);userData=normalizeUserData({version:15,read:[1,35],completedDates:{1:"2026-01-01"}})');assert.equal(h.run('JSON.stringify(archived)'),h.run('original'));assert.equal(h.run('readingMetrics().books'),2);assert.equal(h.data().completedDates[1],'2026-01-01');
+});
+console.log(`${passed} total regression tests passed`);
+
+test('all previous 26-genre queries retain every previously classified book',()=>{const h=harness();const previous=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/pre-simplified-genres.json')));for(const b of previous){h.ctx.bid=b.id;for(const query of b.categories){h.ctx.query=query;assert(h.run('matchesGenre(historyBook(bid),query)'),b.title+': '+query)}}});
+test('historical mystery filters include crime mysteries without adding horror tags',()=>{const h=harness();h.run('activeCategories=["Ráðgáta"];applyFilters()');assert(h.run('filteredBooks.some(b=>b.series?.id==="erlendur")'));assert(h.run('allBooks.filter(b=>b.series?.id==="erlendur").every(b=>!b.categories.includes("Hrollvekjur og ráðgátur"))'));});
 console.log(`${passed} total regression tests passed`);

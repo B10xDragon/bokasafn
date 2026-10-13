@@ -1,0 +1,297 @@
+{
+  "date": "2026-10-12",
+  "branch": "Beta",
+  "baselineCommit": "d9665a67de23a79b14c9ff8ca66c25913d77d922",
+  "allPassed": true,
+  "distinctUnitCases": 128,
+  "unitExecutionsIncludingThreeTimeZones": 254,
+  "browserGroupsPassed": 84,
+  "catalogValidationErrors": 0,
+  "genreValidationErrors": 0,
+  "genreReviewWarnings": 17,
+  "seriesMajorGenreWarnings": 0,
+  "commands": [
+    {
+      "name": "regression-UTC",
+      "command": [
+        "node",
+        "tests/regression.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "regression-America-New_York",
+      "command": [
+        "node",
+        "tests/regression.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "regression-Atlantic-Reykjavik",
+      "command": [
+        "node",
+        "tests/regression.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browse-node",
+      "command": [
+        "node",
+        "tests/browse.test.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "catalog_tools",
+      "command": [
+        "python",
+        "tests/catalog_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browsing_tools",
+      "command": [
+        "python",
+        "tests/browsing_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "completion_tools",
+      "command": [
+        "python",
+        "tests/completion_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "genre_tools",
+      "command": [
+        "python",
+        "tests/genre_tools.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-catalog",
+      "command": [
+        "python",
+        "scripts/validate_catalog.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-browsing",
+      "command": [
+        "python",
+        "scripts/validate_browsing.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-completion",
+      "command": [
+        "python",
+        "scripts/validate_completion.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "validate-genres",
+      "command": [
+        "python",
+        "scripts/validate_genres.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browser",
+      "command": [
+        "python",
+        "tests/browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "live_browser",
+      "command": [
+        "python",
+        "tests/live_browser.py"
+      ],
+      "exitCode": 0,
+      "note": "Full rerun passed after correcting the pre-existing assertion to respect the 60-card rendering batch; actual full filtered results are independently checked."
+    },
+    {
+      "name": "features_browser",
+      "command": [
+        "python",
+        "tests/features_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "backups_browser",
+      "command": [
+        "python",
+        "tests/backups_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "clipboard_browser",
+      "command": [
+        "python",
+        "tests/clipboard_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "cleanup_browser",
+      "command": [
+        "python",
+        "tests/cleanup_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "browse_browser",
+      "command": [
+        "python",
+        "tests/browse_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "completion_browser",
+      "command": [
+        "python",
+        "tests/completion_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "responsive_browser",
+      "command": [
+        "python",
+        "tests/responsive_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "cross_engine_browser",
+      "command": [
+        "python",
+        "tests/cross_engine_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "catalog_browser",
+      "command": [
+        "python",
+        "tests/catalog_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "genre_browser",
+      "command": [
+        "python",
+        "tests/genre_browser.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "source-evidence-reparse",
+      "command": [
+        "python",
+        "scripts/verify_genre_sources.py",
+        "--cache",
+        "/tmp/bokasafn-genres/cache"
+      ],
+      "exitCode": 0,
+      "activeSourcesVerified": 663,
+      "additionalSourcesVerified": 1
+    }
+  ],
+  "engines": {
+    "chromium": "151.0.7922.173",
+    "firefox": "153.0",
+    "webkit": "26.5"
+  },
+  "responsive": {
+    "requestedWidths": [
+      320,
+      360,
+      375,
+      390,
+      430,
+      480,
+      600,
+      720,
+      768,
+      820,
+      1024,
+      1180,
+      1280,
+      1366,
+      1440,
+      1920,
+      2560
+    ],
+    "intermediateWidths": [
+      340,
+      412,
+      540,
+      640,
+      744,
+      900,
+      1100,
+      1179,
+      1181,
+      1250,
+      1500,
+      2048
+    ],
+    "themes": [
+      "light",
+      "dark",
+      "green",
+      "purple",
+      "orange"
+    ],
+    "uncaughtErrors": []
+  },
+  "isolatedPerformance": {
+    "original39": {
+      "medianFilterToLayoutMs": 77.4,
+      "maxFilterToLayoutMs": 102
+    },
+    "expanded": {
+      "medianFilterToLayoutMs": 99.0,
+      "maxFilterToLayoutMs": 193.7
+    },
+    "catalogBooks": 663,
+    "catalogBytes": 744109,
+    "coverBytes": 22241346
+  },
+  "metadataPreserved": "Exact per-ID equality against the baseline for all fields except categories and the newly added classification; 663 IDs unchanged.",
+  "reviewedSourcePages": 664,
+  "limitations": [
+    "Headless Firefox and Linux WebKit engine; no native Safari, physical iOS, iPadOS, Android or Samsung Internet test.",
+    "Software keyboard geometry was simulated; no physical software keyboard or browser chrome zoom was exercised."
+  ],
+  "screenshotsInspected": [
+    "genre-library-1440.png",
+    "responsive/library-320.png"
+  ],
+  "checksums": {
+    "Resources/books.json": "dcdfca27c63650faef60dfbba42b9c69e257adae847d98937b8a442f3000da2b",
+    "Resources/genre-taxonomy.json": "af1182bf129e8aefe0d96016dcd07be0a5ea0dcf2c6322279918e6687e8fab0e",
+    "Resources/genre-audit.json": "92be6234e8a016a7d698a4e12dc0d24f8181930e4d525c0462d972af17fa8b13",
+    "tests/fixtures/pre-genre-audit-books.json": "a368e7d5d34db4d1480301727b8c92b00222303afe4e5155c2f026d20cdf34ac"
+  }
+}
